@@ -178,6 +178,89 @@
             width: 100%;
         }
 
+        /* --- COPY TOAST NOTIFICATION --- */
+        .copy-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: #4361ee;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.4);
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 2000;
+            white-space: nowrap;
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            .copy-toast {
+                bottom: 1rem;
+                padding: 0.9rem 1.25rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* --- EMAIL BUTTON VARIANTS --- */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .btn-copy {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            color: white;
+            padding: 1rem 3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-copy:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn-copy:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-mailto {
+            font-size: 0.85rem;
+            padding: 0.7rem 2rem;
+            background: transparent;
+            border: 1px solid rgba(67, 97, 238, 0.5);
+            color: var(--accent-secondary);
+            box-shadow: none;
+        }
+
+        .btn-mailto:hover {
+            background: rgba(67, 97, 238, 0.1);
+            box-shadow: 0 0 15px rgba(67, 97, 238, 0.3);
+        }
+
         /* Mobile Adjustment */
         @media (max-width: 768px) {
             .header-section {
@@ -227,17 +310,58 @@
         
         <span class="email-address">adrianmillermedia@gmail.com</span>
         
-        <a href="mailto:adrianmillermedia@gmail.com" class="btn">
-            Email Me
-        </a>
+        <div class="btn-group">
+            <button class="btn-copy" id="copyEmailBtn">
+                <i class="fa-solid fa-copy"></i>
+                Copy Email
+            </button>
+            <a href="mailto:adrianmillermedia@gmail.com" class="btn btn-mailto" title="Open in your default email client">
+                Or use Email Client
+            </a>
+        </div>
 
         <p class="request-note">Or submit a project request form here:</p>
-        <a href="https://www.adrianmillermedia.com/request" class="btn btn-secondary">
+        <a href="/request/" class="btn btn-secondary">
             Project Request
         </a>
     </div>
 
+    <div class="copy-toast" id="copyToast">
+        <i class="fa-solid fa-check"></i> Email copied to clipboard!
+    </div>
+
     <div id="site-footer"></div>
     <script src="/assets/site.js"></script>
+    <script>
+        // Copy to clipboard functionality
+        const copyBtn = document.getElementById('copyEmailBtn');
+        const copyToast = document.getElementById('copyToast');
+        const email = 'adrianmillermedia@gmail.com';
+
+        copyBtn.addEventListener('click', async () => {
+            try {
+                // Modern Clipboard API
+                await navigator.clipboard.writeText(email);
+                showToastFeedback();
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = email;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToastFeedback();
+            }
+        });
+
+        function showToastFeedback() {
+            copyToast.classList.add('show');
+            // Auto-hide after 2.5 seconds
+            setTimeout(() => {
+                copyToast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
 </body>
 </html>

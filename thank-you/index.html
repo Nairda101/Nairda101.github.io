@@ -30,10 +30,28 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        #site-header {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             padding: 3rem 1.5rem;
-            text-align: center;
+            flex: 1;
+        }
+
+        #site-footer {
+            width: 100%;
+            flex-shrink: 0;
         }
 
         h1, h2, h3 {
@@ -182,13 +200,15 @@
 <body>
     <div id="site-header"></div>
 
-<div class="card">
-    <div class="icon"><i class="fa-regular fa-circle-check"></i></div>
-    <h1>Request Received</h1>
-    <p>Thank you for reaching out. I will review your project details and get back to you within 1-2 business days.</p>
-    <a href="https://www.adrianmillermedia.com/home" class="btn"><i class="fa-solid fa-house"></i>Back to Homepage</a>
-    <div class="note">If you need to add details, email adrianmillermedia@gmail.com.</div>
-</div>
+    <div class="content-wrapper">
+        <div class="card">
+            <div class="icon"><i class="fa-regular fa-circle-check"></i></div>
+            <h1>Request Received</h1>
+            <p>Thank you for reaching out. I will review your project details and get back to you within 1-2 business days.</p>
+            <a href="https://www.adrianmillermedia.com/home" class="btn"><i class="fa-solid fa-house"></i>Back to Homepage</a>
+            <div class="note">If you need to add details, email adrianmillermedia@gmail.com.</div>
+        </div>
+    </div>
 
     <div id="site-footer"></div>
     <script src="/assets/site.js"></script>
