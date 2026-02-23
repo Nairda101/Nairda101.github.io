@@ -1,7 +1,61 @@
 (function () {
+  const knownRootPaths = new Set([
+    'about',
+    'archive',
+    'audio',
+    'contact',
+    'james-family',
+    'rates-concert',
+    'rates-dance',
+    'rates-familyhistory',
+    'rates-theatre',
+    'request',
+    'thank-you',
+    'theatre-showreel',
+    'video',
+    'assets',
+    'partials',
+    'search'
+  ]);
+
+  function detectBasePath() {
+    const metaBase = document.querySelector('meta[name="site-base"]')?.getAttribute('content')?.trim();
+    if (metaBase) {
+      const normalized = `/${metaBase.replace(/^\/+|\/+$/g, '')}`;
+      return normalized === '/' ? '' : normalized;
+    }
+
+    if (!window.location.hostname.endsWith('github.io')) {
+      return '';
+    }
+
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    if (!segments.length) {
+      return '';
+    }
+
+    const first = segments[0].toLowerCase();
+    if (knownRootPaths.has(first)) {
+      return '';
+    }
+
+    return `/${segments[0]}`;
+  }
+
+  const basePath = detectBasePath();
+
+  function withBase(path) {
+    if (!path || /^https?:\/\//i.test(path) || path.startsWith('mailto:') || path.startsWith('tel:') || path.startsWith('#')) {
+      return path;
+    }
+
+    const clean = path.startsWith('/') ? path : `/${path}`;
+    return `${basePath}${clean}`.replace(/\/\/+/, '/').replace(/^\/\//, '/');
+  }
+
   const partialPaths = {
-    header: '/partials/header.html',
-    footer: '/partials/footer.html'
+    header: withBase('/partials/header.html'),
+    footer: withBase('/partials/footer.html')
   };
 
   const fuseCdn = 'https://cdn.jsdelivr.net/npm/fuse.js@6.6.2';
@@ -95,6 +149,22 @@
 
     pathname = pathname.replace(/\/+$/, '');
     return pathname || '/';
+  }
+
+  function applyNavBasePaths() {
+    const nav = document.getElementById('site-nav');
+    if (nav) {
+      nav.querySelectorAll('a[href]').forEach((link) => {
+        const href = link.getAttribute('href') || '';
+        link.setAttribute('href', withBase(href));
+      });
+    }
+
+    const logo = document.querySelector('.site-logo[href]');
+    if (logo) {
+      const href = logo.getAttribute('href') || '';
+      logo.setAttribute('href', withBase(href));
+    }
   }
 
   function setActiveNavLink() {
@@ -272,7 +342,7 @@
       .slice(0, 8)
       .map((item) => {
         const data = item.item;
-        return `<a class="search-result-item" href="${data.url}">${data.title}</a>`;
+        return `<a class="search-result-item" href="${withBase(data.url)}">${data.title}</a>`;
       })
       .join('');
   }
@@ -302,7 +372,7 @@
 
     await loadScript(fuseCdn);
 
-    const response = await fetch('/search/search-index.json', { cache: 'no-store' });
+    const response = await fetch(withBase('/search/search-index.json'), { cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`Failed to load search index: ${response.status}`);
     }
@@ -359,6 +429,7 @@
       cleanupLegacyFooterContent();
       applyTitleColorToHeader();
       setFooterYear();
+      applyNavBasePaths();
       setActiveNavLink();
       setupMobileNavToggle();
       setupSubmenus();
