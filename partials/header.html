@@ -1,0 +1,68 @@
+<header class="site-header">
+  <div class="header-inner">
+    <a class="site-logo" href="index.html" aria-label="Site home">
+      <span class="site-logo-slot" aria-hidden="true">
+        <img class="site-logo-image" src="https://nairda101.github.io/Portfolio/Stacked%20-%20Lighter.png" alt="">
+      </span>
+      <span class="site-logo-text">Adrian Miller Media</span>
+    </a>
+
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      aria-label="Toggle navigation"
+    >
+      ☰
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Primary" data-open="false">
+      <ul class="menu-list">
+        <li class="menu-item">
+          <a href="index.html">Home</a>
+        </li>
+
+        <li class="menu-item has-submenu">
+          <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="submenu-rates">
+            Project Rates
+          </button>
+          <ul id="submenu-rates" class="submenu" role="group">
+            <li><a href="Concert and Ensemble Recording Rates.html">Concert Rates</a></li>
+            <li><a href="Dance Concert Rates.html">Dance Recital Rates</a></li>
+            <li><a href="Family History Rates.html">Family History Rates</a></li>
+            <li><a href="Theatre Production Rates.html">Theatre Rates</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item has-submenu">
+          <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="submenu-work">
+            Recent Work
+          </button>
+          <ul id="submenu-work" class="submenu" role="group">
+            <li><a href="Audio Work Page.html">Audio</a></li>
+            <li><a href="Video Work Page.html">Video</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="About Page.html">About</a>
+        </li>
+        <li class="menu-item">
+          <a href="Contact.html">Contact</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="site-search" data-open="false">
+      <button class="search-toggle" type="button" aria-expanded="false" aria-controls="site-search-panel" aria-label="Open search">
+        <span aria-hidden="true">🔍</span>
+      </button>
+      <div id="site-search-panel" class="site-search-panel">
+        <label class="sr-only" for="site-search-input">Search the site</label>
+        <input id="site-search-input" type="search" placeholder="Search…" autocomplete="off">
+        <div id="site-search-results" class="search-results" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</header>
