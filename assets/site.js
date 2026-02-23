@@ -1,23 +1,4 @@
 (function () {
-  const knownRootPaths = new Set([
-    'about',
-    'archive',
-    'audio',
-    'contact',
-    'james-family',
-    'rates-concert',
-    'rates-dance',
-    'rates-familyhistory',
-    'rates-theatre',
-    'request',
-    'thank-you',
-    'theatre-showreel',
-    'video',
-    'assets',
-    'partials',
-    'search'
-  ]);
-
   function detectBasePath() {
     const metaBase = document.querySelector('meta[name="site-base"]')?.getAttribute('content')?.trim();
     if (metaBase) {
@@ -25,21 +6,27 @@
       return normalized === '/' ? '' : normalized;
     }
 
-    if (!window.location.hostname.endsWith('github.io')) {
+    const scriptTag = document.currentScript ||
+      Array.from(document.scripts).find((script) => /(?:^|\/)assets\/site\.js(?:\?.*)?$/i.test(script.getAttribute('src') || script.src || ''));
+
+    const scriptSrc = scriptTag?.src || scriptTag?.getAttribute('src') || '';
+    if (!scriptSrc) {
       return '';
     }
 
-    const segments = window.location.pathname.split('/').filter(Boolean);
-    if (!segments.length) {
+    try {
+      const scriptUrl = new URL(scriptSrc, window.location.href);
+      const marker = '/assets/site.js';
+      const index = scriptUrl.pathname.toLowerCase().indexOf(marker);
+      if (index === -1) {
+        return '';
+      }
+
+      const base = scriptUrl.pathname.slice(0, index);
+      return base.replace(/\/+$/, '');
+    } catch (_) {
       return '';
     }
-
-    const first = segments[0].toLowerCase();
-    if (knownRootPaths.has(first)) {
-      return '';
-    }
-
-    return `/${segments[0]}`;
   }
 
   const basePath = detectBasePath();
@@ -50,7 +37,7 @@
     }
 
     const clean = path.startsWith('/') ? path : `/${path}`;
-    return `${basePath}${clean}`.replace(/\/\/+/, '/').replace(/^\/\//, '/');
+    return `${basePath}${clean}`.replace(/\/+/g, '/').replace(/^\/\//, '/');
   }
 
   const partialPaths = {
