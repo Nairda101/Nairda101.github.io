@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Adrian Miller Media - Theatre Production Showreel</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME SETTINGS --- */
+        :root {
+            --bg-dark: #0a0e17;      
+            --bg-card: #111625;      
+            --accent-primary: #7b2cbf; 
+            --accent-secondary: #4361ee; 
+            --accent-glow: rgba(67, 97, 238, 0.5);
+            --text-main: #f0f0f0;    
+            --text-muted: #b0b8c4;   
+            --border-color: #2a3040;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- HEADER --- */
+        .header-section {
+            text-align: center;
+            padding: 4rem 0 50rem 0;
+            background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 30%, #0b1018 60%, var(--bg-dark) 100%);
+        }
+
+        .header-section + .container {
+            margin-top: -47rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: -webkit-linear-gradient(0deg, #fff, #a0c4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- HERO VIDEO CONTAINER --- */
+        .hero-video-container {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(67, 97, 238, 0.2);
+            margin-bottom: 3rem;
+        }
+
+        .video-hero-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+        }
+
+        .video-hero-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* --- DESCRIPTION SECTION --- */
+        .reel-description {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 4rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .reel-description h2 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .reel-description p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin: 0 0 1rem 0;
+        }
+
+        .reel-description p:last-child {
+            margin-bottom: 0;
+        }
+
+        .description-highlight {
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+
+        /* --- SOCIAL MEDIA SECTION --- */
+        .social-section {
+            padding: 4rem 0;
+            background-color: var(--bg-dark);
+            text-align: center;
+        }
+
+        .social-section h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .social-container {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--text-muted);
+            font-size: 2.5rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .social-link:hover {
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+            text-shadow: 0 0 20px var(--accent-secondary);
+        }
+
+        .social-link:hover .fa-youtube { color: #FF0000; text-shadow: 0 0 20px rgba(255,0,0,0.6); }
+        .social-link:hover .fa-instagram { color: #E1306C; text-shadow: 0 0 20px rgba(225, 48, 108, 0.6); }
+        .social-link:hover .fa-soundcloud { color: #ff5500; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
+        .social-link:hover .fa-linkedin { color: #0077b5; text-shadow: 0 0 20px rgba(0, 119, 181, 0.6); }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: 2rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: #444;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 3rem 0 35rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -32rem;
+            }
+            
+            h1 { font-size: 2.2rem; }
+            
+            .reel-description {
+                padding: 1.5rem;
+            }
+
+            .reel-description h2 {
+                font-size: 1.4rem;
+            }
+            
+            .social-container {
+                gap: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-section {
+                padding: 2.5rem 0 25rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -22rem;
+            }
+            
+            .reel-description {
+                padding: 1.25rem;
+            }
+
+            .reel-description h2 {
+                font-size: 1.2rem;
+            }
+
+            .reel-description p {
+                font-size: 0.95rem;
+            }
+            
+            .social-container {
+                gap: 1rem;
+            }
+            
+            .social-link {
+                font-size: 2rem;
+            }
+        }
+
+    </style>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+    <div id="site-header"></div>
+
+<div class="header-section">
+    <div class="container">
+        <h1>Theatre Production Showreel</h1>
+        <p class="subtitle">Multi-camera recording and professional audio production for live theatre.</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- ==================== HERO VIDEO ==================== -->
+    <div class="hero-video-container">
+        <div class="video-hero-wrapper">
+            <!-- Replace the video ID (after /embed/) with your actual showreel -->
+            <iframe src="https://www.youtube.com/embed/VbX4nv4THoI" title="Theatre Production Showreel" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- ==================== DESCRIPTION ==================== -->
+    <div class="reel-description">
+        <h2>About This Reel</h2>
+        <p>This showreel showcases my <span class="description-highlight">multi-camera recording and audio production expertise</span> for live theatre productions. I specialize in capturing the energy and emotion of live performances with professional-grade equipment and post-production.</p>
+        
+        <p>Each production is recorded with multiple synchronized cameras, professionally mixed audio, and professionally edited. Whether you need capture for archival, streaming, or cast and crew distribution, I provide complete solutions tailored to your production's needs.</p>
+        
+        <p><span class="description-highlight">Interested in recording your next production?</span> <a href="https://www.adrianmillermedia.com/products/theatre-productions" style="color: #4db8ff; text-decoration: none; font-weight: 600;">Check out my rates</a> or <a href="https://www.adrianmillermedia.com/request" style="color: #4db8ff; text-decoration: none; font-weight: 600;">contact me</a> to discuss your project.</p>
+    </div>
+
+</div>
+
+    <div id="site-footer"></div>
+    <script src="/assets/site.js"></script>
+</body>
+</html>

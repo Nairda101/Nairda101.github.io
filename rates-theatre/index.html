@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adrian Miller Media - Theatre Rates</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME SETTINGS --- */
+        :root {
+            --bg-dark: #0a0e17;      
+            --bg-card: #111625;      
+            --accent-primary: #7b2cbf; 
+            --accent-secondary: #4361ee; 
+            --accent-glow: rgba(67, 97, 238, 0.5);
+            --text-main: #f0f0f0;    
+            --text-muted: #b0b8c4;   
+            --border-color: #2a3040;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- HEADER --- */
+        .header-section {
+            text-align: center;
+            padding: 4rem 0 50rem 0;
+            background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 30%, #0b1018 60%, var(--bg-dark) 100%);
+        }
+
+        .header-section + .container {
+            margin-top: -47rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: -webkit-linear-gradient(0deg, #fff, #a0c4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- COLLAPSIBLE EXPLAINER (UPDATED) --- */
+        .explainer-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            overflow: hidden; 
+            transition: all 0.3s ease;
+        }
+
+        .explainer-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(255,255,255,0.02);
+            transition: background 0.2s;
+        }
+
+        .explainer-header:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .explainer-title {
+            color: var(--accent-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .explainer-icon {
+            transition: transform 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .explainer-content {
+            max-height: 0; /* Hidden by default */
+            padding: 0 2rem;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Open State Styles */
+        .explainer-box.is-open .explainer-content {
+            max-height: 1200px; /* Large height to prevent mobile clipping */
+            padding-bottom: 2rem;
+            opacity: 1;
+        }
+
+        .explainer-box.is-open .explainer-icon {
+            transform: rotate(180deg);
+            color: var(--accent-primary);
+        }
+
+        .explainer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .explainer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .explainer-item h4 { margin-bottom: 0.5rem; color: white; }
+        .explainer-item p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+        
+        .hybrid-note {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #d0d0d0;
+            font-style: italic;
+        }
+
+        .hybrid-note a { color: var(--accent-secondary); font-weight: 700; text-decoration: none; }
+        .hybrid-note a:hover { text-decoration: underline; }
+
+        /* --- GLOBAL TOGGLE (Standard vs Junior) --- */
+        .global-toggle-title {
+            text-align: center;
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 0.8rem;
+        }
+
+        .global-toggle-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .global-toggle-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.8rem 2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .global-toggle-btn:first-child {
+            border-radius: 50px 0 0 50px;
+            border-right: none;
+        }
+        .global-toggle-btn:last-child {
+            border-radius: 0 50px 50px 0;
+            border-left: none;
+        }
+
+        .global-toggle-btn.active {
+            background: var(--accent-secondary);
+            color: white;
+            border-color: var(--accent-secondary);
+        }
+
+        /* --- PRICING GRID --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .price-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--accent-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+            border-top-color: var(--accent-primary);
+        }
+
+        .price-card h2 {
+            margin: 0 0 1.5rem 0;
+            font-size: 1.5rem;
+            text-align: center;
+            color: white;
+        }
+
+        /* --- CARD TOGGLE (Flat vs Copy) --- */
+        .card-toggle-wrapper {
+            background-color: #05070c;
+            border-radius: 50px;
+            padding: 4px;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toggle-glider {
+            position: absolute;
+            top: 4px; left: 4px;
+            width: calc(50% - 4px); height: calc(100% - 8px);
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            border-radius: 50px;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .toggle-label {
+            flex: 1; text-align: center; z-index: 2; 
+            font-size: 0.75rem; font-weight: 700; color: var(--text-muted);
+            transition: color 0.3s ease; user-select: none;
+        }
+
+        .card-toggle-wrapper.mode-flat .label-flat { color: white; }
+        .card-toggle-wrapper.mode-copy .label-copy { color: white; }
+        .card-toggle-wrapper.mode-flat .toggle-glider { transform: translateX(0%); }
+        .card-toggle-wrapper.mode-copy .toggle-glider { transform: translateX(100%); }
+
+        /* --- PRICE DISPLAY --- */
+        .price-area {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            min-height: 100px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+
+        .price-tag {
+            font-size: 2.5rem; font-weight: 900; color: white; font-family: 'Montserrat', sans-serif;
+        }
+
+        .price-sub {
+            font-size: 0.9rem; color: var(--accent-secondary); font-weight: 600; margin-top: 5px;
+        }
+
+        .price-note {
+            font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; font-style: italic;
+        }
+
+        /* --- FEATURES --- */
+        .features {
+            list-style: none; padding: 0; margin: 0 0 2rem 0; flex-grow: 1;
+        }
+
+        .features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted); font-size: 0.95rem;
+            display: flex; align-items: flex-start;
+        }
+
+        .features li::before {
+            content: "✓";
+            color: var(--accent-primary);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .features li.is-off::before {
+            content: "✕";
+            color: #ff6b6b;
+        }
+
+        .card-btn {
+            display: block; text-align: center; background: transparent;
+            border: 2px solid var(--accent-secondary); color: white;
+            padding: 0.8rem; border-radius: 6px; font-weight: 700;
+            text-transform: uppercase; text-decoration: none; transition: 0.3s;
+        }
+
+        .card-btn:hover {
+            background: var(--accent-secondary); box-shadow: 0 0 15px rgba(67, 97, 238, 0.5);
+        }
+
+        /* --- ADD ONS & HYBRID --- */
+        .addons-section {
+            margin-top: 4rem;
+            background: rgba(255,255,255,0.03);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-secondary);
+        }
+
+        .addon-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 1rem 0;
+        }
+        .addon-item:last-child { border-bottom: none; }
+        .addon-title h4 { margin: 0; font-size: 1.1rem; }
+        .addon-title p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+        .addon-price { font-weight: 700; color: var(--accent-secondary); font-size: 1.2rem; }
+
+        .hybrid-banner {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(90deg, #101522 0%, #161b2e 100%);
+            border: 1px dashed var(--accent-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .hybrid-icon { font-size: 2rem; color: var(--accent-primary); }
+        .hybrid-text h4 { margin: 0 0 5px 0; font-size: 1.1rem; color: #fff; }
+        .hybrid-text p { margin: 0; font-size: 0.95rem; color: var(--text-muted); }
+        .hybrid-text a { color: var(--accent-secondary); font-weight: 700; text-decoration: none; }
+        .hybrid-text a:hover { text-decoration: underline; }
+
+        /* --- SOCIAL --- */
+        .social-section {
+            padding: 4rem 0;
+            background-color: var(--bg-dark);
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .social-section h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .social-container {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--text-muted);
+            font-size: 2.5rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+            text-shadow: 0 0 20px var(--accent-secondary);
+        }
+
+        .social-link:hover .fa-youtube { color: #FF0000; text-shadow: 0 0 20px rgba(255,0,0,0.6); }
+        .social-link:hover .fa-instagram { color: #E1306C; text-shadow: 0 0 20px rgba(225, 48, 108, 0.6); }
+        .social-link:hover .fa-soundcloud { color: #ff5500; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
+        .social-link:hover .fa-linkedin { color: #0077b5; text-shadow: 0 0 20px rgba(0, 119, 181, 0.6); }
+
+        footer {
+            padding: 2rem 0; text-align: center; color: #555; font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 3rem 0 35rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -32rem;
+            }
+            
+            h1 { font-size: 2rem; }
+            .addon-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .addon-price { align-self: flex-end; }
+            .hybrid-banner { flex-direction: column; text-align: center; gap: 1rem; }
+            .explainer-box.is-open .explainer-content { max-height: 1600px; }
+            .global-toggle-btn { padding: 0.55rem 1.2rem; font-size: 0.8rem; line-height: 1.1; }
+        }
+        
+        @media (max-width: 480px) {
+            .header-section {
+                padding: 2.5rem 0 25rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -22rem;
+            }
+        }
+
+    </style>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+    <div id="site-header"></div>
+
+<div class="header-section">
+    <div class="container">
+        <h1>Theatre Production Recording Rates</h1>
+        <p class="subtitle">Flexible pricing for schools, community theaters, and parent boosters.</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="explainer-box" id="explainer" onclick="toggleExplainer()">
+        <div class="explainer-header">
+            <span class="explainer-title">
+                <i class="fa-solid fa-circle-info"></i> How Pricing Works (Read First)
+            </span>
+            <i class="fa-solid fa-chevron-down explainer-icon"></i>
+        </div>
+        
+        <div class="explainer-content">
+            <div class="explainer-grid">
+                <div class="explainer-item">
+                    <h4>1. Flat Rate (Best for Schools/Organizations)</h4>
+                    <p>The organization pays a single fee. You receive the master files and full rights to distribute the video to cast, crew, and students for free.</p>
+                </div>
+                <div class="explainer-item">
+                    <h4>2. Per Copy (Best for Parents/Communities)</h4>
+                    <p>No upfront cost to the school. Patrons purchase individual copies directly. <br><em>Note: This option requires a minimum number of pre-orders to confirm booking.</em></p>
+                </div>
+            </div>
+            <div class="hybrid-note">
+                <i class="fa-solid fa-circle-info"></i> <strong>Hybrid Option:</strong> The school or a parent can pay a base fee upfront to lower the cost per copy for everyone else. <a href="https://www.adrianmillermedia.com/request">Submit a request for a custom quote.</a>
+            </div>
+            <div class="hybrid-note" style="border-top-color: #ff6b6b; color: #ffd0d0;">
+                <i class="fa-solid fa-scale-balanced"></i> <strong>Don't forget your video license:</strong> To protect your organization and the show's creators, please remember that video recording rights must be secured separately from your performance rights. It is the hosting organization's responsibility to purchase this authorization from the distributor (e.g., Music Theatre International, Concord Theatricals, Samuel French, etc.) prior to booking. <a href="https://www.adrianmillermedia.com/request">Please reach out</a> to discuss your options!
+            </div>
+        </div>
+    </div>
+
+    <div class="global-toggle-title">Show length</div>
+    <div class="global-toggle-container">
+        <button class="global-toggle-btn active" id="btn-standard" onclick="setGlobalMode('standard')">Standard Show<br>(2+ Hrs)</button>
+        <button class="global-toggle-btn" id="btn-junior" onclick="setGlobalMode('junior')">Junior Show<br>(< 75 Mins)</button>
+    </div>
+
+    <div class="pricing-grid">
+        
+        <div class="price-card">
+            <h2>The Archive</h2>
+            
+            <div class="card-toggle-wrapper mode-flat" id="toggle-1" onclick="toggleCard(1)">
+                <div class="toggle-glider"></div>
+                <div class="toggle-label label-flat">Flat Rate</div>
+                <div class="toggle-label label-copy">Per Copy</div>
+            </div>
+
+            <div class="price-area">
+                <span class="price-tag" id="price-1">$375</span>
+                <span class="price-sub" id="sub-1">One-Time Fee</span>
+                <span class="price-note" id="note-1">Includes Distribution Rights</span>
+            </div>
+
+            <ul class="features">
+                <li>1 Camera (Wide Shot)</li>
+                <li>1 Night Recording</li>
+                <li>Direct Board Audio Feed</li>
+                <li class="is-off">No Color Grading</li>
+                <li class="is-off">No Pro Audio Mix</li>
+                <li>Best for: Archival</li>
+            </ul>
+
+            <a href="https://www.adrianmillermedia.com/request" class="card-btn">Book This</a>
+        </div>
+
+        <div class="price-card" style="border-top-color: var(--accent-primary); box-shadow: 0 0 15px rgba(123, 44, 191, 0.1);">
+            <h2>The Performance</h2>
+            
+            <div class="card-toggle-wrapper mode-flat" id="toggle-2" onclick="toggleCard(2)">
+                <div class="toggle-glider"></div>
+                <div class="toggle-label label-flat">Flat Rate</div>
+                <div class="toggle-label label-copy">Per Copy</div>
+            </div>
+
+            <div class="price-area">
+                <span class="price-tag" id="price-2">$675</span>
+                <span class="price-sub" id="sub-2">One-Time Fee</span>
+                <span class="price-note" id="note-2">Includes Distribution Rights</span>
+            </div>
+
+            <ul class="features">
+                <li>2 Camera Coverage (Wide & Tight)</li>
+                <li>1 Night Recording</li>
+                <li>Color Corrected Video</li>
+                <li>Polished Multicam Edit</li>
+                <li>Pro Audio Mix</li>
+                <li>Best value!</li>
+            </ul>
+
+            <a href="https://www.adrianmillermedia.com/request" class="card-btn" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">Book This</a>
+        </div>
+
+        <div class="price-card">
+            <h2>Full Production</h2>
+            
+            <div class="card-toggle-wrapper mode-flat" id="toggle-3" onclick="toggleCard(3)">
+                <div class="toggle-glider"></div>
+                <div class="toggle-label label-flat">Flat Rate</div>
+                <div class="toggle-label label-copy">Per Copy</div>
+            </div>
+
+            <div class="price-area">
+                <span class="price-tag" id="price-3">$1,200</span>
+                <span class="price-sub" id="sub-3">One-Time Fee</span>
+                <span class="price-note" id="note-3">Includes Distribution Rights</span>
+            </div>
+
+            <ul class="features">
+                <li>2 Camera Coverage (Wide & Tight)</li>
+                <li>2 Nights of Filming</li>
+                <li>Polished Edit of Best Scenes</li>
+                <li>Opening Title Sequence and End Credits</li>
+                <li>Highest Quality Product!</li>
+            </ul>
+
+            <a href="https://www.adrianmillermedia.com/request" class="card-btn">Book This</a>
+        </div>
+
+    </div>
+
+    <div class="addons-section">
+        <h3 style="margin-bottom: 1.5rem;">Optional Add-Ons</h3>
+        
+        <div class="addon-item">
+            <div class="addon-title">
+                <h4>Additional Night Capture</h4>
+                <p>Add an additional performance recording to the Full Production package.</p>
+            </div>
+            <div class="addon-price">+$250</div>
+        </div>
+
+        <div class="addon-item">
+            <div class="addon-title">
+                <h4>BTS Video Package</h4>
+                <p>Filming pre-show interviews, cast warmups, or post show reactions.</p>
+            </div>
+            <div class="addon-price">+$150</div>
+        </div>
+        <div class="addon-item">
+            <div class="addon-title">
+                <h4>1 minute Highlight Reel</h4>
+                <p>Highlight reel showcasing key moments from the performance for social media.</p>
+            </div>
+            <div class="addon-price">+$150</div>
+        </div>
+    </div>
+
+    <div class="hybrid-banner">
+        <div class="hybrid-icon"><i class="fa-solid fa-handshake-simple"></i></div>
+        <div class="hybrid-text">
+            <h4>Need a Custom Fit?</h4>
+            <p>Is your show double cast? Need a hybrid payment options? (e.g. School pays 50%, Parents pay 50%). <a href="https://www.adrianmillermedia.com/request">Submit a request for a quote.</a></p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+   // THEATRE DATA STORE
+    const pricingData = {
+        standard: {
+            1: { flat: "$375", copyPrice: "$20", minSold: "19", note: "Includes Distribution Rights", copyNote: "Requires 19 Pre-Orders" },
+            2: { flat: "$675", copyPrice: "$25", minSold: "27", note: "Includes Distribution Rights", copyNote: "Requires 27 Pre-Orders" },
+            3: { flat: "$1,200", copyPrice: "$30", minSold: "40", note: "Includes Distribution Rights", copyNote: "Requires 40 Pre-Orders" }
+        },
+        junior: {
+            1: { flat: "$250", copyPrice: "$20", minSold: "13", note: "Includes Distribution Rights", copyNote: "Requires 13 Pre-Orders" },
+            2: { flat: "$450", copyPrice: "$25", minSold: "18", note: "Includes Distribution Rights", copyNote: "Requires 18 Pre-Orders" },
+            3: { flat: "$800", copyPrice: "$30", minSold: "27", note: "Includes Distribution Rights", copyNote: "Requires 27 Pre-Orders" }
+        }
+    };
+
+    let currentMode = 'standard'; // 'standard' or 'junior'
+
+    // 1. Switch Global Mode (Standard vs Junior)
+    function setGlobalMode(mode) {
+        currentMode = mode;
+        
+        // Update Buttons
+        document.getElementById('btn-standard').classList.toggle('active', mode === 'standard');
+        document.getElementById('btn-junior').classList.toggle('active', mode === 'junior');
+
+        // Refresh all cards
+        for (let i = 1; i <= 3; i++) {
+            updateCardDisplay(i);
+        }
+    }
+
+    // 2. Toggle Individual Card (Flat vs Copy)
+    function toggleCard(tier) {
+        const toggle = document.getElementById(`toggle-${tier}`);
+        const isFlat = toggle.classList.contains('mode-flat');
+        
+        if (isFlat) {
+            toggle.classList.remove('mode-flat');
+            toggle.classList.add('mode-copy');
+        } else {
+            toggle.classList.remove('mode-copy');
+            toggle.classList.add('mode-flat');
+        }
+        updateCardDisplay(tier);
+    }
+
+    // 3. Update Text Logic
+    function updateCardDisplay(tier) {
+        const toggle = document.getElementById(`toggle-${tier}`);
+        const isFlat = toggle.classList.contains('mode-flat');
+        const data = pricingData[currentMode][tier];
+
+        const priceEl = document.getElementById(`price-${tier}`);
+        const subEl = document.getElementById(`sub-${tier}`);
+        const noteEl = document.getElementById(`note-${tier}`);
+
+        if (isFlat) {
+            priceEl.innerText = data.flat;
+            subEl.innerText = "One-Time Fee";
+            noteEl.innerText = data.note;
+        } else {
+            priceEl.innerText = data.copyPrice;
+            subEl.innerText = "Per Copy";
+            noteEl.innerText = data.copyNote;
+        }
+    }
+
+    // 4. Toggle Explainer Box
+    function toggleExplainer() {
+        const box = document.getElementById('explainer');
+        box.classList.toggle('is-open');
+    }
+
+    setGlobalMode('standard');
+</script>
+
+    <div id="site-footer"></div>
+    <script src="/assets/site.js"></script>
+</body>
+</html>

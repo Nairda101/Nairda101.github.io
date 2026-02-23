@@ -1,7 +1,7 @@
 (function () {
   const partialPaths = {
-    header: 'partials/header.html',
-    footer: 'partials/footer.html'
+    header: '/partials/header.html',
+    footer: '/partials/footer.html'
   };
 
   const fuseCdn = 'https://cdn.jsdelivr.net/npm/fuse.js@6.6.2';
@@ -77,9 +77,24 @@
     document.documentElement.style.setProperty('--site-title-color', computed);
   }
 
-  function normalizePath(pathname) {
-    const value = pathname.split('/').pop() || 'index.html';
-    return value.toLowerCase();
+  function normalizePath(value) {
+    let pathname = '/';
+
+    try {
+      const parsed = new URL(value || '/', window.location.origin);
+      pathname = parsed.pathname || '/';
+    } catch (_) {
+      pathname = '/';
+    }
+
+    pathname = pathname.toLowerCase();
+
+    if (pathname.endsWith('/index.html')) {
+      pathname = pathname.slice(0, -'/index.html'.length) || '/';
+    }
+
+    pathname = pathname.replace(/\/+$/, '');
+    return pathname || '/';
   }
 
   function setActiveNavLink() {
@@ -287,7 +302,7 @@
 
     await loadScript(fuseCdn);
 
-    const response = await fetch('search/search-index.json', { cache: 'no-store' });
+    const response = await fetch('/search/search-index.json', { cache: 'no-store' });
     if (!response.ok) {
       throw new Error(`Failed to load search index: ${response.status}`);
     }

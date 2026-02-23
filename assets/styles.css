@@ -446,9 +446,11 @@
   }
 
   .site-search-panel {
-    right: auto;
-    left: 0;
+    left: auto;
+    right: 0;
     width: min(92vw, 300px);
+    max-width: calc(100vw - 0.75rem);
+    box-sizing: border-box;
   }
 }
 

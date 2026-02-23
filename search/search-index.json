@@ -1,72 +1,67 @@
 [
   {
     "title": "Home",
-    "url": "index.html",
+    "url": "/",
     "content": "Adrian Miller Media. Professional video editing, audio production, and media services for Salt Lake area. Creating high-quality media without the agency price tag."
   },
   {
     "title": "About",
-    "url": "About Page.html",
+    "url": "/about/",
     "content": "About Adrian Miller. Professional audio and video producer with degrees in Music Recording Technology and Digital Audio. Experience in theatre recording, podcast production, video editing, and live sound."
   },
   {
     "title": "Contact",
-    "url": "Contact.html",
+    "url": "/contact/",
     "content": "Contact Adrian Miller Media. Get in touch for your next project. Email adrianmillermedia@gmail.com"
   },
   {
     "title": "Theatre Production Rates",
-    "url": "Theatre Production Rates.html",
+    "url": "/rates-theatre/",
     "content": "Theatre production recording rates. Multi-camera recording packages for musical theatre productions. Standard and junior pricing options with flat rate or per-copy pricing."
   },
   {
     "title": "Concert and Ensemble Recording Rates",
-    "url": "Concert and Ensemble Recording Rates.html",
+    "url": "/rates-concert/",
     "content": "Concert and ensemble recording rates. Professional recording packages for choir concerts, band performances, and orchestra concerts. Standard and junior pricing tiers."
   },
   {
     "title": "Dance Concert Rates",
-    "url": "Dance Concert Rates.html",
+    "url": "/rates-dance/",
     "content": "Dance concert recording rates. Professional multi-camera recording for dance recitals and performances. Two-tier pricing for single and multi-performance events."
   },
   {
     "title": "Family History Rates",
-    "url": "Family History Rates.html",
+    "url": "/rates-familyhistory/",
     "content": "Family legacy interview rates. Preserve your family history with professional video portraits. Archival raw sessions and edited heirloom packages available."
   },
   {
     "title": "Audio Work",
-    "url": "Audio Work Page.html",
+    "url": "/audio/",
     "content": "Audio production portfolio. Music composition, podcast editing, audio mixing, and mastering services. Listen to samples of original compositions and professionally mixed projects."
   },
   {
     "title": "Video Work",
-    "url": "Video Work Page.html",
+    "url": "/video/",
     "content": "Video production portfolio. Music videos, promotional content, ad campaigns, instructional videos, and corporate video editing. Professional editing and motion graphics."
   },
   {
     "title": "Theatre Showreel",
-    "url": "Theatre Showreel.html",
+    "url": "/theatre-showreel/",
     "content": "Theatre production showreel. Multi-camera recording and professional audio production for live theatre. View samples of theatre production recordings."
   },
   {
     "title": "Project Archive",
-    "url": "Archive.html",
+    "url": "/archive/",
     "content": "Project archive. Additional works and extended portfolio collections including theatre recordings, musical recordings, podcasts, and video projects."
   },
   {
     "title": "James Family Legacy",
-    "url": "James Family Legacy_v1.html",
+    "url": "/james-family/",
     "content": "James Family Legacy project. Preserving the history, stories, and memories of Robert and Linda James through professional video documentation."
   },
   {
     "title": "Project Request",
-    "url": "Project Request Master.html",
+    "url": "/request/",
     "content": "Submit a project request. Get a custom quote for your audio or video production project. Contact form for theatre, concert, family history, or custom media projects."
-  },
-  {
-    "title": "Request Received",
-    "url": "Project Request Thanks.html",
-    "content": "Thank you for your project request. We will review your details and get back to you within 1-2 business days."
   }
 ]

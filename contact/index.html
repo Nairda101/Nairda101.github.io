@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME SETTINGS --- */
+        :root {
+            --bg-dark: #0a0e17;      
+            --bg-card: #111625;      
+            --accent-primary: #7b2cbf; 
+            --accent-secondary: #4361ee; 
+            --accent-glow: rgba(67, 97, 238, 0.5);
+            --text-main: #f0f0f0;    
+            --text-muted: #b0b8c4;   
+        }
+
+        /* --- GLOBAL --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- HERO TEXT --- */
+        .contact-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem); /* Responsive sizing */
+            margin-bottom: 1rem;
+            background: -webkit-linear-gradient(0deg, #fff, #a0c4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact-hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .header-section {
+            width: 100%;
+            text-align: center;
+            padding: 5rem 0 50rem 0;
+            background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 30%, #0b1018 60%, var(--bg-dark) 100%);
+        }
+
+        /* --- CONTACT CARD --- */
+        .contact-card {
+            background-color: rgba(17, 22, 37, 0.5);
+            padding: 3rem;
+            border-radius: 12px;
+            border: 1px solid rgba(67, 97, 238, 0.1);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            margin: -47rem auto 4rem;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .email-icon {
+            font-size: 3rem;
+            color: var(--accent-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .email-address {
+            display: block;
+            font-size: clamp(1rem, 4.5vw, 1.5rem);
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* --- BUTTON --- */
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            color: white;
+            padding: 1rem 3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 50px; /* Pill shape */
+            box-shadow: 0 0 15px var(--accent-glow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            margin-top: 0.8rem;
+        }
+
+        .request-note {
+            margin-top: 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- SOCIAL SECTION (Integrated) --- */
+        .social-section h3 {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 0 1.5rem;
+        }
+
+        .social-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0 1.5rem;
+        }
+
+        .social-link {
+            color: #555;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: white;
+            transform: scale(1.2);
+            text-shadow: 0 0 15px var(--accent-secondary);
+        }
+
+        .social-link:hover .fa-youtube { color: #FF0000; text-shadow: 0 0 20px rgba(255,0,0,0.6); }
+        .social-link:hover .fa-instagram { color: #E1306C; text-shadow: 0 0 20px rgba(225, 48, 108, 0.6); }
+        .social-link:hover .fa-soundcloud { color: #ff5500; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
+        .social-link:hover .fa-linkedin { color: #0077b5; text-shadow: 0 0 20px rgba(0, 119, 181, 0.6); }
+
+        footer {
+            padding: 2rem 0 1rem;
+            text-align: center;
+            color: #444;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        /* Mobile Adjustment */
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 3rem 0 35rem 0;
+            }
+            
+            .contact-card {
+                width: calc(100% - 3rem);
+                margin: -32rem auto 4rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .contact-card { padding: 2rem 1.5rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .header-section {
+                padding: 2.5rem 0 25rem 0;
+            }
+            
+            .contact-card {
+                width: calc(100% - 2rem);
+                margin: -22rem auto 4rem;
+            }
+        }
+
+    </style>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <div class="header-section">
+        <div class="container">
+            <div class="contact-hero">
+                <h1>Ready to Create?</h1>
+                <p>Whether you need a quote for a project or just want to discuss an idea, I’m currently open for new collaborations.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-card">
+        <div class="email-icon">
+            <i class="fa-regular fa-envelope"></i>
+        </div>
+        
+        <span class="email-address">adrianmillermedia@gmail.com</span>
+        
+        <a href="mailto:adrianmillermedia@gmail.com" class="btn">
+            Email Me
+        </a>
+
+        <p class="request-note">Or submit a project request form here:</p>
+        <a href="https://www.adrianmillermedia.com/request" class="btn btn-secondary">
+            Project Request
+        </a>
+    </div>
+
+    <div id="site-footer"></div>
+    <script src="/assets/site.js"></script>
+</body>
+</html>
