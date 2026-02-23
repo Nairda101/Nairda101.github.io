@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adrian Miller Media - Video Portfolio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME SETTINGS --- */
+        :root {
+            --bg-dark: #0a0e17;      
+            --bg-card: #111625;      
+            --accent-primary: #7b2cbf; 
+            --accent-secondary: #4361ee; 
+            --text-main: #f0f0f0;    
+            --text-muted: #b0b8c4;   
+            --border-color: #2a3040;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- HEADER --- */
+        .header-section {
+            text-align: center;
+            padding: 4rem 0 50rem 0;
+            background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 30%, #0b1018 60%, var(--bg-dark) 100%);
+        }
+
+        .header-section + .container {
+            margin-top: -47rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: -webkit-linear-gradient(0deg, #fff, #a0c4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- HERO VIDEO SECTION --- */
+        .hero-video-container {
+            margin-bottom: 5rem;
+            border: 2px solid var(--accent-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(67, 97, 238, 0.2);
+            background: #000;
+        }
+        
+        .hero-label {
+            background: var(--accent-secondary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            display: inline-block;
+            border-bottom-right-radius: 12px;
+        }
+
+        /* --- CATEGORY HEADER --- */
+        .category-header {
+            margin-top: 5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .category-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent-secondary), transparent);
+        }
+
+        .category-icon { color: var(--accent-secondary); }
+
+        /* --- GRID SYSTEM --- */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); 
+            gap: 2.5rem;
+        }
+
+        /* --- CARD STYLE --- */
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-secondary);
+        }
+
+        /* --- VIDEO CONTAINER (16:9) --- */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; 
+            height: 0;
+            background: black;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* --- CARD CONTENT --- */
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--accent-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .tag.purple {
+            background: rgba(123, 44, 191, 0.1);
+            color: var(--accent-primary);
+        }
+
+        .tag.white {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ccc;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* --- SOCIAL MEDIA SECTION --- */
+        .social-section {
+            padding: 4rem 0;
+            background-color: var(--bg-dark);
+            text-align: center;
+        }
+
+        .social-section h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .social-container {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--text-muted);
+            font-size: 2.5rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .social-link:hover {
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+            text-shadow: 0 0 20px var(--accent-secondary);
+        }
+
+        .social-link:hover .fa-youtube { color: #FF0000; text-shadow: 0 0 20px rgba(255,0,0,0.6); }
+        .social-link:hover .fa-instagram { color: #E1306C; text-shadow: 0 0 20px rgba(225, 48, 108, 0.6); }
+        .social-link:hover .fa-soundcloud { color: #ff5500; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
+        .social-link:hover .fa-linkedin { color: #0077b5; text-shadow: 0 0 20px rgba(0, 119, 181, 0.6); }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: 2rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: #444;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 3rem 0 35rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -32rem;
+            }
+            
+            h1 { font-size: 2.2rem; }
+            .video-grid { grid-template-columns: 1fr; }
+            
+            .social-container {
+                gap: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-section {
+                padding: 2.5rem 0 25rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -22rem;
+            }
+            
+            .social-container {
+                gap: 1rem;
+            }
+            
+            .social-link {
+                font-size: 2rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header-section">
+    <div class="container">
+        <h1>Visual Storytelling</h1>
+        <p class="subtitle">A selection of recent production work.</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Hero video section - Can be added back just remove the tags above and below.
+    <div class="hero-video-container">
+        <div class="hero-label">Featured Project</div>
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/H89hwIxrnJs" title="Featured Video" allowfullscreen></iframe>
+        </div>
+    </div>
+-->
+
+    <h2 class="category-header"><i class="fa-solid fa-masks-theater category-icon"></i> Theatre Recordings</h2>
+    <div class="video-grid">
+        <div class="project-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/pzWouHYJeug" title="Video Player" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <div class="tags"><span class="tag">Multicam</span><span class="tag purple">Full Production</span></div>
+                <h3 class="project-title">High School Musical Production</h3>
+                <p class="project-desc">Multi-night, multicamera capture of a live stage performance, edited for cast and crew distribution.</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/yvm_IgeO3M0" title="Video Player" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <div class="tags"><span class="tag">Multicam</span><span class="tag purple">Full Production</span></div>
+                <h3 class="project-title">Junior High Musical Production</h3>
+                <p class="project-desc">Multi-camera capture of a live stage performance, edited for school streaming.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <h2 class="category-header"><i class="fa-solid fa-book-open category-icon"></i> Family History</h2>
+    <div class="video-grid">
+        <div class="project-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/IwubXkxULwU" title="Video Player" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <div class="tags"><span class="tag">Interview</span><span class="tag purple">Documentary</span></div>
+                <h3 class="project-title">Grandparent Legacy Interview</h3>
+                <p class="project-desc">A 2-hour life story interview edited into a narrative legacy episode for the family.</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/aOITNfZBLZA" title="Video Player" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <div class="tags"><span class="tag">In-Home</span><span class="tag purple">4K</span></div>
+                <h3 class="project-title">Family History Sessions</h3>
+                <p class="project-desc">A short demo of the on-location recording capturing the life story of a family member.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <h2 class="category-header"><i class="fa-solid fa-bullhorn category-icon"></i> Ad Campaigns</h2>
+    <div class="video-grid">
+        <div class="project-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/udAnCyI_Mmg" title="Video Player" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <div class="tags"><span class="tag">Full Edit</span><span class="tag purple">SFX</span></div>
+                <h3 class="project-title">Ultimate Business Quest - Compilation</h3>
+                <p class="project-desc">High-energy editing and and SFX for a Business RPG.</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/FFOmcK0oxLA" title="Video Player" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <div class="tags"><span class="tag">Full Edit</span><span class="tag purple">Motion Graphics</span></div>
+                <h3 class="project-title">Outbreak Health - App Campaign</h3>
+                <p class="project-desc">High energy edit including motion graphics and sound effects.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <h2 class="category-header"><i class="fa-solid fa-chalkboard-user category-icon"></i> Instructional Videos</h2>
+    <div class="video-grid">
+        <div class="project-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/LmTQ9Yk23uk" title="Video Player" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <div class="tags"><span class="tag">Corporate</span><span class="tag purple">Motion Graphics</span></div>
+                <h3 class="project-title">Construction Safety Training</h3>
+                <p class="project-desc">Full instructional video with basic motion graphics and b-roll to enhance learning.</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/mevzL6fToP4" title="Video Player" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <div class="tags"><span class="tag">Corporate</span><span class="tag purple">Training</span></div>
+                <h3 class="project-title">MLO Training Compilation</h3>
+                <p class="project-desc">Licensing training video clips, including some basic motion graphics and talking head.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="social-section">
+        <div class="container">
+            <h3>CONNECT WITH ME</h3>
+            <div class="social-container">
+                <a href="https://www.youtube.com/@adrianmillermedia" target="_blank" class="social-link" aria-label="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://www.instagram.com/admillermusic/" target="_blank" class="social-link" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://soundcloud.com/adrian-miller-music" target="_blank" class="social-link" aria-label="SoundCloud">
+                    <i class="fa-brands fa-soundcloud"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/adrian-d-millermusic/" target="_blank" class="social-link" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Adrian Miller Media.</p>
+    </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME SETTINGS --- */
+        :root {
+            /* Deep Midnight Blue Backgrounds */
+            --bg-dark: #0a0e17;      
+            --bg-card: #111625;      
+            
+            /* The "Miller Media" Blue/Purple Gradient */
+            --accent-primary: #7b2cbf; /* Purple */
+            --accent-secondary: #4361ee; /* Blue */
+            --accent-glow: rgba(67, 97, 238, 0.5);
+
+            --text-main: #f0f0f0;    
+            --text-muted: #b0b8c4;   
+        }
+
+        /* --- GLOBAL STYLES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            /* No padding at top since we removed the menu */
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Gradient Button Style */
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            color: white;
+            padding: 0.8rem 2.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 4px;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            /* Taller padding to look good under the Google Sites menu */
+            padding: 6rem 0 30rem 0; 
+            text-align: center;
+            /* Subtle radial gradient background */
+            background: radial-gradient(circle at top center, #1e2538 0%, var(--bg-dark) 80%);
+        }
+
+        .hero + .services {
+            margin-top: -24rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            /* Text Gradient Effect */
+            background: -webkit-linear-gradient(0deg, #fff, #a0c4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Responsive Typography */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .hero {
+                padding: 4rem 0 18rem 0;
+            }
+            .hero + .services {
+                margin-top: -15rem;
+            }
+            .services, .portfolio {
+                padding: 3rem 0;
+            }
+            .about {
+                padding: 3rem 0;
+            }
+            .about-text {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 1.75rem;
+            }
+            .hero {
+                padding: 3rem 0 12rem 0;
+            }
+            .hero + .services {
+                margin-top: -9rem;
+            }
+            .services, .portfolio {
+                padding: 2rem 0;
+            }
+            .about {
+                padding: 2rem 0;
+            }
+            .about-text {
+                font-size: 0.95rem;
+                padding-left: 1rem;
+            }
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* --- SERVICES GRID --- */
+        .services { padding: 4rem 0; }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-top: 3px solid var(--accent-secondary); /* Blue top border */
+            border-radius: 4px;
+            box-shadow: 0 0 25px rgba(67, 97, 238, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px rgba(67, 97, 238, 0.35);
+        }
+
+        .service-card h3 { 
+            margin-bottom: 1rem; 
+            color: #a0c4ff; /* Light blue text for headers */
+        }
+
+        /* --- PORTFOLIO --- */
+        .portfolio { padding: 4rem 0; }
+        
+        .project-card {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #2a3040;
+        }
+
+        /* Placeholder for where you paste YouTube Embeds */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .video-container iframe, 
+        .video-container .placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Temporary styling for the placeholder text */
+        .placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .project-info { padding: 1.5rem; }
+        
+        .role-tag {
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        /* --- ABOUT --- */
+        .about {
+            padding: 5rem 0;
+            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+            text-align: center;
+        }
+
+        .about-text {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            border-left: 2px solid var(--accent-primary);
+            padding-left: 2rem;
+            text-align: left;
+        }
+
+        /* --- SOCIAL MEDIA SECTION --- */
+        .social-section {
+            padding: 4rem 0;
+            background-color: var(--bg-dark);
+            text-align: center;
+        }
+
+        .social-section h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .social-container {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--text-muted);
+            font-size: 2.5rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .social-link:hover {
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+            text-shadow: 0 0 20px var(--accent-secondary);
+        }
+
+        .social-link:hover .fa-youtube { color: #FF0000; text-shadow: 0 0 20px rgba(255,0,0,0.6); }
+        .social-link:hover .fa-instagram { color: #E1306C; text-shadow: 0 0 20px rgba(225, 48, 108, 0.6); }
+        .social-link:hover .fa-soundcloud { color: #ff5500; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
+        .social-link:hover .fa-linkedin { color: #0077b5; text-shadow: 0 0 20px rgba(0, 119, 181, 0.6); }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            color: #555;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Crystal Clear Audio.<br>Impactful Video.</h1>
+            <p>Professional media production for Salt Lake City. I handle the technical precision so you can focus on your story.</p>
+            <a href="https://www.adrianmillermedia.com/contact" class="btn">Start Your Project</a>
+        </div>
+    </section>
+
+    <section class="services">
+        <div class="container">
+            <h2 class="section-title">Production Services</h2>
+            <div class="grid-3">
+                <div class="service-card">
+                    <h3>Audio Engineering</h3>
+                    <p>From podcast mixing or music production, to on-location sound recording. Get crisp, balanced audio that tells your story.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Video Production</h3>
+                    <p>Full-service production for interviews, performances, and all your video needs.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Post-Production</h3>
+                    <p>Professional editing, color grading, and sound design to turn your raw footage into a polished final product.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="grid-3">
+                
+                <article class="project-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/IwubXkxULwU" allow="fullscreen"></iframe>
+                    </div>
+                    <div class="project-info">
+                        <span class="role-tag">Documentary Production</span>
+                        <h3>"It was Meant to Be" - Episode</h3>
+                        <p>Full documentary episode production focusing on telling the story of a couple's courtship.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/Z5tJQ3EyxNI" allow="fullscreen"></iframe>
+                    </div>
+                    <div class="project-info">
+                        <span class="role-tag">Sound Design & Foley</span>
+                        <h3>Sintel - Open Source Film</h3>
+                        <p>Complete audio re-design focusing on SFX depth and intimate Foley artistry to bring the animation to life.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/pzWouHYJeug" allow="fullscreen"></iframe>
+                    </div>
+                    <div class="project-info">
+                        <span class="role-tag">Musical Recording</span>
+                        <h3>The Little Mermaid</h3>
+                        <p>A complete audio-visual production delivered from concept to final export.</p>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <h2 class="section-title">About Adrian Miller Media</h2>
+            <div class="about-text">
+                <p>You have a vision, but technical hurdles can get in the way. Whether you need seamless audio mixing or a full-scale video production, I bridge the gap between technology and creativity.</p>
+                <br>
+                <p>Based in West Jordan, I help clients across the Salt Lake area elevate their media presence without the agency price tag.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="social-section">
+        <div class="container">
+            <h3>CONNECT WITH ME</h3>
+            <div class="social-container">
+                <a href="https://www.youtube.com/@adrianmillermedia" target="_blank" class="social-link" aria-label="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://www.instagram.com/admillermusic/" target="_blank" class="social-link" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://soundcloud.com/adrian-miller-music" target="_blank" class="social-link" aria-label="SoundCloud">
+                    <i class="fa-brands fa-soundcloud"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/adrian-d-millermusic/" target="_blank" class="social-link" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Adrian Miller Media.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

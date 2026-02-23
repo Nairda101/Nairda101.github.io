@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>James Family Legacy - Adrian Miller Media</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME SETTINGS --- */
+        :root {
+            --bg-dark: #0a0e17;      
+            --bg-card: #111625;      
+            --accent-primary: #7b2cbf; 
+            --accent-secondary: #4361ee; 
+            --text-main: #f0f0f0;    
+            --text-muted: #b0b8c4;   
+            --border-color: #2a3040;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- HEADER --- */
+        .header-section {
+            text-align: center;
+            padding: 4rem 0 50rem 0;
+            background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 30%, #0b1018 60%, var(--bg-dark) 100%);
+        }
+
+        .header-section + .container {
+            margin-top: -47rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: -webkit-linear-gradient(0deg, #fff, #a0c4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* --- SECTION DIVIDERS --- */
+        .section-header {
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent-secondary), transparent);
+        }
+
+        .section-icon { color: var(--accent-secondary); }
+
+        /* --- FEATURED GRID (Larger Cards) --- */
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 3rem;
+        }
+
+        /* --- ARCHIVE GRID (Smaller Cards) --- */
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* --- CARD STYLE --- */
+        .video-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-secondary);
+        }
+
+        /* --- VIDEO CONTAINER --- */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            background: black;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .video-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .video-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        /* --- COMING SOON TAG --- */
+        .coming-soon-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        /* --- PLACEHOLDER VIDEO --- */
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .video-placeholder-icon {
+            font-size: 3rem;
+            color: var(--accent-secondary);
+            opacity: 0.5;
+        }
+
+        .video-placeholder-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .video-card.coming-soon {
+            position: relative;
+        }
+        
+        .date-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: var(--accent-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- SOCIAL MEDIA SECTION --- */
+        .social-section {
+            padding: 4rem 0;
+            background-color: var(--bg-dark);
+            text-align: center;
+        }
+
+        .social-section h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .social-container {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--text-muted);
+            font-size: 2.5rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .social-link:hover {
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+            text-shadow: 0 0 20px var(--accent-secondary);
+        }
+
+        .social-link:hover .fa-youtube { color: #FF0000; text-shadow: 0 0 20px rgba(255,0,0,0.6); }
+        .social-link:hover .fa-instagram { color: #E1306C; text-shadow: 0 0 20px rgba(225, 48, 108, 0.6); }
+        .social-link:hover .fa-soundcloud { color: #ff5500; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
+        .social-link:hover .fa-linkedin { color: #0077b5; text-shadow: 0 0 20px rgba(0, 119, 181, 0.6); }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: 5rem;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: #444;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 3rem 0 35rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -32rem;
+            }
+            
+            h1 { font-size: 2.2rem; }
+            .featured-grid, .archive-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 480px) {
+            .header-section {
+                padding: 2.5rem 0 25rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -22rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header-section">
+    <div class="container">
+        <h1>James Family Legacy</h1>
+        <p class="subtitle">Preserving the history, stories, and memories of Robert and Linda James. These videos are meant to be enjoyed and shared by family and friends.</p>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="section-header"><i class="fa-solid fa-film section-icon"></i> Featured Films & Presentations</h2>
+    
+    <div class="featured-grid">
+        
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/IwubXkxULwU" title="It was Meant to Be" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <h3 class="video-title">It Was Meant to Be</h3>
+                <p class="video-desc">A family history documentary episode covering the courtship of Robert and Linda James.</p>
+            </div>
+        </div>
+
+        
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/Cfva6uNLgrE" title="Civil War Presentation" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <span class="date-tag">September 23, 2025</span>
+                <h3 class="video-title">Civil War Presentation</h3>
+                <p class="video-desc">Robert James presenting at the Midvale Senior Center.</p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/aXmvMr1st-Q" title="Veterans Day Presentation" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <span class="date-tag">November 10, 2025</span>
+                <h3 class="video-title">Veterans Day Presentation</h3>
+                <p class="video-desc">Robert James presenting at the Midvale Senior Center.</p>
+            </div>
+        </div>
+        
+         <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/YGVIsoRqTqw" title="Colt Revolver Demo" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <h3 class="video-title">Colt Revolver Demo</h3>
+                <p class="video-desc">Instructional video where Robert demonstrates how to reload a Civil War era Colt revolver.</p>
+            </div>
+        </div>
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/Wo8TFTzm9K8" title="Grandma Linda Storytime" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <span class="date-tag">January 21, 2023</span>
+                <h3 class="video-title">Grandma Linda - One Last Storytime</h3>
+                <p class="video-desc">A cherished memory recorded shortly before Linda's passing. One last story time for her grandkids and great-grandkids to remember.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <h2 class="section-header"><i class="fa-solid fa-box-archive section-icon"></i> The Interview Archive</h2>
+    <p style="color:var(--text-muted); margin-bottom: 2rem;">Raw, unedited footage of Robert and Linda sharing their life stories.</p>
+    
+    <div class="archive-grid">
+        
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/LOzNWTVvNGg" title="Interview" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <span class="date-tag">September 19, 2022</span>
+                <h3 class="video-title">Robert & Linda: Early Years</h3>
+                <p class="video-desc">Raw footage discussing parents, siblings, growing up, and early courtship.</p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/euK30tKOIiw" title="Session 1" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <h3 class="video-title">Session 1: Military & Meeting Linda</h3>
+                <p class="video-desc">Robert discusses his military career and how he met Linda.</p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/tVclp4bpqm8" title="Session 2" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <h3 class="video-title">Session 2: The Farm</h3>
+                <p class="video-desc">Stories about growing up on the farm.</p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/K7CgznTV7Eg" title="Session 3" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <h3 class="video-title">Session 3: The Farm (Part 2)</h3>
+                <p class="video-desc">Continuing stories from childhood on the farm.</p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/CliC3nxPgwQ" title="Session 4" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <h3 class="video-title">Session 4: California & Military</h3>
+                <p class="video-desc">Life in California and details of his military service.</p>
+            </div>
+        </div>
+
+        <div class="video-card">
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/-0xKjRJqirM" title="Session 5" allowfullscreen></iframe>
+            </div>
+            <div class="card-content">
+                <h3 class="video-title">Session 5: Military Career (Part 2)</h3>
+                <p class="video-desc">Further details on Robert's military career.</p>
+            </div>
+        </div>
+
+        <div class="video-card coming-soon">
+            <div class="video-wrapper">
+                <div class="coming-soon-tag">Coming Soon</div>
+                <div class="video-placeholder">
+                    <i class="fa-solid fa-film video-placeholder-icon"></i>
+                    <p class="video-placeholder-text">Coming Soon</p>
+                </div>
+            </div>
+            <div class="card-content">
+                <h3 class="video-title">Session 6: Grandma & D.C.</h3>
+                <p class="video-desc">All about Grandma, their courtship, and their first years in D.C.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <section class="social-section">
+        <div class="container">
+            <h3>CONNECT WITH ME</h3>
+            <div class="social-container">
+                <a href="https://www.youtube.com/@adrianmillermedia" target="_blank" class="social-link" aria-label="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://www.instagram.com/admillermusic/" target="_blank" class="social-link" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://soundcloud.com/adrian-miller-music" target="_blank" class="social-link" aria-label="SoundCloud">
+                    <i class="fa-brands fa-soundcloud"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/adrian-d-millermusic/" target="_blank" class="social-link" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Adrian Miller Media.</p>
+    </footer>
+
+</div>
+
+</body>
+</html>

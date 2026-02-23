@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <title>Adrian Miller Media - Concert Rates</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- THEME SETTINGS --- */
+        :root {
+            --bg-dark: #0a0e17;      
+            --bg-card: #111625;      
+            --accent-primary: #7b2cbf; 
+            --accent-secondary: #4361ee; 
+            --accent-glow: rgba(67, 97, 238, 0.5);
+            --text-main: #f0f0f0;    
+            --text-muted: #b0b8c4;   
+            --border-color: #2a3040;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- HEADER --- */
+        .header-section {
+            text-align: center;
+            padding: 4rem 0 50rem 0;
+            background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 30%, #0b1018 60%, var(--bg-dark) 100%);
+        }
+
+        .header-section + .container {
+            margin-top: -47rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: -webkit-linear-gradient(0deg, #fff, #a0c4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- COLLAPSIBLE EXPLAINER --- */
+        .explainer-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            overflow: hidden; 
+            transition: all 0.3s ease;
+        }
+
+        .explainer-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(255,255,255,0.02);
+            transition: background 0.2s;
+        }
+
+        .explainer-header:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .explainer-title {
+            color: var(--accent-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .explainer-icon {
+            transition: transform 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .explainer-content {
+            max-height: 0;
+            padding: 0 2rem;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .explainer-box.is-open .explainer-content {
+            max-height: 1200px; /* Large height to prevent mobile clipping */
+            padding-bottom: 2rem;
+            opacity: 1;
+        }
+
+        .explainer-box.is-open .explainer-icon {
+            transform: rotate(180deg);
+            color: var(--accent-primary);
+        }
+
+        .explainer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .explainer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .explainer-item h4 { margin-bottom: 0.5rem; color: white; }
+        .explainer-item p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+        
+        .hybrid-note {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #d0d0d0;
+            font-style: italic;
+        }
+
+        /* --- GLOBAL TOGGLE --- */
+        .global-toggle-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .global-toggle-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.8rem 2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .global-toggle-btn:first-child {
+            border-radius: 50px 0 0 50px;
+            border-right: none;
+        }
+        .global-toggle-btn:last-child {
+            border-radius: 0 50px 50px 0;
+            border-left: none;
+        }
+
+        .global-toggle-btn.active {
+            background: var(--accent-secondary);
+            color: white;
+            border-color: var(--accent-secondary);
+        }
+
+        /* --- PRICING GRID --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .price-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-top: 3px solid var(--accent-secondary);
+            border-radius: 12px;
+            padding: 2.5rem 2rem 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+            border-top-color: var(--accent-primary);
+        }
+
+        .price-card h2 {
+            margin: 0 0 1.5rem 0;
+            font-size: 1.5rem;
+            text-align: center;
+            color: white;
+        }
+
+        /* --- PRICE DISPLAY --- */
+        .price-area {
+            text-align: center;
+            margin-bottom: 2rem;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+
+        .price-tag {
+            font-size: 2.8rem; font-weight: 900; color: white; font-family: 'Montserrat', sans-serif;
+        }
+
+        .price-sub {
+            font-size: 0.9rem; color: var(--accent-secondary); font-weight: 600; margin-top: 5px; text-transform: uppercase;
+        }
+
+        .price-note {
+            font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; font-style: italic;
+        }
+
+        /* --- FEATURES --- */
+        .features {
+            list-style: none; padding: 0; margin: 0 0 2rem 0; flex-grow: 1;
+        }
+
+        .features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted); font-size: 0.95rem;
+            display: flex; align-items: flex-start;
+        }
+
+        .features li::before {
+            content: "✓";
+            color: var(--accent-primary);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .features li.is-off::before {
+            content: "✕";
+            color: #ff6b6b;
+        }
+
+        .card-btn {
+            display: block; text-align: center; background: transparent;
+            border: 2px solid var(--accent-secondary); color: white;
+            padding: 0.8rem; border-radius: 6px; font-weight: 700;
+            text-transform: uppercase; text-decoration: none; transition: 0.3s;
+        }
+
+        .card-btn:hover {
+            background: var(--accent-secondary); box-shadow: 0 0 15px rgba(67, 97, 238, 0.5);
+        }
+
+        /* --- ADD ONS --- */
+        .addons-section {
+            margin-top: 4rem;
+            background: rgba(255,255,255,0.03);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-secondary);
+        }
+
+        .addon-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 1rem 0;
+        }
+        .addon-item:last-child { border-bottom: none; }
+        .addon-title h4 { margin: 0; font-size: 1.1rem; }
+        .addon-title p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+        .addon-price { font-weight: 700; color: var(--accent-secondary); font-size: 1.2rem; }
+
+        .hybrid-banner {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(90deg, #101522 0%, #161b2e 100%);
+            border: 1px dashed var(--accent-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .hybrid-icon { font-size: 2rem; color: var(--accent-primary); }
+        .hybrid-text h4 { margin: 0 0 5px 0; font-size: 1.1rem; color: #fff; }
+        .hybrid-text p { margin: 0; font-size: 0.95rem; color: var(--text-muted); }
+        .hybrid-text a { color: var(--accent-secondary); font-weight: 700; text-decoration: none; }
+        .hybrid-text a:hover { text-decoration: underline; }
+
+        /* --- SOCIAL --- */
+        .social-section {
+            padding: 4rem 0;
+            background-color: var(--bg-dark);
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .social-section h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .social-container {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            color: var(--text-muted);
+            font-size: 2.5rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+            text-shadow: 0 0 20px var(--accent-secondary);
+        }
+
+        .social-link:hover .fa-youtube { color: #FF0000; text-shadow: 0 0 20px rgba(255,0,0,0.6); }
+        .social-link:hover .fa-instagram { color: #E1306C; text-shadow: 0 0 20px rgba(225, 48, 108, 0.6); }
+        .social-link:hover .fa-soundcloud { color: #ff5500; text-shadow: 0 0 20px rgba(255, 85, 0, 0.6); }
+        .social-link:hover .fa-linkedin { color: #0077b5; text-shadow: 0 0 20px rgba(0, 119, 181, 0.6); }
+
+        /* --- FOOTER --- */
+        footer {
+            margin-top: 5rem;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 3rem 0 35rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -32rem;
+            }
+            
+            h1 { font-size: 2rem; }
+            .addon-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .addon-price { align-self: flex-end; }
+            .hybrid-banner { flex-direction: column; text-align: center; gap: 1rem; }
+            .explainer-box.is-open .explainer-content { max-height: 1600px; }
+            .global-toggle-btn { padding: 0.55rem 1.2rem; font-size: 0.8rem; line-height: 1.1; }
+        }
+        
+        @media (max-width: 480px) {
+            .header-section {
+                padding: 2.5rem 0 25rem 0;
+            }
+            
+            .header-section + .container {
+                margin-top: -22rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header-section">
+    <div class="container">
+        <h1>Concert & Ensemble Recording Rates</h1>
+        <p class="subtitle">Professional audio and video capture for bands, orchestras, and choirs.</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="explainer-box" id="explainer" onclick="toggleExplainer()">
+        <div class="explainer-header">
+            <span class="explainer-title">
+                <i class="fa-solid fa-circle-info"></i> How Concert Booking Works
+            </span>
+            <i class="fa-solid fa-chevron-down explainer-icon"></i>
+        </div>
+        
+        <div class="explainer-content">
+            <div class="explainer-grid">
+                <div class="explainer-item">
+                    <h4>Why Professional Audio Matters</h4>
+                    <p>A single camera microphone in the back of an auditorium can't capture the balance of a live ensemble. I use multi microphone, multi-track audio recording to ensure every section and instrument is heard clearly in the final mix.</p>
+                </div>
+                <div class="explainer-item">
+                    <h4>Flat Rate Delivery</h4>
+                    <p>These packages are designed for schools and organizations. You pay one flat fee and receive the digital master files. You are free to share, distribute, or host these files for your students and parents at no additional cost.</p>
+                </div>
+            </div>
+            <div class="hybrid-note">
+                <strong>Need custom parent copies?</strong> If you want to offer physical copies or individual parent downloads instead of a school flat fee, <a href="https://www.adrianmillermedia.com/request" style="color:var(--accent-secondary);">contact me to arrange a custom presale setup.</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="global-toggle-container">
+        <button class="global-toggle-btn active" id="btn-standard" onclick="setGlobalMode('standard')">Standard Concert<br>(Up to 2 Hrs)</button>
+        <button class="global-toggle-btn" id="btn-junior" onclick="setGlobalMode('junior')">Junior Concert<br>(< 1 Hr)</button>
+    </div>
+
+    <div class="pricing-grid">
+        
+        <div class="price-card">
+            <h2>Audio Performance</h2>
+
+            <div class="price-area">
+                <span class="price-tag" id="price-1">$275</span>
+                <span class="price-sub">Audio Only</span>
+                <span class="price-note">Perfect for festival submissions or albums</span>
+            </div>
+
+            <ul class="features">
+                <li>Multi-track audio recording</li>
+                <li>Professional balancing and mix</li>
+                <li>Mastering for digital playback</li>
+                <li>High-Res WAV and MP3 delivery</li>
+                <li class="is-off">No Video Capture</li>
+            </ul>
+
+            <a href="https://www.adrianmillermedia.com/request" class="card-btn">Book This</a>
+        </div>
+
+        <div class="price-card" style="border-top-color: var(--accent-primary); box-shadow: 0 0 15px rgba(123, 44, 191, 0.1);">
+            <h2>The Archival Video</h2>
+
+            <div class="price-area">
+                <span class="price-tag" id="price-2">$375</span>
+                <span class="price-sub">1-Cam + Pro Audio</span>
+                <span class="price-note">Great for reference and archiving</span>
+            </div>
+
+            <ul class="features">
+                <li>1 Static Wide Camera Angle</li>
+                <li>Multi-track audio recording</li>
+                <li>Audio perfectly synced to video</li>
+                <li>Basic color correction</li>
+                <li>Digital video delivery</li>
+            </ul>
+
+            <a href="https://www.adrianmillermedia.com/request" class="card-btn" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">Book This</a>
+        </div>
+
+        <div class="price-card">
+            <h2>Cinematic Concert</h2>
+
+            <div class="price-area">
+                <span class="price-tag" id="price-3">$550</span>
+                <span class="price-sub">Multi-Cam + Pro Audio</span>
+                <span class="price-note">The ultimate keepsake for your program</span>
+            </div>
+
+            <ul class="features">
+                <li>2 Camera Angles (Wide & Tight)</li>
+                <li>Multi-track audio recording</li>
+                <li>Dynamic editing for solos & sections</li>
+                <li>Audio perfectly synced to video</li>
+                <li>Digital video delivery</li>
+            </ul>
+
+            <a href="https://www.adrianmillermedia.com/request" class="card-btn">Book This</a>
+        </div>
+
+    </div>
+
+    <div class="addons-section">
+        <h3 style="margin-bottom: 1.5rem;">Delivery Upgrades & Add-Ons</h3>
+        
+        <div class="addon-item">
+            <div class="addon-title">
+                <h4>Song-By-Song Separation</h4>
+                <p>Instead of one long continuous file, receive the concert separated into individual files for each piece of music. Great for CDs or YouTube uploads.</p>
+            </div>
+            <div class="addon-price">+$50</div>
+        </div>
+
+        <div class="addon-item">
+            <div class="addon-title">
+                <h4>On-Screen Titling & Graphics</h4>
+                <p>Professional lower-thirds displaying the name of the ensemble, the piece, and the composer as each song begins.</p>
+            </div>
+            <div class="addon-price">+$75</div>
+        </div>
+        
+        <div class="addon-item">
+            <div class="addon-title">
+                <h4>Rush Delivery</h4>
+                <p>Guaranteed 48-hour turnaround time. Perfect for meeting strict festival or competition submission deadlines.</p>
+            </div>
+            <div class="addon-price">+$150</div>
+        </div>
+    </div>
+
+    <div class="hybrid-banner">
+        <div class="hybrid-icon"><i class="fa-solid fa-handshake-simple"></i></div>
+        <div class="hybrid-text">
+            <h4>Need a Custom Quote?</h4>
+            <p>If you are planning a festival or an all-day event, <a href="https://www.adrianmillermedia.com/request">contact me for a custom quote.</a></p>
+        </div>
+    </div>
+
+    <section class="social-section">
+        <div class="container">
+            <h3>CONNECT WITH ME</h3>
+            <div class="social-container">
+                <a href="https://www.youtube.com/@adrianmillermedia" target="_blank" class="social-link" aria-label="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://www.instagram.com/admillermusic/" target="_blank" class="social-link" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://soundcloud.com/adrian-miller-music" target="_blank" class="social-link" aria-label="SoundCloud">
+                    <i class="fa-brands fa-soundcloud"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/adrian-d-millermusic/" target="_blank" class="social-link" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p style="font-size: 0.8rem; color: #444;">© 2026 Adrian Miller Media.</p>
+    </footer>
+
+</div>
+
+<script>
+    // DATA STORE: Simplified because there are no card-level toggles
+    // CONCERTS DATA STORE
+    const pricingData = {
+        standard: {
+            1: "$275",
+            2: "$375",
+            3: "$550"
+        },
+        junior: {
+            1: "$175",
+            2: "$250",
+            3: "$350"
+        }
+    };
+
+    // 1. Switch Global Mode (Standard vs Junior)
+    function setGlobalMode(mode) {
+        // Update Buttons
+        document.getElementById('btn-standard').classList.toggle('active', mode === 'standard');
+        document.getElementById('btn-junior').classList.toggle('active', mode === 'junior');
+
+        // Update Prices on the cards
+        document.getElementById('price-1').innerText = pricingData[mode][1];
+        document.getElementById('price-2').innerText = pricingData[mode][2];
+        document.getElementById('price-3').innerText = pricingData[mode][3];
+    }
+
+    // 2. Toggle Explainer Box
+    function toggleExplainer() {
+        const box = document.getElementById('explainer');
+        box.classList.toggle('is-open');
+    }
+
+    setGlobalMode('standard');
+</script>
+
+</body>
+</html>
