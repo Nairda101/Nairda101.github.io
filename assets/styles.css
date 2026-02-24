@@ -1,17 +1,19 @@
+/* Ensure content doesn't hide under fixed header */
+body {
+  padding-top: 60px;
+}
+
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   background: #070327;
   border-bottom: 1px solid #20174d;
   transform: translateY(0);
-  transition: transform 0.22s ease;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
-}
-
-#site-header {
-  min-height: 70px;
-  background: #070327;
 }
 
 #site-footer {
