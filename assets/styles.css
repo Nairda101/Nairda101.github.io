@@ -1,6 +1,6 @@
 /* Ensure content doesn't hide under fixed header */
 body {
-  padding-top: 60px;
+  padding-top: 50px;
 }
 
 .site-header {
