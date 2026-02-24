@@ -9,6 +9,16 @@
   will-change: transform;
 }
 
+#site-header {
+  min-height: 70px;
+  background: #070327;
+}
+
+#site-footer {
+  min-height: 140px;
+  background: #0a0e17;
+}
+
 .site-header.header-hidden {
   transform: translateY(calc(-100% - 1px));
 }

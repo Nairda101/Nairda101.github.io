@@ -240,15 +240,75 @@
         .required {
             color: var(--accent-secondary);
         }
-        
-        .success-card { background: var(--bg-card); border: 1px solid rgba(67, 97, 238, 0.2); border-radius: 16px; padding: 2.75rem; box-shadow: 0 0 40px rgba(0, 0, 0, 0.35); max-width: 640px; width: 100%; margin: 0 auto; position: relative; overflow: hidden; text-align: center; }
-        .success-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary)); box-shadow: 0 0 20px var(--accent-secondary); }
-        .success-icon { font-size: 3rem; color: var(--accent-secondary); margin-bottom: 1.25rem; }
-        .success-title { font-size: clamp(2.2rem, 3.5vw, 3rem); margin-bottom: 0.75rem; background: -webkit-linear-gradient(0deg, #fff, #a0c4ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Montserrat', sans-serif; line-height: 1.2; }
-        .success-text { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 2rem; }
-        .success-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary)); color: white; padding: 0.9rem 2.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; border-radius: 999px; box-shadow: 0 0 15px var(--accent-glow); border: none; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .success-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px var(--accent-glow); }
-        .success-note { margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted); }
+
+        .submit-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(7, 3, 39, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            z-index: 2000;
+        }
+
+        .submit-overlay.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .submit-overlay-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem 3rem;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+            text-align: center;
+            position: relative;
+            animation: pop-in 0.35s ease;
+        }
+
+        .submit-overlay-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            box-shadow: 0 0 20px var(--accent-secondary);
+        }
+
+        .submit-overlay-icon {
+            font-size: 2.6rem;
+            color: var(--accent-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .submit-overlay-title {
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.2;
+        }
+
+        .submit-overlay-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        @keyframes pop-in {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
         @media (max-width: 860px) {
             .page-wrap { max-width: 100%; }
@@ -454,10 +514,19 @@
         </div>
     </div>
 
+    <div class="submit-overlay" id="submit-overlay" aria-hidden="true">
+        <div class="submit-overlay-card" role="status" aria-live="polite">
+            <div class="submit-overlay-icon"><i class="fa-regular fa-circle-check"></i></div>
+            <div class="submit-overlay-title">Request received</div>
+            <div class="submit-overlay-text">Redirecting you now...</div>
+        </div>
+    </div>
+
 <script>
     const form = document.getElementById('contact-form');
     const submitButton = document.getElementById('submit-btn');
     const errorMessage = document.getElementById('error-message');
+    const submitOverlay = document.getElementById('submit-overlay');
     const projectTypeSelect = document.getElementById('project-type');
     const showLengthField = document.getElementById('show-length-field');
     const showLengthSelect = document.getElementById('show-length');
@@ -709,7 +778,12 @@
         })
         .then(async (response) => {
             if (response.status == 200) {
-                window.location.href = '/thank-you/';
+                if (submitOverlay) {
+                    submitOverlay.classList.add('is-visible');
+                }
+                setTimeout(() => {
+                    window.location.href = '/thank-you/';
+                }, 900);
             } else {
                 console.log(response);
                 errorMessage.style.display = 'block';

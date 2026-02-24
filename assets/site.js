@@ -190,19 +190,48 @@
     const nav = document.getElementById('site-nav');
     if (!toggle || !nav) return;
 
+    const closeNav = () => {
+      nav.setAttribute('data-open', 'false');
+      toggle.setAttribute('aria-expanded', 'false');
+      nav.querySelectorAll('.menu-item.has-submenu[data-open="true"]').forEach((item) => {
+        item.setAttribute('data-open', 'false');
+      });
+      nav.querySelectorAll('.submenu-toggle[aria-expanded="true"]').forEach((submenuToggle) => {
+        submenuToggle.setAttribute('aria-expanded', 'false');
+      });
+    };
+
     toggle.addEventListener('click', function () {
       const isOpen = nav.getAttribute('data-open') === 'true';
       const nextOpen = !isOpen;
-      nav.setAttribute('data-open', nextOpen ? 'true' : 'false');
-      toggle.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
-
       if (!nextOpen) {
-        nav.querySelectorAll('.menu-item.has-submenu[data-open="true"]').forEach((item) => {
-          item.setAttribute('data-open', 'false');
-        });
-        nav.querySelectorAll('.submenu-toggle[aria-expanded="true"]').forEach((submenuToggle) => {
-          submenuToggle.setAttribute('aria-expanded', 'false');
-        });
+        closeNav();
+        return;
+      }
+
+      nav.setAttribute('data-open', 'true');
+      toggle.setAttribute('aria-expanded', 'true');
+    });
+
+    nav.addEventListener('click', function (event) {
+      if (!window.matchMedia('(max-width: 720px)').matches) return;
+      const target = event.target;
+      if (target && target.closest('a')) {
+        closeNav();
+      }
+    });
+
+    document.addEventListener('click', function (event) {
+      if (!window.matchMedia('(max-width: 720px)').matches) return;
+      if (nav.contains(event.target) || toggle.contains(event.target)) return;
+      if (nav.getAttribute('data-open') === 'true') {
+        closeNav();
+      }
+    });
+
+    window.addEventListener('resize', function () {
+      if (!window.matchMedia('(max-width: 720px)').matches) {
+        closeNav();
       }
     });
   }
