@@ -35,9 +35,22 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: flex-start;
             padding: 0;
+        }
+
+        #site-header,
+        #site-footer {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
         }
 
         h1, h2, h3 {
@@ -332,19 +345,20 @@
 <body>
     <div id="site-header"></div>
 
-<div class="header-section">
-    <div class="container">
-        <div class="hero">
-            <h1>Project Request</h1>
-            <p>Tell me about your production so I can put together an accurate quote and timeline. I will respond within 1-2 business days.</p>
+    <div class="content-wrapper">
+        <div class="header-section">
+            <div class="container">
+                <div class="hero">
+                    <h1>Project Request</h1>
+                    <p>Tell me about your production so I can put together an accurate quote and timeline. I will respond within 1-2 business days.</p>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<div class="page-wrap">
-    <div class="form-card">
-        <div id="form-container">
-        <form id="contact-form">
+        <div class="page-wrap">
+            <div class="form-card">
+                <div id="form-container">
+                <form id="contact-form">
             <input type="hidden" name="access_key" value="856b9a3e-1011-4d01-8bab-f02714b89554">
             
             <div class="form-grid">
@@ -433,29 +447,17 @@
                                 <p id="error-message" style="color: #ff6b6b; display: none; margin-top: 10px; text-align: center;">Something went wrong. Please try again.</p>
                 <span class="note">Fields marked with <span class="required">*</span> are required.</span>
             </div>
-        </form>
-                </div>
+                </form>
+                        </div>
 
-                <div id="success-message" style="display: none; width: 100%;">
-                    <div class="success-card">
-                        <div class="success-icon"><i class="fa-regular fa-circle-check"></i></div>
-                        <h1 class="success-title">Request Received</h1>
-                        <p class="success-text">Thank you for reaching out. I will review your project details and get back to you within 1-2 business days.</p>
-                        <a href="https://www.adrianmillermedia.com/" class="success-btn" rel="noopener noreferrer" id="back-home-btn"><i class="fa-solid fa-house"></i>Back to Homepage</a>
-                        <div class="success-note">If you need to add details, email adrianmillermedia@gmail.com.</div>
-                    </div>
-                </div>
+            </div>
+        </div>
     </div>
-</div>
 
 <script>
     const form = document.getElementById('contact-form');
-    const formContainer = document.getElementById('form-container');
-    const successMessage = document.getElementById('success-message');
-    const formCard = document.querySelector('.form-card');
     const submitButton = document.getElementById('submit-btn');
     const errorMessage = document.getElementById('error-message');
-    const backHomeButton = document.getElementById('back-home-btn');
     const projectTypeSelect = document.getElementById('project-type');
     const showLengthField = document.getElementById('show-length-field');
     const showLengthSelect = document.getElementById('show-length');
@@ -707,9 +709,7 @@
         })
         .then(async (response) => {
             if (response.status == 200) {
-                formContainer.style.display = 'none';
-                successMessage.style.display = 'block';
-                formCard.classList.add('success-mode');
+                window.location.href = '/thank-you/';
             } else {
                 console.log(response);
                 errorMessage.style.display = 'block';
@@ -725,11 +725,6 @@
             submitButton.disabled = false;
             submitButton.style.opacity = '1';
         });
-    });
-
-    backHomeButton.addEventListener('click', function (e) {
-        e.preventDefault();
-        window.open('https://www.adrianmillermedia.com/', '_blank', 'noopener,noreferrer');
     });
 
 </script>

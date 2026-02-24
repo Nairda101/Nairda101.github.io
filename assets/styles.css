@@ -41,18 +41,18 @@
   color: var(--site-title-color, #ffffff);
   font-weight: 700;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1.75rem;
+  font-size: 1.35rem;
   letter-spacing: 0.01em;
   white-space: nowrap;
   margin-right: auto;
 }
 
 .site-logo-slot {
-  width: 58px;
-  height: 32px;
-  border-radius: 0.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: linear-gradient(135deg, #131a3b, #2a2f66);
+  width: 72px;
+  height: 40px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
   color: rgba(255, 255, 255, 0.82);
   display: inline-flex;
   align-items: center;
@@ -67,7 +67,7 @@
 .site-logo-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
@@ -118,7 +118,7 @@
   font: inherit;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.02rem;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -166,7 +166,7 @@
   border-radius: 0.3rem;
   padding: 0.5rem 0.6rem;
   font-family: 'Montserrat', sans-serif;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
 }
 
@@ -197,7 +197,7 @@
   border-radius: 999px;
   width: 34px;
   height: 34px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   cursor: pointer;
 }
 
@@ -356,18 +356,18 @@
 /* Tablet Styles */
 @media (max-width: 1024px) {
   .site-logo {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     gap: 0.5rem;
   }
 
   .site-logo-slot {
-    width: 52px;
-    height: 28px;
+    width: 64px;
+    height: 34px;
   }
 
   .menu-item > a,
   .submenu-toggle {
-    font-size: 1rem;
+    font-size: 0.95rem;
     padding: 0.4rem 0.55rem;
   }
 }
@@ -380,14 +380,14 @@
   }
 
   .site-logo {
-    font-size: 1.25rem;
+    font-size: 1rem;
     margin-right: 0;
     gap: 0.45rem;
   }
 
   .site-logo-slot {
-    width: 46px;
-    height: 26px;
+    width: 56px;
+    height: 30px;
   }
 
   .nav-toggle {
@@ -427,7 +427,7 @@
   .submenu-toggle {
     width: 100%;
     justify-content: space-between;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .submenu {
@@ -457,18 +457,18 @@
 /* Small Mobile Styles */
 @media (max-width: 480px) {
   .site-logo {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     gap: 0.4rem;
   }
 
   .site-logo-slot {
-    width: 40px;
-    height: 22px;
+    width: 50px;
+    height: 26px;
   }
 
   .menu-item > a,
   .submenu-toggle {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     padding: 0.4rem 0.55rem;
   }
 

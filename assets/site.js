@@ -259,7 +259,15 @@
     if (!header) return;
 
     let lastY = window.scrollY || 0;
+    let lastDirection = 'down';
+    let upAccumulated = 0;
+    let downAccumulated = 0;
     let isTicking = false;
+
+    const minDelta = 2;
+    const hideAfter = 120;
+    const revealAfter = 10;
+    const nearTop = 80;
 
     header.classList.add('header-visible');
 
@@ -270,22 +278,37 @@
       if (currentY <= 8) {
         header.classList.remove('header-hidden');
         header.classList.add('header-visible');
+        upAccumulated = 0;
+        downAccumulated = 0;
         lastY = currentY;
         isTicking = false;
         return;
       }
 
-      if (Math.abs(delta) < 3) {
+      if (Math.abs(delta) < minDelta) {
         isTicking = false;
         return;
       }
 
-      if (delta > 0 && currentY > 80) {
-        header.classList.add('header-hidden');
-        header.classList.remove('header-visible');
-      } else if (delta < 0) {
-        header.classList.remove('header-hidden');
-        header.classList.add('header-visible');
+      const direction = delta > 0 ? 'down' : 'up';
+      if (direction !== lastDirection) {
+        upAccumulated = 0;
+        downAccumulated = 0;
+        lastDirection = direction;
+      }
+
+      if (direction === 'down') {
+        downAccumulated += delta;
+        if (currentY > hideAfter && downAccumulated > revealAfter) {
+          header.classList.add('header-hidden');
+          header.classList.remove('header-visible');
+        }
+      } else {
+        upAccumulated += Math.abs(delta);
+        if (upAccumulated > revealAfter || currentY < nearTop) {
+          header.classList.remove('header-hidden');
+          header.classList.add('header-visible');
+        }
       }
 
       lastY = currentY;
