@@ -78,6 +78,8 @@
             overflow: hidden;
             box-shadow: 0 0 40px rgba(67, 97, 238, 0.2);
             background: #000;
+            width: 100%;
+            max-width: 100%;
         }
         
         .hero-label {
@@ -116,7 +118,7 @@
         /* --- GRID SYSTEM --- */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(min(450px, 100%), 1fr)); 
             gap: 2.5rem;
         }
 
@@ -129,6 +131,8 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
+            width: 100%;
+            max-width: 100%;
         }
 
         .project-card:hover {
@@ -144,6 +148,8 @@
             height: 0;
             background: black;
             border-bottom: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 100%;
         }
         
         .video-wrapper iframe {

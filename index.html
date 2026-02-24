@@ -175,7 +175,7 @@
 
         .grid-3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
             gap: 2rem;
         }
 
@@ -206,6 +206,8 @@
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid #2a3040;
+            width: 100%;
+            max-width: 100%;
         }
 
         /* Placeholder for where you paste YouTube Embeds */
@@ -215,6 +217,8 @@
             height: 0;
             overflow: hidden;
             background: #000;
+            width: 100%;
+            max-width: 100%;
         }
         
         .video-container iframe, 

@@ -108,11 +108,21 @@
             position: relative;
             background: black;
             min-height: 300px;
+            width: 100%;
+            max-width: 100%;
         }
         
         .featured-video iframe {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+        
+        @media (max-width: 767px) {
+            .featured-video {
+                padding-bottom: 56.25%;
+                height: 0;
+                min-height: 0;
+            }
         }
 
         .featured-info {
@@ -266,7 +276,7 @@
         /* --- STANDARD GRID (Existing) --- */
         .audio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
             gap: 2rem;
         }
 
@@ -276,11 +286,13 @@
             border-radius: 12px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 100%;
         }
 
         .project-card:hover { transform: translateY(-5px); box-shadow: 0 0 30px rgba(0, 0, 0, 0.4); border-color: var(--accent-secondary); }
 
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: black; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; background: black; width: 100%; max-width: 100%; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
         
         .card-content { padding: 1.5rem; }
