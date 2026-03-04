@@ -292,6 +292,8 @@
             top: 50%;
             transform: translateY(-50%);
             z-index: 5;
+            align-items: center;
+            justify-content: center;
 
             width: 42px;
             height: 42px;
@@ -324,7 +326,9 @@
         .carousel-dots {
             display: none; /* Only show on mobile */
             justify-content: center;
+            align-items: center;
             gap: 10px;
+            width: 100%;
             margin-top: 1.2rem;
         }
 
@@ -371,11 +375,10 @@
 
                 -webkit-overflow-scrolling: touch;
                 overscroll-behavior-x: contain;
+                scrollbar-width: none;
             }
 
-            .pricing-grid::-webkit-scrollbar { height: 8px; }
-            .pricing-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 50px; }
-            .pricing-grid::-webkit-scrollbar-track { background: rgba(255,255,255,0.06); border-radius: 50px; }
+            .pricing-grid::-webkit-scrollbar { display: none; }
 
             .price-card {
                 scroll-snap-align: center;
