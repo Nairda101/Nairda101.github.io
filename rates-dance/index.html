@@ -70,7 +70,7 @@
             color: var(--text-muted);
             font-size: 1.1rem;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0 auto 1.25rem;
         }
 
         /* --- COLLAPSIBLE EXPLAINER --- */
@@ -278,6 +278,78 @@
             background: var(--accent-secondary); box-shadow: 0 0 15px rgba(67, 97, 238, 0.5);
         }
 
+        /* --- MOBILE CAROUSEL (ONLY AFFECTS RATE CARDS) --- */
+        .pricing-carousel {
+            position: relative;
+        }
+
+        .carousel-stage {
+            position: relative;
+        }
+
+        .carousel-btn {
+            display: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 5;
+            align-items: center;
+            justify-content: center;
+
+            width: 42px;
+            height: 42px;
+            border-radius: 50px;
+
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(17, 22, 37, 0.9);
+            color: white;
+
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+            backdrop-filter: blur(6px);
+        }
+
+        .carousel-btn:hover {
+            border-color: rgba(255,255,255,0.25);
+            transform: translateY(-50%) scale(1.03);
+        }
+
+        .carousel-btn:disabled {
+            opacity: 0.35;
+            cursor: default;
+            transform: translateY(-50%);
+        }
+
+        .carousel-btn.prev { left: 8px; }
+        .carousel-btn.next { right: 8px; }
+
+        .carousel-dots {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 1.2rem;
+        }
+
+        .dot-btn {
+            width: 10px;
+            height: 10px;
+            border-radius: 100px;
+            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.15);
+            cursor: pointer;
+            transition: transform 0.15s, background 0.15s;
+            padding: 0;
+        }
+
+        .dot-btn[aria-selected="true"] {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+            transform: scale(1.15);
+        }
+
         /* --- ADD ONS --- */
         .addons-section {
             margin-top: 4rem;
@@ -372,6 +444,56 @@
                 padding: 0 1rem;
             }
 
+            .pricing-carousel {
+                margin-inline: -1rem;
+            }
+
+            .pricing-grid {
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-columns: 82vw;
+                gap: 1rem;
+                max-width: 100%;
+                margin: 0;
+
+                overflow-x: auto;
+                overflow-y: visible;
+
+                scroll-snap-type: x mandatory;
+                padding-inline: calc((100% - 82vw) / 2);
+                padding-block: 0.5rem 0.75rem;
+                scroll-padding-inline: calc((100% - 82vw) / 2);
+
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-x: contain;
+                scrollbar-width: none;
+            }
+
+            .pricing-grid::-webkit-scrollbar { display: none; }
+
+            .price-card {
+                width: auto;
+                max-width: none;
+                margin: 0;
+                scroll-snap-align: center;
+                scroll-snap-stop: always;
+                padding: 1.75rem 1.4rem 1.4rem 1.4rem;
+            }
+
+            .price-card h2 {
+                font-size: 1.35rem;
+                margin-bottom: 1.1rem;
+            }
+
+            .price-tag { font-size: 2.35rem; }
+            .features li { padding: 0.65rem 0; font-size: 0.92rem; }
+            .features { margin-bottom: 1.3rem; }
+
+            .carousel-btn,
+            .carousel-dots {
+                display: flex;
+            }
+
             .header-section {
                 padding: 0.5rem 0 35rem 0;
             }
@@ -380,29 +502,16 @@
                 margin-top: -32rem;
             }
 
-            .pricing-grid {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-                max-width: 100%;
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .price-card {
-                width: 100%;
-                max-width: 460px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-            
             h1 { font-size: 2rem; }
             .addon-item { flex-direction: column; align-items: flex-start; gap: 10px; }
             .addon-price { align-self: flex-end; }
             .hybrid-banner { flex-direction: column; text-align: center; gap: 1rem; }
             .explainer-box.is-open .explainer-content { max-height: 1600px; }
             .global-toggle-btn { padding: 0.55rem 1.2rem; font-size: 0.8rem; line-height: 1.1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .price-card, .carousel-btn, .dot-btn { transition: none !important; }
         }
         
         @media (max-width: 480px) {
@@ -464,9 +573,15 @@
         <button class="global-toggle-btn" id="btn-junior" onclick="setGlobalMode('junior')">Junior Showcase<br>(< 1 Hr)</button>
     </div>
 
-    <div class="pricing-grid">
+    <div class="pricing-carousel" aria-label="Rate card carousel">
+        <div class="carousel-stage">
+            <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous rate option" type="button">
+                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            </button>
+
+            <div class="pricing-grid" id="pricingTrack">
         
-        <div class="price-card">
+        <div class="price-card" data-card-index="0">
             <h2>The Choreography Archive</h2>
 
             <div class="price-area">
@@ -486,7 +601,7 @@
             <a href="/request/" class="card-btn">Book This</a>
         </div>
 
-        <div class="price-card" style="border-top-color: var(--accent-primary); box-shadow: 0 0 15px rgba(123, 44, 191, 0.1);">
+        <div class="price-card" data-card-index="1" style="border-top-color: var(--accent-primary); box-shadow: 0 0 15px rgba(123, 44, 191, 0.1);">
             <h2>The Recital Cut</h2>
 
             <div class="price-area">
@@ -506,6 +621,15 @@
             <a href="/request/" class="card-btn" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">Book This</a>
         </div>
 
+            </div>
+
+            <button class="carousel-btn next" id="carouselNext" aria-label="Next rate option" type="button">
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <div class="carousel-dots" role="tablist" aria-label="Rate card pages" id="carouselDots">
+        </div>
     </div>
 
     <div class="addons-section">
@@ -586,6 +710,109 @@
         const box = document.getElementById('explainer');
         box.classList.toggle('is-open');
     }
+
+    (function initRateCarousel(){
+        const track = document.getElementById('pricingTrack');
+        const prevBtn = document.getElementById('carouselPrev');
+        const nextBtn = document.getElementById('carouselNext');
+        const dotsEl = document.getElementById('carouselDots');
+
+        if (!track || !prevBtn || !nextBtn || !dotsEl) return;
+
+        const cards = Array.from(track.querySelectorAll('.price-card'));
+        if (!cards.length) return;
+
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function isMobile() {
+            return window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+        }
+
+        function getClosestIndex() {
+            const trackRect = track.getBoundingClientRect();
+            const trackCenter = trackRect.left + trackRect.width / 2;
+            let bestIdx = 0;
+            let bestDist = Infinity;
+
+            cards.forEach((card, idx) => {
+                const rect = card.getBoundingClientRect();
+                const cardCenter = rect.left + rect.width / 2;
+                const dist = Math.abs(cardCenter - trackCenter);
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestIdx = idx;
+                }
+            });
+
+            return bestIdx;
+        }
+
+        function scrollToIndex(idx) {
+            const target = cards[idx];
+            if (!target) return;
+
+            const trackRect = track.getBoundingClientRect();
+            const cardRect = target.getBoundingClientRect();
+            const cardCenter = cardRect.left + cardRect.width / 2;
+            const trackCenter = trackRect.left + trackRect.width / 2;
+            const scrollLeft = track.scrollLeft + (cardCenter - trackCenter);
+
+            track.scrollTo({
+                left: scrollLeft,
+                behavior: prefersReducedMotion ? 'auto' : 'smooth'
+            });
+        }
+
+        function renderDots() {
+            dotsEl.innerHTML = '';
+            cards.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'dot-btn';
+                btn.type = 'button';
+                btn.setAttribute('role', 'tab');
+                btn.setAttribute('aria-label', `View option ${idx + 1} of ${cards.length}`);
+                btn.setAttribute('aria-selected', 'false');
+                btn.addEventListener('click', () => scrollToIndex(idx));
+                dotsEl.appendChild(btn);
+            });
+        }
+
+        function updateUI() {
+            const idx = getClosestIndex();
+            const dotBtns = Array.from(dotsEl.querySelectorAll('.dot-btn'));
+            dotBtns.forEach((d, i) => d.setAttribute('aria-selected', String(i === idx)));
+            prevBtn.disabled = idx <= 0;
+            nextBtn.disabled = idx >= cards.length - 1;
+        }
+
+        function step(delta) {
+            const idx = getClosestIndex();
+            const next = Math.max(0, Math.min(cards.length - 1, idx + delta));
+            scrollToIndex(next);
+        }
+
+        prevBtn.addEventListener('click', () => step(-1));
+        nextBtn.addEventListener('click', () => step(1));
+
+        let ticking = false;
+        track.addEventListener('scroll', () => {
+            if (!isMobile()) return;
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(() => {
+                updateUI();
+                ticking = false;
+            });
+        }, { passive: true });
+
+        window.addEventListener('resize', () => {
+            renderDots();
+            updateUI();
+        });
+
+        renderDots();
+        updateUI();
+    })();
 
     setGlobalMode('standard');
 </script>
