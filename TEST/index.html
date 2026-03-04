@@ -280,6 +280,12 @@
             position: relative;
         }
 
+        /* Stage wraps the track + arrow buttons, providing the positioning
+           context for arrows without including the dots in the height calc. */
+        .carousel-stage {
+            position: relative;
+        }
+
         .carousel-btn {
             display: none; /* Only show on mobile */
             position: absolute;
@@ -312,8 +318,8 @@
             transform: translateY(-50%);
         }
 
-        .carousel-btn.prev { left: -6px; }
-        .carousel-btn.next { right: -6px; }
+        .carousel-btn.prev { left: 8px; }
+        .carousel-btn.next { right: 8px; }
 
         .carousel-dots {
             display: none; /* Only show on mobile */
@@ -340,20 +346,28 @@
         }
 
         @media (max-width: 768px) {
-            /* Swap grid -> horizontal scroller, but keep the same .price-card markup */
+            /* Break carousel out of container padding so cards can fill the
+               full viewport width, enabling the centered-snap + peek layout. */
+            .pricing-carousel {
+                margin-inline: -2rem;
+            }
+
+            /* Swap grid -> centered horizontal scroller with peek */
             .pricing-grid {
                 display: grid;
                 grid-auto-flow: column;
-                grid-auto-columns: 86%;
+                grid-auto-columns: 82vw;
                 gap: 1rem;
 
                 overflow-x: auto;
                 overflow-y: visible;
 
                 scroll-snap-type: x mandatory;
-                scroll-padding-left: 0.5rem;
-
-                padding: 0.5rem 0.5rem 0.75rem 0.5rem;
+                /* Side padding lets the first/last card sit centered while
+                   adjacent cards peek in from the edge. */
+                padding-inline: calc((100% - 82vw) / 2);
+                padding-block: 0.5rem 0.75rem;
+                scroll-padding-inline: calc((100% - 82vw) / 2);
 
                 -webkit-overflow-scrolling: touch;
                 overscroll-behavior-x: contain;
@@ -364,10 +378,9 @@
             .pricing-grid::-webkit-scrollbar-track { background: rgba(255,255,255,0.06); border-radius: 50px; }
 
             .price-card {
-                scroll-snap-align: start;
+                scroll-snap-align: center;
                 scroll-snap-stop: always;
 
-                /* Slightly tighter so button stays visible */
                 padding: 1.75rem 1.4rem 1.4rem 1.4rem;
             }
 
@@ -383,12 +396,6 @@
             .carousel-btn,
             .carousel-dots {
                 display: flex;
-            }
-
-            /* give a little extra space to show "peek" without clipping */
-            .pricing-carousel {
-                margin-left: -0.5rem;
-                margin-right: -0.5rem;
             }
         }
 
@@ -511,9 +518,6 @@
             .header-section + .container {
                 margin-top: -22rem;
             }
-
-            /* Slightly narrower cards on very small phones for better peek */
-            .pricing-grid { grid-auto-columns: 90%; }
         }
 
     </style>
@@ -563,11 +567,12 @@
 
     <!-- MOBILE CAROUSEL WRAPPER (cards inside remain the same) -->
     <div class="pricing-carousel" aria-label="Rate card carousel">
-        <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous rate option" type="button">
-            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-        </button>
+        <div class="carousel-stage">
+            <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous rate option" type="button">
+                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            </button>
 
-        <div class="pricing-grid" id="pricingTrack">
+            <div class="pricing-grid" id="pricingTrack">
             
             <div class="price-card" data-card-index="0">
                 <h2>Audio Performance</h2>
@@ -631,9 +636,10 @@
 
         </div>
 
-        <button class="carousel-btn next" id="carouselNext" aria-label="Next rate option" type="button">
-            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-        </button>
+            <button class="carousel-btn next" id="carouselNext" aria-label="Next rate option" type="button">
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </button>
+        </div>
 
         <div class="carousel-dots" role="tablist" aria-label="Rate card pages" id="carouselDots">
             <!-- dots injected by JS -->
@@ -735,14 +741,16 @@
         }
 
         function getClosestIndex() {
-            // Find the card whose left edge is closest to the track's left padding position
+            // Find the card whose center is closest to the track's visible center
             const trackRect = track.getBoundingClientRect();
+            const trackCenter = trackRect.left + trackRect.width / 2;
             let bestIdx = 0;
             let bestDist = Infinity;
 
             cards.forEach((card, idx) => {
                 const rect = card.getBoundingClientRect();
-                const dist = Math.abs(rect.left - trackRect.left);
+                const cardCenter = rect.left + rect.width / 2;
+                const dist = Math.abs(cardCenter - trackCenter);
                 if (dist < bestDist) {
                     bestDist = dist;
                     bestIdx = idx;
@@ -756,9 +764,15 @@
             const target = cards[idx];
             if (!target) return;
 
-            const left = target.offsetLeft - track.offsetLeft;
+            // Scroll so the card's center aligns with the track's visible center
+            const trackRect = track.getBoundingClientRect();
+            const cardRect = target.getBoundingClientRect();
+            const cardCenter = cardRect.left + cardRect.width / 2;
+            const trackCenter = trackRect.left + trackRect.width / 2;
+            const scrollLeft = track.scrollLeft + (cardCenter - trackCenter);
+
             track.scrollTo({
-                left,
+                left: scrollLeft,
                 behavior: prefersReducedMotion ? 'auto' : 'smooth'
             });
         }
