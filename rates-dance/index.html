@@ -155,38 +155,52 @@
             font-style: italic;
         }
 
-        /* --- GLOBAL TOGGLE --- */
-        .global-toggle-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 3rem;
-        }
-
-        .global-toggle-btn {
+        .budget-callout {
+            margin: 0 auto 2rem;
+            padding: 1.4rem 1.5rem;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 0.8rem 2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            font-size: 0.9rem;
+            border-left: 4px solid var(--accent-secondary);
+            border-radius: 12px;
+            max-width: 900px;
         }
 
-        .global-toggle-btn:first-child {
-            border-radius: 50px 0 0 50px;
-            border-right: none;
-        }
-        .global-toggle-btn:last-child {
-            border-radius: 0 50px 50px 0;
-            border-left: none;
-        }
-
-        .global-toggle-btn.active {
-            background: var(--accent-secondary);
+        .budget-callout h3 {
+            margin: 0 0 0.55rem;
+            font-size: 1.15rem;
             color: white;
-            border-color: var(--accent-secondary);
+        }
+
+        .budget-callout p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .budget-callout a {
+            color: var(--accent-secondary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .budget-callout a:hover {
+            text-decoration: underline;
+        }
+
+        .duration-note {
+            margin: 2.5rem auto 2.1rem;
+            padding: 0.9rem 1.1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #d8deea;
+            font-size: 0.78rem;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .duration-note .price-sub {
+            font-size: 0.9rem;
         }
 
         /* --- PRICING GRID (2 CARDS) --- */
@@ -236,7 +250,7 @@
         }
 
         .price-sub {
-            font-size: 0.9rem; color: var(--accent-secondary); font-weight: 600; margin-top: 5px; text-transform: uppercase;
+            font-size: 0.9rem; color: var(--accent-primary); font-weight: 600; margin-top: 5px; text-transform: uppercase;
         }
 
         .price-note {
@@ -367,7 +381,7 @@
             padding: 1rem 0;
         }
         .addon-item:last-child { border-bottom: none; }
-        .addon-title h4 { margin: 0; font-size: 1.1rem; }
+        .addon-title h4 { margin: 0 0 0.4rem 0; font-size: 1.1rem; }
         .addon-title p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
         .addon-price { font-weight: 700; color: var(--accent-secondary); font-size: 1.2rem; }
 
@@ -440,6 +454,10 @@
         }
 
         @media (max-width: 768px) {
+            :root {
+                --mobile-card-width: 90vw;
+            }
+
             .container {
                 padding: 0 1rem;
             }
@@ -451,7 +469,7 @@
             .pricing-grid {
                 display: grid;
                 grid-auto-flow: column;
-                grid-auto-columns: 82vw;
+                grid-auto-columns: var(--mobile-card-width);
                 gap: 1rem;
                 max-width: 100%;
                 margin: 0;
@@ -460,9 +478,9 @@
                 overflow-y: visible;
 
                 scroll-snap-type: x mandatory;
-                padding-inline: calc((100% - 82vw) / 2);
+                padding-inline: calc((100% - var(--mobile-card-width)) / 2);
                 padding-block: 0.5rem 0.75rem;
-                scroll-padding-inline: calc((100% - 82vw) / 2);
+                scroll-padding-inline: calc((100% - var(--mobile-card-width)) / 2);
 
                 -webkit-overflow-scrolling: touch;
                 overscroll-behavior-x: contain;
@@ -507,7 +525,6 @@
             .addon-price { align-self: flex-end; }
             .hybrid-banner { flex-direction: column; text-align: center; gap: 1rem; }
             .explainer-box.is-open .explainer-content { max-height: 1600px; }
-            .global-toggle-btn { padding: 0.55rem 1.2rem; font-size: 0.8rem; line-height: 1.1; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -537,7 +554,7 @@
 <div class="header-section">
     <div class="container">
         <h1>Dance Recital Recording Rates</h1>
-        <p class="subtitle">Professional multi-camera capture ensuring every leap, turn, and formation is preserved.</p>
+        <p class="subtitle">Professional dance recital filming built for studio archives and parent showcases.</p>
     </div>
 </div>
 
@@ -559,7 +576,7 @@
                 </div>
                 <div class="explainer-item">
                     <h4>Flat Rate Delivery</h4>
-                    <p>These packages are designed for studios. You pay one flat fee and receive the digital master files. You are free to share, distribute, or host these files for your dancers and parents at no additional cost.</p>
+                    <p>These packages are designed for studios. You pay one flat fee and receive the digital master files. You are free to share, distribute, or host these files for your dancers and families at no additional cost.</p>
                 </div>
             </div>
             <div class="hybrid-note">
@@ -568,9 +585,9 @@
         </div>
     </div>
 
-    <div class="global-toggle-container">
-        <button class="global-toggle-btn active" id="btn-standard" onclick="setGlobalMode('standard')">Standard Recital<br>(Up to 2 Hrs)</button>
-        <button class="global-toggle-btn" id="btn-junior" onclick="setGlobalMode('junior')">Junior Showcase<br>(< 1 Hr)</button>
+    <div class="budget-callout" aria-label="Studio budget support">
+        <h3>Working with a strict budget?</h3>
+        <p>If your budget is tight, please still <a href="/request/">reach out</a>. Share your available media budget and I will build a custom package that captures your recital with the strongest possible quality.</p>
     </div>
 
     <div class="pricing-carousel" aria-label="Rate card carousel">
@@ -582,40 +599,40 @@
             <div class="pricing-grid" id="pricingTrack">
         
         <div class="price-card" data-card-index="0">
-            <h2>The Choreography Archive</h2>
+            <h2>Archival Recital</h2>
 
             <div class="price-area">
-                <span class="price-tag" id="price-1">$375</span>
-                <span class="price-sub">1-Cam Coverage</span>
-                <span class="price-note">Perfect for instructors and choreography review</span>
+                <span class="price-sub">Starting at*</span>
+                <span class="price-tag">$250</span>
+                <span class="price-note">The essential full-stage visual record.</span>
             </div>
 
             <ul class="features">
-                <li>1 Static Wide Camera Angle (Full Stage)</li>
-                <li>Ensures all formations are visible</li>
-                <li>Direct board audio for clean music</li>
-                <li>Basic color correction</li>
-                <li>Digital video delivery</li>
+                <li>1-camera continuous wide-shot coverage</li>
+                <li>Ensures no formations or staging are missed</li>
+                <li>Crisp, professional audio synced to video</li>
+                <li>Delivered as a single, continuous video file</li>
+                <li>Basic color correction and exposure adjustments</li>
             </ul>
 
             <a href="/request/" class="card-btn">Book This</a>
         </div>
 
         <div class="price-card" data-card-index="1" style="border-top-color: var(--accent-primary); box-shadow: 0 0 15px rgba(123, 44, 191, 0.1);">
-            <h2>The Recital Cut</h2>
+            <h2>Dynamic Recital Edit</h2>
 
             <div class="price-area">
-                <span class="price-tag" id="price-2">$600</span>
-                <span class="price-sub">2-Cam Dynamic Edit</span>
-                <span class="price-note">The standard keepsake for parents and dancers</span>
+                <span class="price-sub">Starting at*</span>
+                <span class="price-tag">$400</span>
+                <span class="price-note">The ultimate showcase of choreography.</span>
             </div>
 
             <ul class="features">
-                <li>2 Camera Angles (Wide & Tight)</li>
-                <li>Dynamic editing following the action</li>
-                <li>Close-ups of soloists and leaps</li>
-                <li>Direct board audio for clean music</li>
-                <li>Digital video delivery</li>
+                <li><strong style="color: white;">Includes Archival features</strong></li>
+                <li>Multi-camera coverage from dynamic angles</li>
+                <li>Expertly edited to the rhythm and beat of the music</li>
+                <li>Close-ups highlighting soloists and leaps</li>
+                <li>Delivered as a single, continuous cinematic video</li>
             </ul>
 
             <a href="/request/" class="card-btn" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">Book This</a>
@@ -630,6 +647,10 @@
 
         <div class="carousel-dots" role="tablist" aria-label="Rate card pages" id="carouselDots">
         </div>
+    </div>
+
+    <div class="duration-note" aria-label="Performance duration pricing note">
+       <span class="price-sub">*</span> Base prices are for recitals up to 1 hour in length with a single-file delivery. Recitals over 1 hour will be billed in addition to the base rate. See add-ons below for routine-by-routine cuts or other upgrades.
     </div>
 
     <div class="addons-section">
@@ -681,31 +702,7 @@
 </div>
 
 <script>
-    // DATA STORE: 2 Tiers for Dance
-   // DANCE DATA STORE (2 Tiers)
-    const pricingData = {
-        standard: {
-            1: "$375",
-            2: "$600"
-        },
-        junior: {
-            1: "$250",
-            2: "$400"
-        }
-    };
-
-    // 1. Switch Global Mode (Standard vs Junior)
-    function setGlobalMode(mode) {
-        // Update Buttons
-        document.getElementById('btn-standard').classList.toggle('active', mode === 'standard');
-        document.getElementById('btn-junior').classList.toggle('active', mode === 'junior');
-
-        // Update Prices on the cards
-        document.getElementById('price-1').innerText = pricingData[mode][1];
-        document.getElementById('price-2').innerText = pricingData[mode][2];
-    }
-
-    // 2. Toggle Explainer Box
+    // Toggle Explainer Box
     function toggleExplainer() {
         const box = document.getElementById('explainer');
         box.classList.toggle('is-open');
@@ -814,7 +811,6 @@
         updateUI();
     })();
 
-    setGlobalMode('standard');
 </script>
 
     <div id="site-footer"></div>
