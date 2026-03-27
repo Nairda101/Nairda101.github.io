@@ -242,15 +242,74 @@
 
     const menuItems = nav.querySelectorAll('.menu-item.has-submenu');
     const toggles = nav.querySelectorAll('.submenu-toggle');
+    const desktopMq = window.matchMedia('(min-width: 721px)');
+    const closeDelayMs = 180;
+    const closeTimers = new WeakMap();
+
+    const clearCloseTimer = (menuItem) => {
+      const timer = closeTimers.get(menuItem);
+      if (timer) {
+        window.clearTimeout(timer);
+        closeTimers.delete(menuItem);
+      }
+    };
+
+    const setMenuOpen = (menuItem, isOpen) => {
+      menuItem.setAttribute('data-open', isOpen ? 'true' : 'false');
+      const toggle = menuItem.querySelector('.submenu-toggle');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      }
+    };
+
+    const scheduleClose = (menuItem) => {
+      clearCloseTimer(menuItem);
+      const timer = window.setTimeout(() => {
+        if (!desktopMq.matches) {
+          return;
+        }
+        if (menuItem.matches(':hover') || menuItem.contains(document.activeElement)) {
+          return;
+        }
+        setMenuOpen(menuItem, false);
+      }, closeDelayMs);
+      closeTimers.set(menuItem, timer);
+    };
 
     const closeAllSubmenus = () => {
       menuItems.forEach((item) => {
-        item.setAttribute('data-open', 'false');
-      });
-      toggles.forEach((toggle) => {
-        toggle.setAttribute('aria-expanded', 'false');
+        clearCloseTimer(item);
+        setMenuOpen(item, false);
       });
     };
+
+    menuItems.forEach((menuItem) => {
+      menuItem.addEventListener('mouseenter', function () {
+        if (!desktopMq.matches) return;
+        clearCloseTimer(menuItem);
+        setMenuOpen(menuItem, true);
+      });
+
+      menuItem.addEventListener('mouseleave', function () {
+        if (!desktopMq.matches) return;
+        scheduleClose(menuItem);
+      });
+
+      menuItem.addEventListener('focusin', function () {
+        if (!desktopMq.matches) return;
+        clearCloseTimer(menuItem);
+        setMenuOpen(menuItem, true);
+      });
+
+      menuItem.addEventListener('focusout', function (event) {
+        if (!desktopMq.matches) return;
+        const nextFocused = event.relatedTarget;
+        if (nextFocused && menuItem.contains(nextFocused)) {
+          return;
+        }
+        scheduleClose(menuItem);
+      });
+    });
 
     toggles.forEach((toggle) => {
       toggle.addEventListener('click', function (event) {
@@ -264,8 +323,8 @@
           closeAllSubmenus();
         }
 
-        menuItem.setAttribute('data-open', nextOpen ? 'true' : 'false');
-        toggle.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+        clearCloseTimer(menuItem);
+        setMenuOpen(menuItem, nextOpen);
         event.stopPropagation();
       });
     });

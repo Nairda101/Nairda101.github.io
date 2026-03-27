@@ -125,8 +125,9 @@ body {
   position: absolute;
   left: 0;
   top: 100%;
-  width: 100%;
-  height: 0.4rem;
+  width: max(100%, 240px);
+  height: 0.7rem;
+  display: none;
 }
 
 .menu-item > a,
@@ -164,7 +165,7 @@ body {
 .submenu {
   display: none;
   position: absolute;
-  top: 100%;
+  top: calc(100% - 1px);
   left: 0;
   min-width: 220px;
   background: #0e1230;
@@ -202,6 +203,10 @@ body {
 }
 
 @media (min-width: 721px) {
+  .menu-item.has-submenu::after {
+    display: block;
+  }
+
   .menu-item.has-submenu:hover > .submenu {
     display: block;
   }
