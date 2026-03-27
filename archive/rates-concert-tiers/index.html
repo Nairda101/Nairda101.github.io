@@ -189,7 +189,7 @@
             border-color: var(--accent-secondary);
         }
 
-        /* --- PRICING GRID (DESKTOP DEFAULT) --- */
+        /* --- PRICING GRID --- */
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -280,14 +280,12 @@
             position: relative;
         }
 
-        /* Stage wraps the track + arrow buttons, providing the positioning
-           context for arrows without including the dots in the height calc. */
         .carousel-stage {
             position: relative;
         }
 
         .carousel-btn {
-            display: none; /* Only show on mobile */
+            display: none;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -324,7 +322,7 @@
         .carousel-btn.next { right: 8px; }
 
         .carousel-dots {
-            display: none; /* Only show on mobile */
+            display: none;
             justify-content: center;
             align-items: center;
             gap: 10px;
@@ -347,64 +345,6 @@
             background: var(--accent-secondary);
             border-color: var(--accent-secondary);
             transform: scale(1.15);
-        }
-
-        @media (max-width: 768px) {
-            /* Break carousel out of container padding so cards can fill the
-               full viewport width, enabling the centered-snap + peek layout. */
-            .pricing-carousel {
-                margin-inline: -2rem;
-            }
-
-            /* Swap grid -> centered horizontal scroller with peek */
-            .pricing-grid {
-                display: grid;
-                grid-auto-flow: column;
-                grid-auto-columns: 82vw;
-                gap: 1rem;
-
-                overflow-x: auto;
-                overflow-y: visible;
-
-                scroll-snap-type: x mandatory;
-                /* Side padding lets the first/last card sit centered while
-                   adjacent cards peek in from the edge. */
-                padding-inline: calc((100% - 82vw) / 2);
-                padding-block: 0.5rem 0.75rem;
-                scroll-padding-inline: calc((100% - 82vw) / 2);
-
-                -webkit-overflow-scrolling: touch;
-                overscroll-behavior-x: contain;
-                scrollbar-width: none;
-            }
-
-            .pricing-grid::-webkit-scrollbar { display: none; }
-
-            .price-card {
-                scroll-snap-align: center;
-                scroll-snap-stop: always;
-
-                padding: 1.75rem 1.4rem 1.4rem 1.4rem;
-            }
-
-            .price-card h2 {
-                font-size: 1.35rem;
-                margin-bottom: 1.1rem;
-            }
-
-            .price-tag { font-size: 2.35rem; }
-            .features li { padding: 0.65rem 0; font-size: 0.92rem; }
-            .features { margin-bottom: 1.3rem; }
-
-            .carousel-btn,
-            .carousel-dots {
-                display: flex;
-            }
-        }
-
-        /* Respect reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            .price-card, .carousel-btn, .dot-btn { transition: none !important; }
         }
 
         /* --- ADD ONS --- */
@@ -497,6 +437,52 @@
         }
 
         @media (max-width: 768px) {
+            .pricing-carousel {
+                margin-inline: -2rem;
+            }
+
+            .pricing-grid {
+                display: grid;
+                grid-auto-flow: column;
+                grid-auto-columns: 82vw;
+                gap: 1rem;
+
+                overflow-x: auto;
+                overflow-y: visible;
+
+                scroll-snap-type: x mandatory;
+                padding-inline: calc((100% - 82vw) / 2);
+                padding-block: 0.5rem 0.75rem;
+                scroll-padding-inline: calc((100% - 82vw) / 2);
+
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior-x: contain;
+                scrollbar-width: none;
+            }
+
+            .pricing-grid::-webkit-scrollbar { display: none; }
+
+            .price-card {
+                scroll-snap-align: center;
+                scroll-snap-stop: always;
+
+                padding: 1.75rem 1.4rem 1.4rem 1.4rem;
+            }
+
+            .price-card h2 {
+                font-size: 1.35rem;
+                margin-bottom: 1.1rem;
+            }
+
+            .price-tag { font-size: 2.35rem; }
+            .features li { padding: 0.65rem 0; font-size: 0.92rem; }
+            .features { margin-bottom: 1.3rem; }
+
+            .carousel-btn,
+            .carousel-dots {
+                display: flex;
+            }
+
             .header-section {
                 padding: 0.5rem 0 35rem 0;
             }
@@ -511,6 +497,10 @@
             .hybrid-banner { flex-direction: column; text-align: center; gap: 1rem; }
             .explainer-box.is-open .explainer-content { max-height: 1600px; }
             .global-toggle-btn { padding: 0.55rem 1.2rem; font-size: 0.8rem; line-height: 1.1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .price-card, .carousel-btn, .dot-btn { transition: none !important; }
         }
         
         @media (max-width: 480px) {
@@ -568,7 +558,6 @@
         <button class="global-toggle-btn" id="btn-junior" onclick="setGlobalMode('junior')">Junior Concert<br>(< 1 Hr)</button>
     </div>
 
-    <!-- MOBILE CAROUSEL WRAPPER (cards inside remain the same) -->
     <div class="pricing-carousel" aria-label="Rate card carousel">
         <div class="carousel-stage">
             <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous rate option" type="button">
@@ -576,68 +565,68 @@
             </button>
 
             <div class="pricing-grid" id="pricingTrack">
-            
-            <div class="price-card" data-card-index="0">
-                <h2>Audio Performance</h2>
+        
+        <div class="price-card" data-card-index="0">
+            <h2>Audio Performance</h2>
 
-                <div class="price-area">
-                    <span class="price-tag" id="price-1">$275</span>
-                    <span class="price-sub">Audio Only</span>
-                    <span class="price-note">Perfect for festival submissions or albums</span>
-                </div>
-
-                <ul class="features">
-                    <li>Multi-track audio recording</li>
-                    <li>Professional balancing and mix</li>
-                    <li>Mastering for digital playback</li>
-                    <li>High-Res WAV and MP3 delivery</li>
-                    <li class="is-off">No Video Capture</li>
-                </ul>
-
-                <a href="/request/" class="card-btn">Book This</a>
+            <div class="price-area">
+                <span class="price-tag" id="price-1">$275</span>
+                <span class="price-sub">Audio Only</span>
+                <span class="price-note">Perfect for festival submissions or albums</span>
             </div>
 
-            <div class="price-card" data-card-index="1" style="border-top-color: var(--accent-primary); box-shadow: 0 0 15px rgba(123, 44, 191, 0.1);">
-                <h2>The Archival Video</h2>
+            <ul class="features">
+                <li>Multi-track audio recording</li>
+                <li>Professional balancing and mix</li>
+                <li>Mastering for digital playback</li>
+                <li>High-Res WAV and MP3 delivery</li>
+                <li class="is-off">No Video Capture</li>
+            </ul>
 
-                <div class="price-area">
-                    <span class="price-tag" id="price-2">$375</span>
-                    <span class="price-sub">1-Cam + Pro Audio</span>
-                    <span class="price-note">Great for reference and archiving</span>
-                </div>
-
-                <ul class="features">
-                    <li>1 Static Wide Camera Angle</li>
-                    <li>Multi-track audio recording</li>
-                    <li>Audio perfectly synced to video</li>
-                    <li>Basic color correction</li>
-                    <li>Digital video delivery</li>
-                </ul>
-
-                <a href="/request/" class="card-btn" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">Book This</a>
-            </div>
-
-            <div class="price-card" data-card-index="2">
-                <h2>Cinematic Concert</h2>
-
-                <div class="price-area">
-                    <span class="price-tag" id="price-3">$550</span>
-                    <span class="price-sub">Multi-Cam + Pro Audio</span>
-                    <span class="price-note">The ultimate keepsake for your program</span>
-                </div>
-
-                <ul class="features">
-                    <li>2 Camera Angles (Wide & Tight)</li>
-                    <li>Multi-track audio recording</li>
-                    <li>Dynamic editing for solos & sections</li>
-                    <li>Audio perfectly synced to video</li>
-                    <li>Digital video delivery</li>
-                </ul>
-
-                <a href="/request/" class="card-btn">Book This</a>
-            </div>
-
+            <a href="/request/" class="card-btn">Book This</a>
         </div>
+
+        <div class="price-card" data-card-index="1" style="border-top-color: var(--accent-primary); box-shadow: 0 0 15px rgba(123, 44, 191, 0.1);">
+            <h2>The Archival Video</h2>
+
+            <div class="price-area">
+                <span class="price-tag" id="price-2">$375</span>
+                <span class="price-sub">1-Cam + Pro Audio</span>
+                <span class="price-note">Great for reference and archiving</span>
+            </div>
+
+            <ul class="features">
+                <li>1 Static Wide Camera Angle</li>
+                <li>Multi-track audio recording</li>
+                <li>Audio perfectly synced to video</li>
+                <li>Basic color correction</li>
+                <li>Digital video delivery</li>
+            </ul>
+
+            <a href="/request/" class="card-btn" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">Book This</a>
+        </div>
+
+        <div class="price-card" data-card-index="2">
+            <h2>Cinematic Concert</h2>
+
+            <div class="price-area">
+                <span class="price-tag" id="price-3">$550</span>
+                <span class="price-sub">Multi-Cam + Pro Audio</span>
+                <span class="price-note">The ultimate keepsake for your program</span>
+            </div>
+
+            <ul class="features">
+                <li>2 Camera Angles (Wide & Tight)</li>
+                <li>Multi-track audio recording</li>
+                <li>Dynamic editing for solos & sections</li>
+                <li>Audio perfectly synced to video</li>
+                <li>Digital video delivery</li>
+            </ul>
+
+            <a href="/request/" class="card-btn">Book This</a>
+        </div>
+
+            </div>
 
             <button class="carousel-btn next" id="carouselNext" aria-label="Next rate option" type="button">
                 <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
@@ -645,7 +634,6 @@
         </div>
 
         <div class="carousel-dots" role="tablist" aria-label="Rate card pages" id="carouselDots">
-            <!-- dots injected by JS -->
         </div>
     </div>
 
@@ -715,8 +703,6 @@
         document.getElementById('price-1').innerText = pricingData[mode][1];
         document.getElementById('price-2').innerText = pricingData[mode][2];
         document.getElementById('price-3').innerText = pricingData[mode][3];
-
-        // If needed, could re-measure carousel here, but not required for price text changes
     }
 
     // 2. Toggle Explainer Box
@@ -725,7 +711,6 @@
         box.classList.toggle('is-open');
     }
 
-    // 3. Mobile carousel controls + dots
     (function initRateCarousel(){
         const track = document.getElementById('pricingTrack');
         const prevBtn = document.getElementById('carouselPrev');
@@ -744,7 +729,6 @@
         }
 
         function getClosestIndex() {
-            // Find the card whose center is closest to the track's visible center
             const trackRect = track.getBoundingClientRect();
             const trackCenter = trackRect.left + trackRect.width / 2;
             let bestIdx = 0;
@@ -767,7 +751,6 @@
             const target = cards[idx];
             if (!target) return;
 
-            // Scroll so the card's center aligns with the track's visible center
             const trackRect = track.getBoundingClientRect();
             const cardRect = target.getBoundingClientRect();
             const cardCenter = cardRect.left + cardRect.width / 2;
@@ -796,12 +779,8 @@
 
         function updateUI() {
             const idx = getClosestIndex();
-
-            // dots
             const dotBtns = Array.from(dotsEl.querySelectorAll('.dot-btn'));
             dotBtns.forEach((d, i) => d.setAttribute('aria-selected', String(i === idx)));
-
-            // arrows (only meaningful on mobile; keep safe anyway)
             prevBtn.disabled = idx <= 0;
             nextBtn.disabled = idx >= cards.length - 1;
         }
@@ -815,7 +794,6 @@
         prevBtn.addEventListener('click', () => step(-1));
         nextBtn.addEventListener('click', () => step(1));
 
-        // update on scroll (throttled via rAF)
         let ticking = false;
         track.addEventListener('scroll', () => {
             if (!isMobile()) return;
