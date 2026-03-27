@@ -119,6 +119,16 @@ body {
   position: relative;
 }
 
+/* Bridge the pointer path so desktop hover does not collapse before entering submenu. */
+.menu-item.has-submenu::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 0.4rem;
+}
+
 .menu-item > a,
 .submenu-toggle {
   text-decoration: none;
@@ -154,7 +164,7 @@ body {
 .submenu {
   display: none;
   position: absolute;
-  top: calc(100% + 0.2rem);
+  top: 100%;
   left: 0;
   min-width: 220px;
   background: #0e1230;
@@ -193,6 +203,10 @@ body {
 
 @media (min-width: 721px) {
   .menu-item.has-submenu:hover > .submenu {
+    display: block;
+  }
+
+  .menu-item.has-submenu:focus-within > .submenu {
     display: block;
   }
 }
