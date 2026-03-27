@@ -467,17 +467,22 @@
                     </select>
                 </div>
 
+                <div class="field conditional-field is-hidden" id="concert-length-field">
+                    <label for="concert-length">Concert Length <span class="required">*</span></label>
+                    <input type="text" id="concert-length" name="concertLength" placeholder="Example: 1 hour 20 minutes">
+                </div>
+
                 <div class="field conditional-field is-hidden" id="price-tier-field">
-                    <label for="price-tier">Price Tier <span class="required">*</span></label>
+                    <label for="price-tier" id="tier-label">Product Tier <span class="required">*</span></label>
                     <select id="price-tier" name="priceTier">
-                        <option value="" disabled selected>Select a price tier</option>
+                        <option value="" disabled selected>Select a product tier</option>
                     </select>
                 </div>
 
                 <div class="field conditional-field is-hidden" id="family-tier-field">
-                    <label for="family-tier">Price Tier <span class="required">*</span></label>
+                    <label for="family-tier">Product Tier <span class="required">*</span></label>
                     <select id="family-tier" name="familyTier">
-                        <option value="" disabled selected>Select a price tier</option>
+                        <option value="" disabled selected>Select a product tier</option>
                     </select>
                 </div>
 
@@ -532,8 +537,11 @@
     const showLengthField = document.getElementById('show-length-field');
     const showLengthSelect = document.getElementById('show-length');
     const lengthLabel = document.getElementById('length-label');
+    const concertLengthField = document.getElementById('concert-length-field');
+    const concertLengthInput = document.getElementById('concert-length');
     const priceTierField = document.getElementById('price-tier-field');
     const priceTierSelect = document.getElementById('price-tier');
+    const tierLabel = document.getElementById('tier-label');
     const familyTierField = document.getElementById('family-tier-field');
     const familyTierSelect = document.getElementById('family-tier');
     const budgetField = document.getElementById('budget-field');
@@ -550,9 +558,9 @@
             recitalCut: 'The Recital Cut'
         },
         concert: {
-            audioMastery: 'Audio Mastery',
-            archivalVideo: 'The Archival Video',
-            cinematic: 'Cinematic Concert'
+            audioArchival: 'Audio Archival',
+            videoArchival: 'Video Archival',
+            cinematicConcert: 'Cinematic Concert'
         }
     };
 
@@ -580,18 +588,49 @@
             }
         },
         concert: {
-            standard: {
-                audioMastery: '$275',
-                archivalVideo: '$375',
-                cinematic: '$550'
-            },
-            junior: {
-                audioMastery: '$175',
-                archivalVideo: '$250',
-                cinematic: '$350'
-            }
+            audioArchival: '$175',
+            videoArchival: '$250',
+            cinematicConcert: '$350'
         }
     };
+
+    const tierPlaceholderText = {
+        default: 'Select a product tier',
+        theatre: 'Select a theatre product tier',
+        dance: 'Select a dance product tier',
+        concert: 'Select a concert product tier',
+        family: 'Select a product tier'
+    };
+
+    const tierLabelText = {
+        default: 'Product Tier',
+        theatre: 'Theatre Product Tier',
+        dance: 'Dance Product Tier',
+        concert: 'Concert Product Tier'
+    };
+
+    const tierSuffix = {
+        theatre: '',
+        dance: '',
+        concert: 'Starting at '
+    };
+
+    function setTierLabel(projectType) {
+        if (projectType === 'Theatre Performance Capture') {
+            tierLabel.innerHTML = `${tierLabelText.theatre} <span class="required">*</span>`;
+            return;
+        }
+        if (projectType === 'Dance Recital Recording') {
+            tierLabel.innerHTML = `${tierLabelText.dance} <span class="required">*</span>`;
+            return;
+        }
+        if (projectType === 'Concert & Ensemble Recording') {
+            tierLabel.innerHTML = `${tierLabelText.concert} <span class="required">*</span>`;
+            return;
+        }
+
+        tierLabel.innerHTML = `${tierLabelText.default} <span class="required">*</span>`;
+    }
 
     const familyTierOptions = [
         { value: 'archival', label: 'Archival Raw Session - $400' },
@@ -659,36 +698,57 @@
     }
 
     function updatePriceTierOptions() {
-        const showLength = showLengthSelect.value;
         const projectType = projectTypeSelect.value;
         priceTierSelect.innerHTML = '';
 
         const placeholder = document.createElement('option');
         placeholder.value = '';
-        placeholder.textContent = 'Select a price tier';
+        placeholder.textContent = tierPlaceholderText.default;
         placeholder.disabled = true;
         placeholder.selected = true;
         priceTierSelect.appendChild(placeholder);
 
         // Determine which tier set to use based on project type
         let tierSet = 'theatre';
+        let requiresLength = true;
         if (projectType === 'Dance Recital Recording') {
             tierSet = 'dance';
         } else if (projectType === 'Concert & Ensemble Recording') {
             tierSet = 'concert';
+            requiresLength = false;
         }
 
-        if (!showLength || !tierPrices[tierSet] || !tierPrices[tierSet][showLength]) {
+        if (tierSet === 'theatre') {
+            placeholder.textContent = tierPlaceholderText.theatre;
+        } else if (tierSet === 'dance') {
+            placeholder.textContent = tierPlaceholderText.dance;
+        } else {
+            placeholder.textContent = tierPlaceholderText.concert;
+        }
+
+        const pricePrefix = tierSuffix[tierSet] || '';
+
+        if (!tierPrices[tierSet]) {
             return;
         }
 
         const currentLabels = tierLabels[tierSet];
-        const currentPrices = tierPrices[tierSet][showLength];
+        let currentPrices = {};
+
+        if (requiresLength) {
+            const showLength = showLengthSelect.value;
+            if (!showLength || !tierPrices[tierSet][showLength]) {
+                return;
+            }
+            currentPrices = tierPrices[tierSet][showLength];
+        } else {
+            currentPrices = tierPrices[tierSet];
+        }
 
         Object.keys(currentLabels).forEach((tierKey) => {
             const option = document.createElement('option');
             option.value = tierKey;
-            option.textContent = `${currentLabels[tierKey]} - ${currentPrices[tierKey]}`;
+            option.textContent = `${currentLabels[tierKey]} - ${pricePrefix}${currentPrices[tierKey]}`;
             priceTierSelect.appendChild(option);
         });
 
@@ -703,7 +763,7 @@
 
         const placeholder = document.createElement('option');
         placeholder.value = '';
-        placeholder.textContent = 'Select a price tier';
+        placeholder.textContent = tierPlaceholderText.family;
         placeholder.disabled = true;
         placeholder.selected = true;
         familyTierSelect.appendChild(placeholder);
@@ -718,26 +778,35 @@
 
     function toggleProjectTypeFields() {
         const projectType = projectTypeSelect.value;
-        const isEventCapture = projectType === 'Theatre Performance Capture' || 
-                              projectType === 'Dance Recital Recording' || 
-                              projectType === 'Concert & Ensemble Recording';
+        const isTheatreOrDance = projectType === 'Theatre Performance Capture' ||
+                                projectType === 'Dance Recital Recording';
+        const isConcert = projectType === 'Concert & Ensemble Recording';
+        const isEventCapture = isTheatreOrDance || isConcert;
         const isFamilyLegacy = projectType === 'Family Legacy Interview';
 
-        showLengthField.classList.toggle('is-hidden', !isEventCapture);
+        showLengthField.classList.toggle('is-hidden', !isTheatreOrDance);
+        concertLengthField.classList.toggle('is-hidden', !isConcert);
         priceTierField.classList.toggle('is-hidden', !isEventCapture);
         budgetField.classList.toggle('is-hidden', isEventCapture || isFamilyLegacy);
         familyTierField.classList.toggle('is-hidden', !isFamilyLegacy);
 
-        showLengthSelect.required = isEventCapture;
+        showLengthSelect.required = isTheatreOrDance;
+        concertLengthInput.required = isConcert;
         priceTierSelect.required = isEventCapture;
         familyTierSelect.required = isFamilyLegacy;
+        setTierLabel(projectType);
 
         if (!isEventCapture) {
             showLengthSelect.selectedIndex = 0;
-            priceTierSelect.innerHTML = '<option value="" disabled selected>Select a price tier</option>';
+            concertLengthInput.value = '';
+            priceTierSelect.innerHTML = '<option value="" disabled selected>Select a product tier</option>';
         } else {
             budgetInput.value = '';
-            updateLengthFieldForProjectType();
+            if (isTheatreOrDance) {
+                updateLengthFieldForProjectType();
+            } else {
+                showLengthSelect.selectedIndex = 0;
+            }
             updatePriceTierOptions();
         }
 
@@ -746,7 +815,7 @@
         }
 
         if (!isFamilyLegacy) {
-            familyTierSelect.innerHTML = '<option value="" disabled selected>Select a price tier</option>';
+            familyTierSelect.innerHTML = '<option value="" disabled selected>Select a product tier</option>';
         } else {
             updateFamilyTierOptions();
         }
