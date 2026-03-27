@@ -155,38 +155,50 @@
             font-style: italic;
         }
 
-        /* --- GLOBAL TOGGLE --- */
-        .global-toggle-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 3rem;
-        }
-
-        .global-toggle-btn {
+        .budget-callout {
+            margin: 0 auto 2rem;
+            padding: 1.4rem 1.5rem;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 0.8rem 2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            font-size: 0.9rem;
+            border-left: 4px solid var(--accent-secondary);
+            border-radius: 12px;
         }
 
-        .global-toggle-btn:first-child {
-            border-radius: 50px 0 0 50px;
-            border-right: none;
-        }
-        .global-toggle-btn:last-child {
-            border-radius: 0 50px 50px 0;
-            border-left: none;
-        }
-
-        .global-toggle-btn.active {
-            background: var(--accent-secondary);
+        .budget-callout h3 {
+            margin: 0 0 0.55rem;
+            font-size: 1.15rem;
             color: white;
-            border-color: var(--accent-secondary);
+        }
+
+        .budget-callout p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .budget-callout a {
+            color: var(--accent-secondary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .budget-callout a:hover {
+            text-decoration: underline;
+        }
+
+        .duration-note {
+            margin: 2.5rem auto 2.1rem;
+            padding: 0.9rem 1.1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #d8deea;
+            font-size: 0.78rem;
+            text-align: center;
+        }
+
+        .duration-note .price-sub {
+            font-size: 0.9rem;
         }
 
         /* --- PRICING GRID --- */
@@ -233,7 +245,7 @@
         }
 
         .price-sub {
-            font-size: 0.9rem; color: var(--accent-secondary); font-weight: 600; margin-top: 5px; text-transform: uppercase;
+            font-size: 0.9rem; color: var(--accent-primary); font-weight: 600; margin-top: 5px; text-transform: uppercase;
         }
 
         .price-note {
@@ -364,7 +376,7 @@
             padding: 1rem 0;
         }
         .addon-item:last-child { border-bottom: none; }
-        .addon-title h4 { margin: 0; font-size: 1.1rem; }
+        .addon-title h4 { margin: 0 0 0.4rem 0; font-size: 1.1rem; }
         .addon-title p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
         .addon-price { font-weight: 700; color: var(--accent-secondary); font-size: 1.2rem; }
 
@@ -496,7 +508,6 @@
             .addon-price { align-self: flex-end; }
             .hybrid-banner { flex-direction: column; text-align: center; gap: 1rem; }
             .explainer-box.is-open .explainer-content { max-height: 1600px; }
-            .global-toggle-btn { padding: 0.55rem 1.2rem; font-size: 0.8rem; line-height: 1.1; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -553,9 +564,9 @@
         </div>
     </div>
 
-    <div class="global-toggle-container">
-        <button class="global-toggle-btn active" id="btn-standard" onclick="setGlobalMode('standard')">Standard Concert<br>(Up to 2 Hrs)</button>
-        <button class="global-toggle-btn" id="btn-junior" onclick="setGlobalMode('junior')">Junior Concert<br>(< 1 Hr)</button>
+    <div class="budget-callout" aria-label="Educator budget support">
+        <h3>Working with a strict budget?</h3>
+        <p>I know how difficult it is to fund school arts programs. If your budget is tight, please still <a href="/request/">reach out</a>. Share what you have allocated for media, and I will build a custom package that gets your students the strongest possible recording within your budget.</p>
     </div>
 
     <div class="pricing-carousel" aria-label="Rate card carousel">
@@ -567,40 +578,38 @@
             <div class="pricing-grid" id="pricingTrack">
         
         <div class="price-card" data-card-index="0">
-            <h2>Audio Performance</h2>
+            <h2>Audio Archival</h2>
 
             <div class="price-area">
-                <span class="price-tag" id="price-1">$275</span>
-                <span class="price-sub">Audio Only</span>
-                <span class="price-note">Perfect for festival submissions or albums</span>
+                <span class="price-sub">Starting at*</span>
+                <span class="price-tag">$175</span>
+                <span class="price-note">Professional stereo/multi-track audio</span>
             </div>
 
             <ul class="features">
-                <li>Multi-track audio recording</li>
-                <li>Professional balancing and mix</li>
-                <li>Mastering for digital playback</li>
-                <li>High-Res WAV and MP3 delivery</li>
-                <li class="is-off">No Video Capture</li>
+                <li>Professional stereo or multi-track recording</li>
+                <li>High quality, continuous capture of the live performance</li>
+                <li>Delivered as a single, high-res audio file</li>
             </ul>
 
             <a href="/request/" class="card-btn">Book This</a>
         </div>
 
         <div class="price-card" data-card-index="1" style="border-top-color: var(--accent-primary); box-shadow: 0 0 15px rgba(123, 44, 191, 0.1);">
-            <h2>The Archival Video</h2>
+            <h2>Video Archival</h2>
 
             <div class="price-area">
-                <span class="price-tag" id="price-2">$375</span>
-                <span class="price-sub">1-Cam + Pro Audio</span>
-                <span class="price-note">Great for reference and archiving</span>
+                <span class="price-sub">Starting at*</span>
+                <span class="price-tag">$250</span>
+                <span class="price-note">Wide-angle video with pro audio</span>
             </div>
 
             <ul class="features">
-                <li>1 Static Wide Camera Angle</li>
-                <li>Multi-track audio recording</li>
-                <li>Audio perfectly synced to video</li>
-                <li>Basic color correction</li>
-                <li>Digital video delivery</li>
+                <li><strong style="color: white;">Includes Audio Archival features</strong></li>
+                <li>1-camera continuous wide-shot coverage</li>
+                <li>Audio perfectly synced to high-quality video</li>
+                <li>Basic color and exposure correction</li>
+                <li>Delivered as a single, continuous video file</li>
             </ul>
 
             <a href="/request/" class="card-btn" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">Book This</a>
@@ -610,17 +619,18 @@
             <h2>Cinematic Concert</h2>
 
             <div class="price-area">
-                <span class="price-tag" id="price-3">$550</span>
-                <span class="price-sub">Multi-Cam + Pro Audio</span>
-                <span class="price-note">The ultimate keepsake for your program</span>
+                <span class="price-sub">Starting at*</span>
+                <span class="price-tag">$350</span>
+                <span class="price-note">Dynamic multi-camera production</span>
             </div>
 
             <ul class="features">
-                <li>2 Camera Angles (Wide & Tight)</li>
-                <li>Multi-track audio recording</li>
-                <li>Dynamic editing for solos & sections</li>
-                <li>Audio perfectly synced to video</li>
-                <li>Digital video delivery</li>
+                <li><strong style="color: white;">Includes Audio Archival features</strong></li>
+                <li><strong style="color: white;">Includes Video Archival features</strong></li>
+                <li>2–3 cameras for wide coverage and close-up detail</li>
+                <li>Professionally edited to the music</li>
+                <li>Close-ups highlighting solos, sections, and key moments</li>
+                <li>Delivered as a single, continuous concert video</li>
             </ul>
 
             <a href="/request/" class="card-btn">Book This</a>
@@ -637,13 +647,17 @@
         </div>
     </div>
 
+    <div class="duration-note" aria-label="Performance duration pricing note">
+       <span class="price-sub">*</span> Base prices are for performances up to 1 hour in length with a single-file delivery. Performances over 1 hour will be billed in addition to the base rate. See add-ons below for a section-by-section or song-by-song cut delivery or other upgrades.
+    </div>
+
     <div class="addons-section">
         <h3 style="margin-bottom: 1.5rem;">Delivery Upgrades & Add-Ons</h3>
         
         <div class="addon-item">
             <div class="addon-title">
-                <h4>Song-By-Song Separation</h4>
-                <p>Instead of one long continuous file, receive the concert separated into individual files for each piece of music. Great for CDs or YouTube uploads.</p>
+                <h4>Section-by-Section Separation</h4>
+                <p>Instead of one long continuous file, receive the concert separated into individual files for each group or piece of music.</p>
             </div>
             <div class="addon-price">+$50</div>
         </div>
@@ -678,34 +692,7 @@
 </div>
 
 <script>
-    // DATA STORE: Simplified because there are no card-level toggles
-    // CONCERTS DATA STORE
-    const pricingData = {
-        standard: {
-            1: "$275",
-            2: "$375",
-            3: "$550"
-        },
-        junior: {
-            1: "$175",
-            2: "$250",
-            3: "$350"
-        }
-    };
-
-    // 1. Switch Global Mode (Standard vs Junior)
-    function setGlobalMode(mode) {
-        // Update Buttons
-        document.getElementById('btn-standard').classList.toggle('active', mode === 'standard');
-        document.getElementById('btn-junior').classList.toggle('active', mode === 'junior');
-
-        // Update Prices on the cards
-        document.getElementById('price-1').innerText = pricingData[mode][1];
-        document.getElementById('price-2').innerText = pricingData[mode][2];
-        document.getElementById('price-3').innerText = pricingData[mode][3];
-    }
-
-    // 2. Toggle Explainer Box
+    // Toggle Explainer Box
     function toggleExplainer() {
         const box = document.getElementById('explainer');
         box.classList.toggle('is-open');
@@ -814,7 +801,6 @@
         updateUI();
     })();
 
-    setGlobalMode('standard');
 </script>
 
     <div id="site-footer"></div>
