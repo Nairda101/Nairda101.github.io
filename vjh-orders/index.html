@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/assets/images/MillerMediaLogo.png">
+    <title>Adrian Miller Media - VJH Orders</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://www.paypalobjects.com/ncp/cart/cart.js" data-merchant-id="AFHPVNMVVWT6Q"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-card: #111625;
+            --accent-primary: #7b2cbf;
+            --accent-secondary: #4361ee;
+            --accent-glow: rgba(67, 97, 238, 0.5);
+            --text-main: #f0f0f0;
+            --text-muted: #b0b8c4;
+            --border-color: #2a3040;
+            --line-item: #0d1220;
+            --error: #ff6b6b;
+            --success: #3ddc97;
+            --warning: #ffcc66;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 0;
+        }
+
+        #site-header,
+        #site-footer {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            width: 100%;
+        }
+
+        .cart-toolbar {
+            width: 100%;
+            position: sticky;
+            top: var(--cart-sticky-top, 50px);
+            z-index: 900;
+            background: rgba(11, 16, 24, 0.9);
+            border-top: 1px solid rgba(67, 97, 238, 0.2);
+            border-bottom: 1px solid rgba(67, 97, 238, 0.2);
+            backdrop-filter: blur(6px);
+            padding: 0.7rem 0;
+        }
+
+        .cart-toolbar.is-hidden {
+            display: none;
+        }
+
+        .cart-toolbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cart-toolbar-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+
+        .cart-toolbar-label i {
+            color: var(--accent-secondary);
+        }
+
+        .header-section {
+            width: 100%;
+            text-align: center;
+            padding: 1rem 0 36rem 0;
+            background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 30%, #0b1018 60%, var(--bg-dark) 100%);
+        }
+
+        .hero {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 4vw, 3.4rem);
+            margin-bottom: 0.75rem;
+            background: -webkit-linear-gradient(0deg, #fff, #a0c4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin: 0 auto;
+        }
+
+        .page-wrap {
+            width: 100%;
+            max-width: 980px;
+            padding: 0 1.5rem 2.8rem;
+            margin-top: -33rem;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #contact-card { order: 1; }
+        #products-card { order: 2; }
+
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-complete-message {
+            display: none;
+            border: 1px solid rgba(61, 220, 151, 0.45);
+            background: rgba(61, 220, 151, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            color: #dcffec;
+            margin-top: 0.5rem;
+        }
+
+        .step-complete-message h3 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .step-complete-message p {
+            color: #d6ffe9;
+            font-size: 0.9rem;
+        }
+
+        #contact-card.is-complete form {
+            display: none;
+        }
+
+        #contact-card.is-complete .step-complete-message {
+            display: block;
+        }
+
+        .step-kicker {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: #a0c4ff;
+            margin-bottom: 0.35rem;
+        }
+
+        .step-panel {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: max-height 0.4s ease, opacity 0.3s ease, transform 0.3s ease;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-width: 0;
+        }
+
+        .step-panel.is-open {
+            max-height: 4000px;
+            opacity: 1;
+            pointer-events: auto;
+            transform: none;
+            margin-bottom: 1.5rem;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            border-width: 1px;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            box-shadow: 0 0 20px var(--accent-secondary);
+        }
+
+        .quick-steps {
+            margin-top: 0.2rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .quick-steps li {
+            margin-left: 1.1rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .pickup-note {
+            margin-top: 0.8rem;
+            border: 1px solid rgba(255, 204, 102, 0.45);
+            background: rgba(255, 204, 102, 0.08);
+            color: #ffe4a9;
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            font-size: 0.92rem;
+        }
+
+        .show-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .show-card {
+            background: var(--line-item);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .show-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .show-expand-btn {
+            border: 1px solid rgba(67, 97, 238, 0.45);
+            background: rgba(67, 97, 238, 0.14);
+            color: #dbe8ff;
+            border-radius: 999px;
+            padding: 0.45rem 0.7rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .show-expand-btn:hover {
+            background: rgba(67, 97, 238, 0.26);
+        }
+
+        .show-card.is-open .show-expand-btn i {
+            transform: rotate(180deg);
+        }
+
+        .show-expand-btn i {
+            transition: transform 0.2s ease;
+        }
+
+        .show-card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .show-card .year {
+            color: #a0c4ff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .show-selection {
+            border: 1px solid rgba(67, 97, 238, 0.25);
+            background: rgba(67, 97, 238, 0.08);
+            border-radius: 12px;
+            padding: 0.75rem;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+            transform: translateY(-4px);
+            transition: max-height 0.3s ease, opacity 0.25s ease, transform 0.25s ease, padding 0.25s ease;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-width: 0;
+        }
+
+        .show-card.is-open .show-selection {
+            max-height: 560px;
+            opacity: 1;
+            pointer-events: auto;
+            transform: none;
+            padding: 0.75rem;
+            border-width: 1px;
+        }
+
+        .option-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .toggle-btn {
+            border: 1px solid rgba(67, 97, 238, 0.45);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--text-main);
+            padding: 0.5rem 0.7rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .toggle-btn.is-active {
+            background: linear-gradient(90deg, rgba(67, 97, 238, 0.28), rgba(123, 44, 191, 0.28));
+            border-color: rgba(160, 196, 255, 0.75);
+            color: #e7f1ff;
+        }
+
+        .selected-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+        }
+
+        .selected-kind {
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #cbe2ff;
+            font-size: 0.82rem;
+        }
+
+        .selected-price {
+            font-size: 1rem;
+        }
+
+        .selected-note {
+            color: var(--text-muted);
+            font-size: 0.83rem;
+            min-height: 2.4em;
+        }
+
+        .cart-add-wrap {
+            position: relative;
+            margin-top: 0.65rem;
+            min-height: 42px;
+        }
+
+        .paypal-slot.is-hidden {
+            display: none;
+        }
+
+        .paypal-slot paypal-add-to-cart-button {
+            display: block;
+            width: 100%;
+            min-height: 42px;
+            cursor: pointer;
+        }
+
+        .paypal-slot.locked paypal-add-to-cart-button {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .cart-lock-capture {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            border: none;
+            background: transparent;
+            cursor: not-allowed;
+        }
+
+        .cart-lock-capture.is-hidden {
+            display: none;
+        }
+
+        .gate-banner {
+            margin-top: 0.9rem;
+            border: 1px solid rgba(255, 107, 107, 0.5);
+            background: rgba(255, 107, 107, 0.08);
+            color: #ffd6d6;
+            border-radius: 10px;
+            padding: 0.75rem 0.9rem;
+            font-size: 0.88rem;
+        }
+
+        .gate-banner.ready {
+            border-color: rgba(61, 220, 151, 0.45);
+            background: rgba(61, 220, 151, 0.08);
+            color: #d8ffe9;
+        }
+
+        .product-option {
+            background: rgba(67, 97, 238, 0.08);
+            border: 1px solid rgba(67, 97, 238, 0.25);
+            border-radius: 10px;
+            padding: 0.8rem;
+        }
+
+        .product-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-weight: 700;
+            margin-bottom: 0.45rem;
+        }
+
+        .product-label .kind {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #cbe2ff;
+            letter-spacing: 0.05em;
+        }
+
+        .product-label .price {
+            font-size: 1rem;
+            color: #ffffff;
+        }
+
+        .product-note {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .button-slot {
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title {
+            margin-bottom: 0.35rem;
+            font-size: 1.35rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .field label {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .field input,
+        .field textarea {
+            background: #0d1220;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.8rem 0.9rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            font-family: inherit;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .field textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .item-checklist {
+            margin-top: 0.15rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.95rem;
+        }
+
+        .item-checklist h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .item-checklist p {
+            color: var(--text-muted);
+            font-size: 0.86rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.55rem 0.9rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .check-item input[type="checkbox"] {
+            accent-color: var(--accent-secondary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .required {
+            color: var(--accent-secondary);
+        }
+
+        .btn-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            color: white;
+            padding: 0.9rem 2.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            border-radius: 999px;
+            box-shadow: 0 0 15px var(--accent-glow);
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn:disabled {
+            opacity: 0.72;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .note {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .status {
+            margin-top: 0.7rem;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .status.error {
+            display: block;
+            color: var(--error);
+        }
+
+        .status.success {
+            display: block;
+            color: var(--success);
+        }
+
+        .ids-help {
+            margin-top: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.9rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .ids-help code {
+            color: #d9e8ff;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 960px) {
+            .show-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-wrap {
+                margin-top: -29rem;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .header-section {
+                padding: 0.5rem 0 30rem 0;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checklist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-section {
+                padding: 0.5rem 0 24rem 0;
+            }
+
+            .page-wrap {
+                margin-top: -22rem;
+                padding: 0 1rem 2rem;
+            }
+
+            .form-card {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <div class="content-wrapper">
+        <div class="cart-toolbar is-hidden" id="paypal-toolbar" aria-hidden="true">
+            <div class="container cart-toolbar-inner">
+                <div class="cart-toolbar-label"><i class="fa-solid fa-cart-shopping"></i> View your PayPal cart anytime</div>
+                <paypal-cart-button data-id="pp-view-cart"></paypal-cart-button>
+            </div>
+        </div>
+
+        <div class="header-section">
+            <div class="container">
+                <div class="hero">
+                    <h1>VJH Orders</h1>
+                    <p>Complete Step 1 first so we get your details, then Step 2 opens for secure PayPal checkout. Flash drives are pickup only at Valley Junior High.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-wrap">
+            <div class="form-card step-panel" id="products-card" aria-hidden="true">
+                <div class="step-kicker">Step 2</div>
+                <h2 class="section-title">Choose Your Show Copies</h2>
+                <p class="section-subtitle">All digital copies are $11. All flash drive copies are $16.</p>
+
+                <ul class="quick-steps">
+                    <li>Step 2 unlocks after Step 1 submits successfully.</li>
+                    <li>Click a show card to expand it, then choose Digital or Flash Drive.</li>
+                    <li>Use Add To Cart, then open the cart at the top to check out.</li>
+                </ul>
+
+                <div class="pickup-note">
+                    Flash drive copies are pickup only at Valley Junior High. Include a preferred contact method in the form below.
+                </div>
+
+                <div id="gate-banner" class="gate-banner">
+                    Please submit the contact form first to unlock Add To Cart.
+                </div>
+
+                <div class="show-grid" style="margin-top: 1rem;">
+                    <article class="show-card">
+                        <div class="show-head">
+                            <div>
+                                <h3>Aladdin Jr.</h3>
+                                <div class="year">2024 Production</div>
+                            </div>
+                            <button type="button" class="show-expand-btn" aria-expanded="false">
+                                Open <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                        </div>
+
+                        <div class="show-selection" data-show="aladdin">
+                            <div class="option-toggle" role="group" aria-label="Aladdin format">
+                                <button type="button" class="toggle-btn is-active" data-format="digital">Digital</button>
+                                <button type="button" class="toggle-btn" data-format="flash">Flash Drive</button>
+                            </div>
+                            <div class="selected-label">
+                                <span class="selected-kind">Digital Copy</span>
+                                <span class="selected-price">$11</span>
+                            </div>
+                            <p class="selected-note">Delivered digitally after payment.</p>
+                            <div class="cart-add-wrap" data-show="aladdin">
+                                <button type="button" class="cart-lock-capture" data-show="aladdin" aria-label="Submit form first"></button>
+                                <div class="paypal-slot locked" data-show="aladdin" data-format="digital">
+                                    <paypal-add-to-cart-button data-id="FD7A9GHXARKRS"></paypal-add-to-cart-button>
+                                </div>
+                                <div class="paypal-slot locked is-hidden" data-show="aladdin" data-format="flash">
+                                    <paypal-add-to-cart-button data-id="K5FQ3HHR85NFC"></paypal-add-to-cart-button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="show-card">
+                        <div class="show-head">
+                            <div>
+                                <h3>Annie Jr.</h3>
+                                <div class="year">2025 Production</div>
+                            </div>
+                            <button type="button" class="show-expand-btn" aria-expanded="false">
+                                Open <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                        </div>
+
+                        <div class="show-selection" data-show="annie">
+                            <div class="option-toggle" role="group" aria-label="Annie format">
+                                <button type="button" class="toggle-btn is-active" data-format="digital">Digital</button>
+                                <button type="button" class="toggle-btn" data-format="flash">Flash Drive</button>
+                            </div>
+                            <div class="selected-label">
+                                <span class="selected-kind">Digital Copy</span>
+                                <span class="selected-price">$11</span>
+                            </div>
+                            <p class="selected-note">Delivered digitally after payment.</p>
+                            <div class="cart-add-wrap" data-show="annie">
+                                <button type="button" class="cart-lock-capture" data-show="annie" aria-label="Submit form first"></button>
+                                <div class="paypal-slot locked" data-show="annie" data-format="digital">
+                                    <paypal-add-to-cart-button data-id="4GQWVM4364NFG"></paypal-add-to-cart-button>
+                                </div>
+                                <div class="paypal-slot locked is-hidden" data-show="annie" data-format="flash">
+                                    <paypal-add-to-cart-button data-id="D2YN55MC7F99N"></paypal-add-to-cart-button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="show-card">
+                        <div class="show-head">
+                            <div>
+                                <h3>Mary Poppins Jr.</h3>
+                                <div class="year">2026 Production</div>
+                            </div>
+                            <button type="button" class="show-expand-btn" aria-expanded="false">
+                                Open <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                        </div>
+
+                        <div class="show-selection" data-show="mary">
+                            <div class="option-toggle" role="group" aria-label="Mary Poppins format">
+                                <button type="button" class="toggle-btn is-active" data-format="digital">Digital</button>
+                                <button type="button" class="toggle-btn" data-format="flash">Flash Drive</button>
+                            </div>
+                            <div class="selected-label">
+                                <span class="selected-kind">Digital Copy</span>
+                                <span class="selected-price">$11</span>
+                            </div>
+                            <p class="selected-note">Delivered digitally after payment.</p>
+                            <div class="cart-add-wrap" data-show="mary">
+                                <button type="button" class="cart-lock-capture" data-show="mary" aria-label="Submit form first"></button>
+                                <div class="paypal-slot locked" data-show="mary" data-format="digital">
+                                    <paypal-add-to-cart-button data-id="36ZB35KWFHKHN"></paypal-add-to-cart-button>
+                                </div>
+                                <div class="paypal-slot locked is-hidden" data-show="mary" data-format="flash">
+                                    <paypal-add-to-cart-button data-id="L49A4HR8EZM3S"></paypal-add-to-cart-button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="ids-help">
+                    Product format is selected with the toggle in each show card. The visible PayPal button in each card is the active item.
+                </div>
+            </div>
+
+            <div class="form-card" id="contact-card">
+                <div class="step-kicker">Step 1</div>
+                <h2 class="section-title">Quick Contact Form</h2>
+                <p class="section-subtitle">Step 1 is this form. It sends your contact details and planned items first, then unlocks PayPal cart actions below.</p>
+
+                <form id="store-contact-form">
+                    <input type="hidden" name="access_key" value="856b9a3e-1011-4d01-8bab-f02714b89554">
+                    <input type="hidden" name="subject" value="New Store Order Contact">
+                    <input type="hidden" name="from_name" value="Adrian Miller Media Website">
+                    <input type="hidden" name="plannedItemsSummary" id="planned-items-summary" value="None selected">
+                    <input type="hidden" name="plannedItemCount" id="planned-item-count" value="0">
+
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="customer-name">Full Name <span class="required">*</span></label>
+                            <input id="customer-name" name="name" type="text" required placeholder="Your name">
+                        </div>
+
+                        <div class="field">
+                            <label for="customer-email">Email <span class="required">*</span></label>
+                            <input id="customer-email" name="email" type="email" required placeholder="you@email.com">
+                        </div>
+
+                        <div class="field">
+                            <label for="customer-phone">Phone</label>
+                            <input id="customer-phone" name="phone" type="tel" placeholder="(555) 555-5555">
+                        </div>
+
+                        <div class="field full-width">
+                            <label for="order-notes">Notes</label>
+                            <textarea id="order-notes" name="message" placeholder="Special instructions, requests, or additional information needed for your order."></textarea>
+                        </div>
+
+                        <div class="field full-width">
+                            <div class="item-checklist">
+                                <h3>Planned Purchases</h3>
+                                <p>Check what you expect to buy so your contact email matches your PayPal receipt.</p>
+                                <div class="checklist-grid">
+                                    <label class="check-item"><input type="checkbox" class="planned-item" value="Aladdin Jr. - Digital ($11)"> Aladdin Jr. - Digital ($11)</label>
+                                    <label class="check-item"><input type="checkbox" class="planned-item" value="Aladdin Jr. - Flash Drive ($16)"> Aladdin Jr. - Flash Drive ($16)</label>
+                                    <label class="check-item"><input type="checkbox" class="planned-item" value="Annie Jr. - Digital ($11)"> Annie Jr. - Digital ($11)</label>
+                                    <label class="check-item"><input type="checkbox" class="planned-item" value="Annie Jr. - Flash Drive ($16)"> Annie Jr. - Flash Drive ($16)</label>
+                                    <label class="check-item"><input type="checkbox" class="planned-item" value="Mary Poppins Jr. - Digital ($11)"> Mary Poppins Jr. - Digital ($11)</label>
+                                    <label class="check-item"><input type="checkbox" class="planned-item" value="Mary Poppins Jr. - Flash Drive ($16)"> Mary Poppins Jr. - Flash Drive ($16)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-row">
+                        <button type="submit" class="btn" id="submit-btn"><i class="fa-regular fa-paper-plane"></i> Send Contact Info</button>
+                        <span class="note">After submitting this form, you will be directed to complete payment in the PayPal cart above.</span>
+                    </div>
+                    <p id="store-status" class="status">Something went wrong. Please try again.</p>
+                </form>
+
+                <div class="step-complete-message" id="step-complete-message" role="status" aria-live="polite">
+                    <h3><i class="fa-regular fa-circle-check"></i> Step 1 Complete</h3>
+                    <p>Your contact details were submitted successfully. Continue to Step 2 and complete checkout in the PayPal cart above.</p>
+                    <p style="margin-top: 0.45rem;">For any changes to your order, or issues with checkout, please email adrianmillermedia@gmail.com.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="site-footer"></div>
+
+<script>
+    cartPaypal.Cart({ id: 'pp-view-cart' });
+
+    const productMap = {
+        aladdin: {
+            digital: { id: 'FD7A9GHXARKRS', kind: 'Digital Copy', price: '$11', note: 'Delivered digitally after payment.' },
+            flash: { id: 'K5FQ3HHR85NFC', kind: 'Flash Drive Copy', price: '$16', note: 'Pickup at Valley Junior High.' }
+        },
+        annie: {
+            digital: { id: '4GQWVM4364NFG', kind: 'Digital Copy', price: '$11', note: 'Delivered digitally after payment.' },
+            flash: { id: 'D2YN55MC7F99N', kind: 'Flash Drive Copy', price: '$16', note: 'Pickup at Valley Junior High.' }
+        },
+        mary: {
+            digital: { id: '36ZB35KWFHKHN', kind: 'Digital Copy', price: '$11', note: 'Delivered digitally after payment.' },
+            flash: { id: 'L49A4HR8EZM3S', kind: 'Flash Drive Copy', price: '$16', note: 'Pickup at Valley Junior High.' }
+        }
+    };
+
+    Object.values(productMap).forEach((showOptions) => {
+        Object.values(showOptions).forEach((option) => {
+            cartPaypal.AddToCart({ id: option.id });
+        });
+    });
+
+    function setShowFormat(showCard, showKey, formatKey) {
+        const details = productMap[showKey][formatKey];
+        const kindNode = showCard.querySelector('.selected-kind');
+        const priceNode = showCard.querySelector('.selected-price');
+        const noteNode = showCard.querySelector('.selected-note');
+        const toggleButtons = Array.from(showCard.querySelectorAll('.toggle-btn'));
+        const slots = Array.from(showCard.querySelectorAll('.paypal-slot'));
+
+        kindNode.textContent = details.kind;
+        priceNode.textContent = details.price;
+        noteNode.textContent = details.note;
+
+        toggleButtons.forEach((btn) => {
+            const active = btn.dataset.format === formatKey;
+            btn.classList.toggle('is-active', active);
+            btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+
+        slots.forEach((slot) => {
+            slot.classList.toggle('is-hidden', slot.dataset.format !== formatKey);
+        });
+
+        showCard.dataset.activeFormat = formatKey;
+    }
+
+    document.querySelectorAll('.show-selection').forEach((showCard) => {
+        const showKey = showCard.dataset.show;
+        setShowFormat(showCard, showKey, 'digital');
+
+        showCard.querySelectorAll('.toggle-btn').forEach((btn) => {
+            btn.addEventListener('click', function () {
+                setShowFormat(showCard, showKey, btn.dataset.format);
+            });
+        });
+    });
+
+    window.storePaypal = { productMap };
+
+    (function syncStickyCartWithHeader() {
+        const root = document.documentElement;
+        const headerSlot = document.getElementById('site-header');
+        let classObserver;
+
+        function setStickyOffset() {
+            const header = document.querySelector('#site-header .site-header');
+            if (!header) {
+                root.style.setProperty('--cart-sticky-top', '0px');
+                return;
+            }
+
+            const hidden = header.classList.contains('header-hidden');
+            root.style.setProperty('--cart-sticky-top', hidden ? '0px' : `${header.offsetHeight}px`);
+        }
+
+        function observeHeaderClass() {
+            const header = document.querySelector('#site-header .site-header');
+            if (!header) {
+                return;
+            }
+
+            if (classObserver) {
+                classObserver.disconnect();
+            }
+
+            classObserver = new MutationObserver(setStickyOffset);
+            classObserver.observe(header, { attributes: true, attributeFilter: ['class'] });
+            setStickyOffset();
+        }
+
+        const slotObserver = new MutationObserver(function () {
+            observeHeaderClass();
+            setStickyOffset();
+        });
+
+        slotObserver.observe(headerSlot, { childList: true, subtree: true });
+        window.addEventListener('resize', setStickyOffset);
+        window.addEventListener('load', function () {
+            observeHeaderClass();
+            setStickyOffset();
+        });
+        setStickyOffset();
+    })();
+</script>
+<script>
+    (function () {
+        const form = document.getElementById('store-contact-form');
+        const productsCard = document.getElementById('products-card');
+        const contactCard = document.getElementById('contact-card');
+        const paypalToolbar = document.getElementById('paypal-toolbar');
+        const submitBtn = document.getElementById('submit-btn');
+        const statusNode = document.getElementById('store-status');
+        const plannedItemsSummary = document.getElementById('planned-items-summary');
+        const plannedItemCount = document.getElementById('planned-item-count');
+        const plannedItemCheckboxes = Array.from(document.querySelectorAll('.planned-item'));
+        const gateBanner = document.getElementById('gate-banner');
+        const lockCaptures = Array.from(document.querySelectorAll('.cart-lock-capture'));
+        const paypalSlots = Array.from(document.querySelectorAll('.paypal-slot'));
+        const paypalButtons = Array.from(document.querySelectorAll('.paypal-slot paypal-add-to-cart-button'));
+        const showCards = Array.from(document.querySelectorAll('.show-card'));
+        const STORE_GATE_KEY = 'amm_store_form_gate_open';
+        const STORE_STEP_ONE_DONE_KEY = 'amm_store_step_one_done';
+        let canAddToCart = false;
+
+        function getPlannedItems() {
+            return plannedItemCheckboxes.filter((box) => box.checked).map((box) => box.value);
+        }
+
+        function syncPlannedItemFields() {
+            const selected = getPlannedItems();
+            plannedItemCount.value = String(selected.length);
+            plannedItemsSummary.value = selected.length ? selected.join('; ') : 'None selected';
+
+            if (selected.length > 0 && statusNode.classList.contains('error') && /planned purchase/i.test(statusNode.textContent)) {
+                statusNode.className = 'status';
+                statusNode.textContent = '';
+            }
+        }
+
+        plannedItemCheckboxes.forEach((box) => {
+            box.addEventListener('change', syncPlannedItemFields);
+        });
+
+        syncPlannedItemFields();
+
+        showCards.forEach((card) => {
+            const head = card.querySelector('.show-head');
+            const toggle = card.querySelector('.show-expand-btn');
+
+            function flipCard() {
+                const open = card.classList.toggle('is-open');
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                toggle.innerHTML = `${open ? 'Close' : 'Open'} <i class="fa-solid fa-chevron-down"></i>`;
+            }
+
+            toggle.addEventListener('click', function (event) {
+                event.stopPropagation();
+                flipCard();
+            });
+
+            head.addEventListener('click', function (event) {
+                if (event.target.closest('.show-expand-btn')) {
+                    return;
+                }
+                flipCard();
+            });
+        });
+
+        window.addEventListener('load', function () {
+            if (sessionStorage.getItem(STORE_GATE_KEY) === '1') {
+                setCartGate(true);
+            }
+
+            if (sessionStorage.getItem(STORE_STEP_ONE_DONE_KEY) === '1') {
+                setStepOneComplete(true);
+            }
+        });
+
+        function setStepOneComplete(completed) {
+            contactCard.classList.toggle('is-complete', completed);
+        }
+
+        function setCartGate(enabled) {
+            canAddToCart = enabled;
+            lockCaptures.forEach((capture) => {
+                capture.classList.toggle('is-hidden', enabled);
+            });
+
+            paypalSlots.forEach((slot) => {
+                slot.classList.toggle('locked', !enabled);
+            });
+
+            productsCard.classList.toggle('is-open', enabled);
+            productsCard.setAttribute('aria-hidden', enabled ? 'false' : 'true');
+            paypalToolbar.classList.toggle('is-hidden', !enabled);
+            paypalToolbar.setAttribute('aria-hidden', enabled ? 'false' : 'true');
+
+            if (enabled) {
+                gateBanner.classList.add('ready');
+                gateBanner.textContent = 'Contact form sent. You can now add items and complete PayPal checkout.';
+            } else {
+                gateBanner.classList.remove('ready');
+                gateBanner.textContent = 'Please submit the contact form first to unlock Add To Cart.';
+                showCards.forEach((card) => {
+                    card.classList.remove('is-open');
+                    const toggle = card.querySelector('.show-expand-btn');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.innerHTML = 'Open <i class="fa-solid fa-chevron-down"></i>';
+                });
+            }
+        }
+
+        setCartGate(false);
+
+        lockCaptures.forEach((capture) => {
+            capture.addEventListener('click', function () {
+                statusNode.className = 'status error';
+                statusNode.textContent = 'Please submit the contact form first, then add items to your PayPal cart.';
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        paypalButtons.forEach((paypalButton) => {
+            paypalButton.addEventListener('click', function () {
+                if (!canAddToCart) {
+                    return;
+                }
+
+                const slot = paypalButton.closest('.paypal-slot');
+                if (!slot) {
+                    return;
+                }
+
+                const showKey = slot.dataset.show;
+                const formatKey = slot.dataset.format;
+                const selected = window.storePaypal.productMap[showKey][formatKey];
+                statusNode.className = 'status success';
+                statusNode.textContent = `${selected.kind} for ${showKey === 'mary' ? 'Mary Poppins Jr.' : showKey === 'annie' ? 'Annie Jr.' : 'Aladdin Jr.'} sent to PayPal cart. Open the cart bar at top to review checkout.`;
+            });
+        });
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            statusNode.className = 'status';
+            statusNode.textContent = '';
+
+            const originalLabel = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Sending...';
+
+            syncPlannedItemFields();
+            if (Number.parseInt(plannedItemCount.value, 10) < 1) {
+                statusNode.className = 'status error';
+                statusNode.textContent = 'Please select at least one planned purchase before submitting Step 1.';
+                plannedItemCheckboxes[0]?.focus();
+                return;
+            }
+
+            const payload = Object.fromEntries(new FormData(form));
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(async (response) => {
+                if (response.ok) {
+                    statusNode.className = 'status success';
+                    statusNode.textContent = 'Contact info sent successfully. You can now add items and complete payment in the PayPal cart.';
+                    submitBtn.innerHTML = '<i class="fa-regular fa-circle-check"></i> Sent';
+                    sessionStorage.setItem(STORE_GATE_KEY, '1');
+                    sessionStorage.setItem(STORE_STEP_ONE_DONE_KEY, '1');
+                    setCartGate(true);
+                    setStepOneComplete(true);
+                    setTimeout(function () {
+                        productsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 250);
+                    setTimeout(function () {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalLabel;
+                    }, 1600);
+                    return;
+                }
+
+                throw new Error('Failed to submit form.');
+            })
+            .catch(function () {
+                statusNode.className = 'status error';
+                statusNode.textContent = 'Something went wrong. Please try again.';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalLabel;
+            });
+        });
+    })();
+</script>
+<script src="/assets/site.js"></script>
+</body>
+</html>

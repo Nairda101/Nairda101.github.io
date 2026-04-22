@@ -63,5 +63,10 @@
     "title": "Project Request",
     "url": "/request/",
     "content": "Submit a project request. Get a custom quote for your audio or video production project. Contact form for theatre, concert, family history, or custom media projects."
+  },
+  {
+    "title": "VJH Orders",
+    "url": "/vjh-orders/",
+    "content": "VJH Orders page for musical show copies. Step 1 contact form and planned items, then Step 2 PayPal checkout for digital downloads ($11) and flash drive pickup copies ($16)."
   }
 ]
