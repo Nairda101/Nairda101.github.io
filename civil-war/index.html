@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/assets/images/MillerMediaLogo.png">
+    <title>Civil War Presentations - Adrian Miller Media</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #0d0c0a;
+            --bg-card: #181510;
+            --accent-primary: #8b5e34;
+            --accent-secondary: #c49a63;
+            --accent-tertiary: #5f6a54;
+            --text-main: #f3ede3;
+            --text-muted: #c0b5a6;
+            --border-color: #342b20;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-image:
+                linear-gradient(180deg, rgba(12, 9, 6, 0.36), rgba(12, 9, 6, 0.44)),
+                url('/assets/civil-war-assets/Old%20Paper.png');
+            background-size: auto, cover;
+            background-position: center, center;
+            background-attachment: scroll, fixed;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at top, rgba(255, 231, 185, 0.12), transparent 42%);
+            opacity: 0.65;
+            z-index: 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-section {
+            text-align: center;
+            padding: 2rem 0 15rem 0;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(18, 12, 7, 0.7) 0%, rgba(18, 12, 7, 0.48) 42%, rgba(18, 12, 7, 0.16) 76%, rgba(18, 12, 7, 0) 100%),
+                radial-gradient(circle at 50% 8%, rgba(236, 198, 138, 0.17) 0%, rgba(236, 198, 138, 0.05) 34%, rgba(236, 198, 138, 0) 68%);
+            pointer-events: none;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 2;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 1.1rem 1.1rem 1rem;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.5rem 0.85rem;
+            border: 1px solid rgba(196, 154, 99, 0.35);
+            border-radius: 999px;
+            background: rgba(24, 21, 16, 0.5);
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            color: #fff4df;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+        }
+
+        .subtitle {
+            color: #eadac2;
+            font-size: 1.08rem;
+            max-width: 720px;
+            margin: 0 auto 1.25rem;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-section + .container {
+            margin-top: -11.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-header {
+            margin-top: 4rem;
+            margin-bottom: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent-secondary), transparent);
+        }
+
+        .section-icon {
+            color: var(--accent-secondary);
+        }
+
+        .section-intro {
+            color: var(--text-muted);
+            margin: 0 0 1.75rem;
+            max-width: 760px;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+            gap: 2rem;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 2rem;
+        }
+
+        .video-card,
+        .resource-card {
+            background:
+                linear-gradient(180deg, rgba(24, 21, 16, 0.96), rgba(18, 16, 13, 0.93)),
+                linear-gradient(135deg, rgba(226, 197, 150, 0.06), transparent 34%, rgba(108, 70, 42, 0.09) 100%),
+                radial-gradient(circle at top left, rgba(248, 231, 198, 0.06), transparent 32%);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .video-card {
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            min-width: 0;
+        }
+
+        .video-card:hover,
+        .resource-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 34px rgba(0, 0, 0, 0.38);
+            border-color: var(--accent-secondary);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background: #000;
+            border-bottom: 1px solid var(--border-color);
+            width: 100%;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .video-card.coming-soon,
+        .resource-card.coming-soon {
+            position: relative;
+        }
+
+        .coming-soon-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(90deg, var(--accent-tertiary), var(--accent-primary));
+            color: white;
+            padding: 0.5rem 0.95rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        .video-placeholder,
+        .resource-placeholder {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(38, 30, 22, 0.75), rgba(18, 16, 13, 0.96)),
+                repeating-linear-gradient(45deg, rgba(196, 154, 99, 0.08) 0, rgba(196, 154, 99, 0.08) 12px, transparent 12px, transparent 24px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.9rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .video-placeholder-icon,
+        .resource-placeholder-icon {
+            font-size: 2.8rem;
+            color: var(--accent-secondary);
+            opacity: 0.75;
+        }
+
+        .video-placeholder-text,
+        .resource-placeholder-text {
+            color: var(--text-main);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .card-content,
+        .resource-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .date-tag,
+        .resource-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: var(--accent-secondary);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.06em;
+        }
+
+        .video-title,
+        .resource-title {
+            font-size: 1.3rem;
+            margin: 0 0 0.55rem;
+            color: white;
+        }
+
+        .video-desc,
+        .resource-desc {
+            font-size: 0.96rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .resource-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .resource-top {
+            min-height: 190px;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+            background:
+                linear-gradient(180deg, rgba(196, 154, 99, 0.12), rgba(24, 21, 16, 0.82)),
+                radial-gradient(circle at top right, rgba(95, 106, 84, 0.35), transparent 36%),
+                linear-gradient(135deg, rgba(244, 224, 186, 0.08), transparent 46%, rgba(111, 72, 45, 0.1));
+        }
+
+        .resource-top-inner {
+            height: 100%;
+            padding: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .resource-button,
+        .resource-button-muted {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+            padding: 0.82rem 1.1rem;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .resource-button {
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            color: #1b140d;
+            box-shadow: 0 0 18px rgba(196, 154, 99, 0.22);
+        }
+
+        .resource-button-muted {
+            color: var(--text-main);
+            border: 1px solid rgba(196, 154, 99, 0.22);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .resource-note {
+            margin-top: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .materials-block {
+            margin-top: 1.2rem;
+        }
+
+        .materials-disclosure {
+            margin-top: 1.4rem;
+        }
+
+        .materials-summary {
+            list-style: none;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .materials-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .materials-summary::before {
+            content: '+';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-right: 0.65rem;
+            border-radius: 999px;
+            border: 1px solid rgba(196, 154, 99, 0.45);
+            color: var(--accent-secondary);
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        details[open] .materials-summary::before {
+            content: '-';
+        }
+
+        .materials-summary-hint {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: none;
+            letter-spacing: 0;
+            margin-left: 0.45rem;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 430px;
+            border: 1px solid rgba(196, 154, 99, 0.28);
+            border-radius: 10px;
+            background: rgba(15, 11, 8, 0.52);
+            overflow: auto;
+            padding: 0.7rem;
+        }
+
+        .pdf-loading,
+        .pdf-fallback {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .pdf-pages {
+            display: grid;
+            gap: 0.85rem;
+        }
+
+        .pdf-page {
+            width: 100%;
+            border: 1px solid rgba(196, 154, 99, 0.18);
+            background: #ffffff;
+            border-radius: 6px;
+            display: block;
+        }
+
+        .resource-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .resource-card.coming-soon .resource-content {
+            position: relative;
+        }
+
+        .resource-card.coming-soon .resource-content .coming-soon-tag {
+            top: 0;
+            right: 0;
+        }
+
+        footer {
+            margin-top: 5rem;
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: #5a5148;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 1rem 0 11.5rem 0;
+            }
+
+            .header-section + .container {
+                margin-top: -8.7rem;
+            }
+
+            .container {
+                padding: 0 1.15rem;
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .materials-summary {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-section {
+                padding: 0.8rem 0 9rem 0;
+            }
+
+            .header-section + .container {
+                margin-top: -6.5rem;
+            }
+
+            .resource-actions {
+                flex-direction: column;
+            }
+
+            .resource-button,
+            .resource-button-muted {
+                width: 100%;
+            }
+
+            .resource-actions .resource-button,
+            .resource-actions .resource-button-muted {
+                width: 100%;
+            }
+
+            .pdf-viewer {
+                height: 340px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <div class="header-section">
+        <div class="container hero-copy">
+            <div class="eyebrow"><i class="fa-solid fa-book-open-reader" aria-hidden="true"></i> Midvale Senior Center Civil War Series</div>
+            <h1>Civil War Presentations</h1>
+            <p class="subtitle">Materials and resources for the Civil War presentations presented by Bob James for the Midvale Senior Center, including current recordings and slide deck access.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <details class="materials-disclosure" open>
+            <summary class="section-header materials-summary"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 2 Materials <span class="materials-summary-hint">Click to expand</span></summary>
+            <div class="resource-grid materials-block">
+
+            <article class="resource-card coming-soon">
+                <div class="resource-top">
+                    <div class="resource-placeholder">
+                        <i class="fa-solid fa-folder-open resource-placeholder-icon" aria-hidden="true"></i>
+                        <p class="resource-placeholder-text">Presentation 2 slide deck card reserved.</p>
+                    </div>
+                </div>
+                <div class="resource-content">
+                    <div class="coming-soon-tag">Coming Soon</div>
+                    <span class="resource-label">Presentation 2</span>
+                    <h3 class="resource-title">Slide Deck</h3>
+                    <p class="resource-desc">This card is reserved for the Civilian Impact slide deck viewer and download button.</p>
+                </div>
+            </article>
+
+            <article class="resource-card coming-soon">
+                <div class="resource-top">
+                    <div class="resource-placeholder">
+                        <i class="fa-solid fa-folder-open resource-placeholder-icon" aria-hidden="true"></i>
+                        <p class="resource-placeholder-text">Presentation 2 handout card reserved.</p>
+                    </div>
+                </div>
+                <div class="resource-content">
+                    <div class="coming-soon-tag">Coming Soon</div>
+                    <span class="resource-label">Presentation 2</span>
+                    <h3 class="resource-title">Handout</h3>
+                    <p class="resource-desc">This card is reserved for the Civilian Impact handout viewer and download button.</p>
+                </div>
+            </article>
+            </div>
+        </details>
+
+        <h2 class="section-header"><i class="fa-solid fa-video section-icon"></i> Previous Presentation</h2>
+        <p class="section-intro">Presentation 1 recording for review and follow-up reference.</p>
+
+        <div class="featured-grid">
+            <article class="video-card">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/Cfva6uNLgrE" title="Civil War Presentation 1: Battles, Weapons, Projectiles and the CSS Hunley" allowfullscreen></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="date-tag">Previous Presentation</span>
+                    <h3 class="video-title">Civil War Presentation 1: Battles, Weapons, Projectiles and the CSS Hunley</h3>
+                    <p class="video-desc">A recorded presentation by Bob James for the Midvale Senior Center covering major battle elements, period weaponry, historic projectiles, and the CSS Hunley.</p>
+                </div>
+            </article>
+        </div>
+
+        <details class="materials-disclosure">
+            <summary class="section-header materials-summary"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 1 Materials <span class="materials-summary-hint">Click to expand</span></summary>
+            <div class="resource-grid materials-block">
+            <article class="resource-card">
+                <div class="resource-top">
+                    <div class="resource-top-inner">
+                        <span class="resource-label">Presentation 1</span>
+                        <h3 class="resource-title">Slide Deck</h3>
+                    </div>
+                </div>
+                <div class="resource-content">
+                    <div class="pdf-viewer" data-pdf-url="/assets/civil-war-assets/Civil%20War%20Presentation%201%20Slide%20Deck.pdf" data-pdf-label="Civil War Presentation 1 Slide Deck PDF">
+                        <p class="pdf-loading">Loading preview...</p>
+                    </div>
+                    <div class="resource-actions">
+                        <a class="resource-button" href="/assets/civil-war-assets/Civil%20War%20Presentation%201%20Slide%20Deck.pdf" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i> Open File</a>
+                        <a class="resource-button-muted" href="/assets/civil-war-assets/Civil%20War%20Presentation%201%20Slide%20Deck.pdf" download="Civil War Presentation 1 Slide Deck.pdf"><i class="fa-solid fa-download" aria-hidden="true"></i> Download PDF</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="resource-card">
+                <div class="resource-top">
+                    <div class="resource-top-inner">
+                        <span class="resource-label">Presentation 1</span>
+                        <h3 class="resource-title">Handout</h3>
+                    </div>
+                </div>
+                <div class="resource-content">
+                    <div class="pdf-viewer" data-pdf-url="/assets/civil-war-assets/Presentation%201%20Full%20Handout.pdf" data-pdf-label="Civil War Presentation 1 Full Handout PDF">
+                        <p class="pdf-loading">Loading preview...</p>
+                    </div>
+                    <div class="resource-actions">
+                        <a class="resource-button" href="/assets/civil-war-assets/Presentation%201%20Full%20Handout.pdf" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i> Open File</a>
+                        <a class="resource-button-muted" href="/assets/civil-war-assets/Presentation%201%20Full%20Handout.pdf" download="Presentation 1 Full Handout.pdf"><i class="fa-solid fa-download" aria-hidden="true"></i> Download PDF</a>
+                    </div>
+                </div>
+            </article>
+
+            </div>
+        </details>
+    </div>
+
+    <div id="site-footer"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+        (function () {
+            if (typeof window.pdfjsLib === 'undefined') {
+                return;
+            }
+
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+            const viewers = Array.from(document.querySelectorAll('.pdf-viewer[data-pdf-url]'));
+
+            function renderPdfIntoViewer(viewer) {
+                if (viewer.dataset.rendered === 'true') {
+                    return;
+                }
+
+                const pdfUrl = viewer.getAttribute('data-pdf-url');
+                const pdfLabel = viewer.getAttribute('data-pdf-label') || 'PDF file';
+                if (!pdfUrl) {
+                    return;
+                }
+
+                const loadingNode = viewer.querySelector('.pdf-loading');
+                if (loadingNode) {
+                    loadingNode.textContent = 'Loading preview...';
+                }
+
+                pdfjsLib.getDocument(pdfUrl).promise.then(function (pdfDoc) {
+                    const pagesWrap = document.createElement('div');
+                    pagesWrap.className = 'pdf-pages';
+
+                    const viewerWidth = Math.max(viewer.clientWidth - 24, 320);
+                    const renderJobs = [];
+
+                    for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum += 1) {
+                        renderJobs.push(
+                            pdfDoc.getPage(pageNum).then(function (page) {
+                                const baseViewport = page.getViewport({ scale: 1 });
+                                const scale = viewerWidth / baseViewport.width;
+                                const viewport = page.getViewport({ scale: scale });
+                                const canvas = document.createElement('canvas');
+                                canvas.className = 'pdf-page';
+                                canvas.width = Math.floor(viewport.width);
+                                canvas.height = Math.floor(viewport.height);
+                                canvas.setAttribute('aria-label', pdfLabel + ' page ' + pageNum);
+                                const ctx = canvas.getContext('2d');
+                                return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
+                                    pagesWrap.appendChild(canvas);
+                                });
+                            })
+                        );
+                    }
+
+                    return Promise.all(renderJobs).then(function () {
+                        viewer.innerHTML = '';
+                        viewer.appendChild(pagesWrap);
+                        viewer.dataset.rendered = 'true';
+                    });
+                }).catch(function () {
+                    viewer.innerHTML = '<p class="pdf-fallback">Preview could not be loaded here. Use Open File or Download PDF.</p>';
+                });
+            }
+
+            const disclosures = Array.from(document.querySelectorAll('.materials-disclosure'));
+
+            disclosures.forEach(function (disclosure) {
+                disclosure.addEventListener('toggle', function () {
+                    if (!disclosure.open) {
+                        return;
+                    }
+
+                    disclosure.querySelectorAll('.pdf-viewer[data-pdf-url]').forEach(renderPdfIntoViewer);
+                });
+            });
+
+            disclosures.forEach(function (disclosure) {
+                if (disclosure.open) {
+                    disclosure.querySelectorAll('.pdf-viewer[data-pdf-url]').forEach(renderPdfIntoViewer);
+                }
+            });
+        })();
+    </script>
+    <script src="/assets/site.js"></script>
+</body>
+</html>
