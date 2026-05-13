@@ -212,56 +212,6 @@
             border: 0;
         }
 
-        .video-card.coming-soon,
-        .resource-card.coming-soon {
-            position: relative;
-        }
-
-        .coming-soon-tag {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: linear-gradient(90deg, var(--accent-tertiary), var(--accent-primary));
-            color: white;
-            padding: 0.5rem 0.95rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            z-index: 10;
-        }
-
-        .video-placeholder,
-        .resource-placeholder {
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(38, 30, 22, 0.75), rgba(18, 16, 13, 0.96)),
-                repeating-linear-gradient(45deg, rgba(196, 154, 99, 0.08) 0, rgba(196, 154, 99, 0.08) 12px, transparent 12px, transparent 24px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 0.9rem;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .video-placeholder-icon,
-        .resource-placeholder-icon {
-            font-size: 2.8rem;
-            color: var(--accent-secondary);
-            opacity: 0.75;
-        }
-
-        .video-placeholder-text,
-        .resource-placeholder-text {
-            color: var(--text-main);
-            font-size: 1rem;
-            margin: 0;
-        }
-
         .card-content,
         .resource-content {
             padding: 1.5rem;
@@ -337,6 +287,8 @@
             background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
             color: #1b140d;
             box-shadow: 0 0 18px rgba(196, 154, 99, 0.22);
+            border: 0;
+            cursor: pointer;
         }
 
         .resource-button-muted {
@@ -353,50 +305,6 @@
 
         .materials-block {
             margin-top: 1.2rem;
-        }
-
-        .materials-disclosure {
-            margin-top: 1.4rem;
-        }
-
-        .materials-summary {
-            list-style: none;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .materials-summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .materials-summary::before {
-            content: '+';
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 1.2rem;
-            height: 1.2rem;
-            margin-right: 0.65rem;
-            border-radius: 999px;
-            border: 1px solid rgba(196, 154, 99, 0.45);
-            color: var(--accent-secondary);
-            font-size: 0.95rem;
-            font-weight: 700;
-            line-height: 1;
-            flex-shrink: 0;
-        }
-
-        details[open] .materials-summary::before {
-            content: '-';
-        }
-
-        .materials-summary-hint {
-            color: var(--text-muted);
-            font-size: 0.82rem;
-            font-weight: 600;
-            text-transform: none;
-            letter-spacing: 0;
-            margin-left: 0.45rem;
         }
 
         .pdf-viewer {
@@ -436,13 +344,60 @@
             margin-top: 1rem;
         }
 
-        .resource-card.coming-soon .resource-content {
-            position: relative;
+        .survey-form {
+            display: grid;
+            gap: 0.95rem;
         }
 
-        .resource-card.coming-soon .resource-content .coming-soon-tag {
-            top: 0;
-            right: 0;
+        .survey-field label {
+            display: block;
+            color: var(--text-main);
+            font-size: 0.86rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.45rem;
+            text-transform: uppercase;
+        }
+
+        .survey-field textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            border-radius: 10px;
+            border: 1px solid rgba(196, 154, 99, 0.26);
+            background: rgba(11, 9, 7, 0.62);
+            color: var(--text-main);
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            padding: 0.75rem 0.85rem;
+        }
+
+        .survey-field textarea:focus {
+            outline: none;
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 0 3px rgba(196, 154, 99, 0.16);
+        }
+
+        .survey-help {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .survey-status {
+            margin: 0;
+            font-size: 0.9rem;
+            min-height: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .survey-status.success {
+            color: #b8e1b2;
+        }
+
+        .survey-status.error {
+            color: #f1a7a1;
         }
 
         footer {
@@ -469,10 +424,6 @@
 
             .resource-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .materials-summary {
-                font-size: 1.25rem;
             }
         }
 
@@ -518,41 +469,62 @@
     </div>
 
     <div class="container">
-        <details class="materials-disclosure" open>
-            <summary class="section-header materials-summary"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 2 Materials <span class="materials-summary-hint">Click to expand</span></summary>
-            <div class="resource-grid materials-block">
-
-            <article class="resource-card coming-soon">
+        <h2 class="section-header"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 2 Materials</h2>
+        <div class="resource-grid materials-block">
+            <article class="resource-card">
                 <div class="resource-top">
-                    <div class="resource-placeholder">
-                        <i class="fa-solid fa-folder-open resource-placeholder-icon" aria-hidden="true"></i>
-                        <p class="resource-placeholder-text">Presentation 2 slide deck card reserved.</p>
+                    <div class="resource-top-inner">
+                        <span class="resource-label">Presentation 2</span>
+                        <h3 class="resource-title">Slide Deck</h3>
                     </div>
                 </div>
                 <div class="resource-content">
-                    <div class="coming-soon-tag">Coming Soon</div>
-                    <span class="resource-label">Presentation 2</span>
-                    <h3 class="resource-title">Slide Deck</h3>
-                    <p class="resource-desc">This card is reserved for the Civilian Impact slide deck viewer and download button.</p>
+                    <div class="pdf-viewer" data-pdf-url="/assets/civil-war-assets/Civil%20War%20Presentation%202%20Slide%20Deck.pdf" data-pdf-label="Civil War Presentation 2 Slide Deck PDF">
+                        <p class="pdf-loading">Loading preview...</p>
+                    </div>
+                    <div class="resource-actions">
+                        <a class="resource-button" href="/assets/civil-war-assets/Civil%20War%20Presentation%202%20Slide%20Deck.pdf" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i> Open File</a>
+                        <a class="resource-button-muted" href="/assets/civil-war-assets/Civil%20War%20Presentation%202%20Slide%20Deck.pdf" download="Civil War Presentation 2 Slide Deck.pdf"><i class="fa-solid fa-download" aria-hidden="true"></i> Download PDF</a>
+                    </div>
                 </div>
             </article>
 
-            <article class="resource-card coming-soon">
+            <article class="resource-card survey-card">
                 <div class="resource-top">
-                    <div class="resource-placeholder">
-                        <i class="fa-solid fa-folder-open resource-placeholder-icon" aria-hidden="true"></i>
-                        <p class="resource-placeholder-text">Presentation 2 handout card reserved.</p>
+                    <div class="resource-top-inner">
+                        <span class="resource-label">Presentation 2</span>
+                        <h3 class="resource-title">Survey</h3>
+                        <p class="resource-note">This version is intentionally simple to reduce false-positive antivirus flags.</p>
                     </div>
                 </div>
                 <div class="resource-content">
-                    <div class="coming-soon-tag">Coming Soon</div>
-                    <span class="resource-label">Presentation 2</span>
-                    <h3 class="resource-title">Handout</h3>
-                    <p class="resource-desc">This card is reserved for the Civilian Impact handout viewer and download button.</p>
+                    <form class="survey-form" id="presentation-2-survey">
+                        <input type="hidden" name="access_key" value="856b9a3e-1011-4d01-8bab-f02714b89554">
+                        <input type="hidden" name="subject" value="Civil War Presentation Survey Response">
+                        <input type="hidden" name="from_name" value="Civil War Presentation Survey">
+
+                        <div class="survey-field" style="display:none;">
+                            <label for="survey-botcheck">Leave this field empty</label>
+                            <input id="survey-botcheck" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <div class="survey-field">
+                            <label for="survey-topic">If a third Civil War presentation is to be considered, what topics would you like to hear about?</label>
+                            <textarea id="survey-topic" name="topic_request" required></textarea>
+                        </div>
+
+                        <div class="survey-field">
+                            <label for="survey-feedback">What comments or feedback do you have regarding this presentation?</label>
+                            <textarea id="survey-feedback" name="presentation_feedback" required></textarea>
+                        </div>
+
+                        <button class="resource-button" type="submit" id="presentation-2-survey-submit">Submit Survey</button>
+                        <p class="survey-help">Your response stays on this page and submits instantly.</p>
+                        <p class="survey-status" id="presentation-2-survey-status" aria-live="polite"></p>
+                    </form>
                 </div>
             </article>
-            </div>
-        </details>
+        </div>
 
         <h2 class="section-header"><i class="fa-solid fa-video section-icon"></i> Previous Presentation</h2>
         <p class="section-intro">Presentation 1 recording for review and follow-up reference.</p>
@@ -570,9 +542,8 @@
             </article>
         </div>
 
-        <details class="materials-disclosure">
-            <summary class="section-header materials-summary"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 1 Materials <span class="materials-summary-hint">Click to expand</span></summary>
-            <div class="resource-grid materials-block">
+        <h2 class="section-header"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 1 Materials</h2>
+        <div class="resource-grid materials-block">
             <article class="resource-card">
                 <div class="resource-top">
                     <div class="resource-top-inner">
@@ -608,9 +579,7 @@
                     </div>
                 </div>
             </article>
-
-            </div>
-        </details>
+        </div>
     </div>
 
     <div id="site-footer"></div>
@@ -677,23 +646,50 @@
                 });
             }
 
-            const disclosures = Array.from(document.querySelectorAll('.materials-disclosure'));
+            viewers.forEach(renderPdfIntoViewer);
 
-            disclosures.forEach(function (disclosure) {
-                disclosure.addEventListener('toggle', function () {
-                    if (!disclosure.open) {
-                        return;
-                    }
+            const surveyForm = document.getElementById('presentation-2-survey');
+            const surveyStatus = document.getElementById('presentation-2-survey-status');
+            const surveySubmit = document.getElementById('presentation-2-survey-submit');
 
-                    disclosure.querySelectorAll('.pdf-viewer[data-pdf-url]').forEach(renderPdfIntoViewer);
+            if (surveyForm && surveyStatus && surveySubmit) {
+                surveyForm.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    surveyStatus.className = 'survey-status';
+                    surveyStatus.textContent = 'Sending...';
+                    surveySubmit.disabled = true;
+                    surveySubmit.textContent = 'Sending...';
+
+                    const formData = new FormData(surveyForm);
+                    const payload = Object.fromEntries(formData);
+
+                    fetch('https://api.web3forms.com/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    }).then(async function (response) {
+                        const result = await response.json();
+                        if (response.status !== 200 || !result || result.success === false) {
+                            throw new Error('Survey submit failed');
+                        }
+
+                        surveyForm.reset();
+                        surveyStatus.className = 'survey-status success';
+                        surveyStatus.textContent = 'Thank you. Your survey response has been submitted.';
+                        surveySubmit.disabled = false;
+                        surveySubmit.textContent = 'Submit Survey';
+                    }).catch(function () {
+                        surveyStatus.className = 'survey-status error';
+                        surveyStatus.textContent = 'Something went wrong. Please try again.';
+                        surveySubmit.disabled = false;
+                        surveySubmit.textContent = 'Submit Survey';
+                    });
                 });
-            });
-
-            disclosures.forEach(function (disclosure) {
-                if (disclosure.open) {
-                    disclosure.querySelectorAll('.pdf-viewer[data-pdf-url]').forEach(renderPdfIntoViewer);
-                }
-            });
+            }
         })();
     </script>
     <script src="/assets/site.js"></script>
