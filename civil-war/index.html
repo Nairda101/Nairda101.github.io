@@ -122,6 +122,14 @@
             text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
         }
 
+        .mobile-quick-nav {
+            display: none;
+        }
+
+        .mobile-quick-nav-title {
+            display: none;
+        }
+
         .header-section + .container {
             margin-top: -11.5rem;
             position: relative;
@@ -440,6 +448,48 @@
                 padding: 0 0.85rem;
             }
 
+            .subtitle {
+                font-size: 0.96rem;
+                line-height: 1.45;
+                margin-bottom: 0.75rem;
+            }
+
+            .mobile-quick-nav {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.45rem;
+                margin: 0.2rem auto 0;
+                max-width: 560px;
+            }
+
+            .mobile-quick-nav-title {
+                display: block;
+                margin: 0.35rem 0 0.35rem;
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--text-muted);
+            }
+
+            .mobile-quick-nav a {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 0.52rem 0.55rem;
+                border-radius: 999px;
+                text-decoration: none;
+                font-size: 0.72rem;
+                font-weight: 700;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+                color: #1b140d;
+                border: 1px solid rgba(196, 154, 99, 0.35);
+                background: linear-gradient(90deg, rgba(196, 154, 99, 0.95), rgba(139, 94, 52, 0.95));
+                box-shadow: 0 0 14px rgba(196, 154, 99, 0.16);
+            }
+
             .section-header {
                 margin-top: 1.4rem;
                 margin-bottom: 0.75rem;
@@ -528,11 +578,18 @@
             <div class="eyebrow"><i class="fa-solid fa-book-open-reader" aria-hidden="true"></i> Midvale Senior Center Civil War Series</div>
             <h1>Civil War Presentations</h1>
             <p class="subtitle">Materials and resources for the Civil War presentations presented by Bob James for the Midvale Senior Center, including current recordings and slide deck access.</p>
+            <p class="mobile-quick-nav-title">Quick Links</p>
+            <nav class="mobile-quick-nav" aria-label="Quick links to sections">
+                <a href="#presentation-2-materials">Presentation 2 Materials</a>
+                <a href="#presentation-2-survey">Survey</a>
+                <a href="#presentation-1-recording">Presentation 1 Recording</a>
+                <a href="#presentation-1-materials">Presentation 1 Materials</a>
+            </nav>
         </div>
     </div>
 
     <div class="container">
-        <h2 class="section-header"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 2 Materials</h2>
+        <h2 id="presentation-2-materials" class="section-header"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 2 Materials</h2>
         <div class="resource-grid materials-block">
             <article class="resource-card">
                 <div class="resource-top">
@@ -552,7 +609,7 @@
                 </div>
             </article>
 
-            <article class="resource-card survey-card">
+            <article id="presentation-2-survey" class="resource-card survey-card">
                 <div class="resource-top">
                     <div class="resource-top-inner">
                         <span class="resource-label">Presentation 2</span>
@@ -589,7 +646,7 @@
             </article>
         </div>
 
-        <h2 class="section-header"><i class="fa-solid fa-video section-icon"></i> Previous Presentation</h2>
+        <h2 id="presentation-1-recording" class="section-header"><i class="fa-solid fa-video section-icon"></i> Previous Presentation</h2>
         <p class="section-intro">Presentation 1 recording for review and follow-up reference.</p>
 
         <div class="featured-grid">
@@ -605,7 +662,7 @@
             </article>
         </div>
 
-        <h2 class="section-header"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 1 Materials</h2>
+        <h2 id="presentation-1-materials" class="section-header"><i class="fa-regular fa-folder-open section-icon"></i> Presentation 1 Materials</h2>
         <div class="resource-grid materials-block">
             <article class="resource-card">
                 <div class="resource-top">
