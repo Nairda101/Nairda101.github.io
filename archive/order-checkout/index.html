@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/assets/images/MillerMediaLogo.png">
+    <title>Adrian Miller Media - Checkout</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-card: #111625;
+            --accent-primary: #7b2cbf;
+            --accent-secondary: #4361ee;
+            --accent-glow: rgba(67, 97, 238, 0.5);
+            --text-main: #f0f0f0;
+            --text-muted: #b0b8c4;
+            --border-color: #2a3040;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        #site-header,
+        #site-footer {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 3rem 1.5rem;
+            flex: 1;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            border-radius: 16px;
+            padding: 2.4rem;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+            max-width: 720px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            box-shadow: 0 0 20px var(--accent-secondary);
+        }
+
+        .icon {
+            font-size: 3rem;
+            color: var(--accent-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .card h1 {
+            font-size: clamp(2.2rem, 3.5vw, 3rem);
+            margin-bottom: 0.6rem;
+            background: -webkit-linear-gradient(0deg, #fff, #a0c4ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lead {
+            color: var(--text-muted);
+            margin-bottom: 1.4rem;
+        }
+
+        .total {
+            margin: 1rem auto 1.4rem;
+            background: rgba(67, 97, 238, 0.15);
+            border: 1px solid rgba(67, 97, 238, 0.35);
+            border-radius: 12px;
+            padding: 0.9rem 1rem;
+            max-width: 320px;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .payments {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            color: white;
+            padding: 0.9rem 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            border-radius: 999px;
+            box-shadow: 0 0 15px var(--accent-glow);
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            min-height: 48px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn.secondary {
+            background: transparent;
+            box-shadow: none;
+            border: 1px solid rgba(67, 97, 238, 0.45);
+            color: #c9dbff;
+        }
+
+        .hint {
+            margin-top: 1.2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .list {
+            text-align: left;
+            margin-top: 1.2rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+        }
+
+        .list li {
+            margin-left: 1rem;
+            margin-bottom: 0.45rem;
+        }
+
+        @media (max-width: 640px) {
+            .payments {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 1.8rem 1.2rem;
+            }
+        }
+    </style>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <div class="content-wrapper">
+        <div class="card">
+            <div class="icon"><i class="fa-solid fa-credit-card"></i></div>
+            <h1>Checkout</h1>
+            <p class="lead">Your order was submitted successfully. Choose a payment option below.</p>
+
+            <div class="total">Estimated Total: <span id="total-amount">$0.00</span></div>
+
+            <div class="payments">
+                <a id="paypal-link" class="btn" href="https://www.paypal.com/" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-paypal"></i> Pay with PayPal
+                </a>
+                <a id="stripe-link" class="btn" href="https://buy.stripe.com/" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-bolt"></i> Pay with Stripe
+                </a>
+                <a class="btn secondary" href="/show-order/">
+                    <i class="fa-solid fa-pen"></i> Edit Order
+                </a>
+                <a class="btn secondary" href="/">
+                    <i class="fa-solid fa-house"></i> Back Home
+                </a>
+            </div>
+
+            <ul class="list">
+                <li>Update the PayPal and Stripe links on this page with your real checkout URLs.</li>
+                <li>For PayPal, use a hosted payment link that accepts variable amount or quantity.</li>
+                <li>For Stripe, use a Payment Link with adjustable quantity for a $10 product.</li>
+            </ul>
+
+            <p class="hint">If payment fails, contact adrianmillermedia@gmail.com and include your order name.</p>
+        </div>
+    </div>
+
+    <div id="site-footer"></div>
+
+<script>
+    (function () {
+        const totalNode = document.getElementById('total-amount');
+        const paypalLink = document.getElementById('paypal-link');
+        const stripeLink = document.getElementById('stripe-link');
+
+        const params = new URLSearchParams(window.location.search);
+        const rawTotal = Number.parseFloat(params.get('total') || '0');
+        const total = Number.isFinite(rawTotal) && rawTotal > 0 ? rawTotal : 0;
+
+        totalNode.textContent = `$${total.toFixed(2)}`;
+
+        if (total > 0) {
+            const paypalUrl = new URL(paypalLink.href);
+            paypalUrl.searchParams.set('amount', total.toFixed(2));
+            paypalLink.href = paypalUrl.toString();
+
+            const stripeUrl = new URL(stripeLink.href);
+            stripeUrl.searchParams.set('prefilled_amount', String(Math.round(total * 100)));
+            stripeLink.href = stripeUrl.toString();
+        }
+    })();
+</script>
+<script src="/assets/site.js"></script>
+</body>
+</html>
