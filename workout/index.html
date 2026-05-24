@@ -1,1 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>14-Day Dad-Strength Challenge</title>
+<style>
+    :root {
+        --primary: #2c3e50; 
+        --accent: #e67e22;
+        --bg: #f8f9fa;
+        --card-bg: #ffffff;
+        --text: #333;
+        --completed: #27ae60;
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        margin: 0;
+        padding: 15px;
+        line-height: 1.5;
+    }
+    h1 { text-align: center; color: var(--primary); margin-bottom: 5px; }
+    p.subtitle { text-align: center; color: #666; font-size: 0.9rem; margin-top: 0; margin-bottom: 20px;}
+    
+    .progress-container {
+        background: var(--card-bg);
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        text-align: center;
+        border: 1px solid #e1e1e1;
+        margin-bottom: 20px;
+        position: sticky;
+        top: 10px;
+        z-index: 100;
+    }
+    #progress-text { font-weight: bold; color: var(--completed); }
+    .progress-bar-bg { background: #eee; height: 10px; border-radius: 5px; margin-top: 10px; overflow: hidden; }
+    .progress-fill { background: var(--completed); height: 100%; width: 0%; transition: width 0.3s ease; }
+
+    .day-card {
+        background: var(--card-bg);
+        margin-bottom: 12px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border: 1px solid #e1e1e1;
+        transition: all 0.2s;
+    }
+    .day-header { padding: 15px; display: flex; align-items: center; }
+    .day-info { flex-grow: 1; margin-left: 15px; }
+    .day-title { font-weight: bold; font-size: 1.1rem; display: block; }
+    .tag { background: #eee; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; color: #555; text-transform: uppercase; margin-bottom: 4px; display: inline-block;}
+    .fast-tag { color: var(--accent); font-size: 0.8rem; font-weight: 600; display: block; margin-top: 4px; }
+
+    .check-container { position: relative; width: 32px; height: 32px; flex-shrink: 0; }
+    input[type="checkbox"] { opacity: 0; width: 0; height: 0; }
+    .checkmark {
+        position: absolute; top: 0; left: 0; height: 32px; width: 32px;
+        background-color: #fff; border-radius: 50%; border: 2px solid #ddd;
+    }
+    input:checked ~ .checkmark { background-color: var(--completed); border-color: var(--completed); }
+    .checkmark:after {
+        content: ""; position: absolute; display: none;
+        left: 11px; top: 6px; width: 6px; height: 12px;
+        border: solid white; border-width: 0 3px 3px 0; transform: rotate(45deg);
+    }
+    input:checked ~ .checkmark:after { display: block; }
+
+    details { border-top: 1px solid #eee; }
+    summary { padding: 12px 15px; font-size: 0.9rem; cursor: pointer; font-weight: 600; color: var(--primary); }
+    .exercise-list { padding: 0; margin: 0; list-style: none; background: #fafafa; }
+    .exercise-list li { padding: 10px 15px; border-bottom: 1px solid #eee; font-size: 0.9rem; display: flex; flex-direction: column;}
+    
+    .exercise-header { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+    .exercise-desc { font-size: 0.8rem; color: #666; margin-top: 6px; line-height: 1.4; }
+    .reps { font-weight: bold; color: var(--accent); white-space: nowrap; margin-left: 10px; }
+
+    .day-card.done { border-left: 5px solid var(--completed); opacity: 0.8; }
+    .day-card.done .day-title { text-decoration: line-through; color: #999; }
+</style>
+</head>
+<body>
+
+    <h1>Dad-Strength 14</h1>
+    <p class="subtitle">15 Mins Workout • No Snacks After 8 PM</p>
+
+    <div class="progress-container">
+        <span id="progress-text">0 / 14 Days Finished</span>
+        <div class="progress-bar-bg">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <div id="app-container"></div>
+
+<script>
+    const workoutData = [
+        { day: 1, title: "Strength A: Push & Squat", fast: "Close Kitchen at 8:00 PM", 
+          exercises: [
+              ["Goblet Squat", "12 Reps", "Hold a dumbbell vertically against your chest. Keep your core tight and squat down until your thighs are parallel to the floor."], 
+              ["Overhead Press", "10 Reps", "Stand tall with dumbbells at shoulder height. Press them straight up until your arms are fully extended, then lower with control."], 
+              ["Push-ups", "12 Reps", "Keep a straight line from head to heels. Lower your chest until it's just above the floor, then push back up. Modify on knees if needed."], 
+              ["Band Bicep Curls", "15 Reps", "Step on the center of the resistance band. Keep elbows pinned to your sides and curl the handles upward."], 
+              ["Bird-Dogs", "10 Per Side", "On all fours, extend your right arm forward and left leg backward simultaneously. Keep your back flat. Squeeze, then switch."]
+          ] 
+        },
+        { day: 2, title: "Core & Stability", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Plank", "45 Secs", "Rest on your forearms and toes. Brace your core tightly and avoid letting your hips sag or hike up."], 
+              ["Woodchoppers", "10 Per Side", "Anchor a band low. Rotate your torso to pull the band diagonally upward across your body. Keep arms mostly straight."], 
+              ["Band Pull-Aparts", "20 Reps", "Hold a band straight out in front of you. Squeeze your shoulder blades together to pull the band apart until it touches your chest."], 
+              ["Yoga Block Crunches", "15 Reps", "Lie on your back, knees bent. Place a yoga block between your knees and squeeze it while performing controlled crunches."], 
+              ["Standing Side Bends", "12 Per Side", "Hold a dumbbell in one hand. Slowly lower the weight down your leg by bending your torso sideways, then pull back up using your obliques."]
+          ] 
+        },
+        { day: 3, title: "Active Recovery", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Outdoor Walk", "20 Minutes", "Keep a brisk but conversational pace. Focus on getting fresh air and moving the legs to flush out soreness."], 
+              ["Focus on Breathing", "Deep Inhale/Exhale", "Take 5 minutes to practice box breathing: inhale for 4 seconds, hold for 4, exhale for 4, hold for 4."]
+          ] 
+        },
+        { day: 4, title: "Strength B: Pull & Hinge", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Dumbbell Deadlift", "12 Reps", "Hinge at the hips with a slight knee bend. Keep dumbbells close to your legs as you lower them, keeping your back flat. Squeeze glutes to stand."], 
+              ["Bent Over Row", "12 Reps", "Hinge forward at a 45-degree angle. Pull dumbbells up toward your hip crease, squeezing your shoulder blades together at the top."], 
+              ["Glute Bridges", "15 Reps", "Lie on your back with knees bent. Drive through your heels to lift your hips toward the ceiling. Squeeze glutes hard at the top."], 
+              ["Lateral Raises", "10 Reps", "Stand tall holding light dumbbells. Raise your arms straight out to the sides until they are parallel to the floor, then lower slowly."], 
+              ["Wall Sit", "45 Secs", "Slide down a wall until your knees are at a 90-degree angle. Keep your back flat against the wall and hold the position."]
+          ] 
+        },
+        { day: 5, title: "Core & Stability", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Plank", "45 Secs", "Rest on your forearms and toes. Brace your core tightly and avoid letting your hips sag or hike up."], 
+              ["Woodchoppers", "10 Per Side", "Anchor a band low. Rotate your torso to pull the band diagonally upward across your body. Keep arms mostly straight."], 
+              ["Band Pull-Aparts", "20 Reps", "Hold a band straight out in front of you. Squeeze your shoulder blades together to pull the band apart until it touches your chest."], 
+              ["Yoga Block Crunches", "15 Reps", "Lie on your back, knees bent. Place a yoga block between your knees and squeeze it while performing controlled crunches."], 
+              ["Standing Side Bends", "12 Per Side", "Hold a dumbbell in one hand. Slowly lower the weight down your leg by bending your torso sideways, then pull back up using your obliques."]
+          ] 
+        },
+        { day: 6, title: "Strength A: Push & Squat", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Goblet Squat", "12 Reps", "Hold a dumbbell vertically against your chest. Keep your core tight and squat down until your thighs are parallel to the floor."], 
+              ["Overhead Press", "10 Reps", "Stand tall with dumbbells at shoulder height. Press them straight up until your arms are fully extended, then lower with control."], 
+              ["Push-ups", "12 Reps", "Keep a straight line from head to heels. Lower your chest until it's just above the floor, then push back up. Modify on knees if needed."], 
+              ["Band Bicep Curls", "15 Reps", "Step on the center of the resistance band. Keep elbows pinned to your sides and curl the handles upward."], 
+              ["Bird-Dogs", "10 Per Side", "On all fours, extend your right arm forward and left leg backward simultaneously. Keep your back flat. Squeeze, then switch."]
+          ] 
+        },
+        { day: 7, title: "Rest & Mobility", fast: "Mindful Eating Day",
+          exercises: [
+              ["Full Body Stretch", "5 Minutes", "Focus on tight areas: hamstrings, chest, and hip flexors. Hold each stretch for at least 30 seconds without bouncing."], 
+              ["Hydration Goal", "8+ Glasses", "Prioritize water intake today to help muscles recover. Keep a water bottle nearby."]
+          ] 
+        },
+        { day: 8, title: "Strength B: Pull & Hinge", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Dumbbell Deadlift", "12 Reps", "Hinge at the hips with a slight knee bend. Keep dumbbells close to your legs as you lower them, keeping your back flat. Squeeze glutes to stand."], 
+              ["Bent Over Row", "12 Reps", "Hinge forward at a 45-degree angle. Pull dumbbells up toward your hip crease, squeezing your shoulder blades together at the top."], 
+              ["Glute Bridges", "15 Reps", "Lie on your back with knees bent. Drive through your heels to lift your hips toward the ceiling. Squeeze glutes hard at the top."], 
+              ["Lateral Raises", "10 Reps", "Stand tall holding light dumbbells. Raise your arms straight out to the sides until they are parallel to the floor, then lower slowly."], 
+              ["Wall Sit", "45 Secs", "Slide down a wall until your knees are at a 90-degree angle. Keep your back flat against the wall and hold the position."]
+          ] 
+        },
+        { day: 9, title: "Core & Stability", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Plank", "45 Secs", "Rest on your forearms and toes. Brace your core tightly and avoid letting your hips sag or hike up."], 
+              ["Woodchoppers", "10 Per Side", "Anchor a band low. Rotate your torso to pull the band diagonally upward across your body. Keep arms mostly straight."], 
+              ["Band Pull-Aparts", "20 Reps", "Hold a band straight out in front of you. Squeeze your shoulder blades together to pull the band apart until it touches your chest."], 
+              ["Yoga Block Crunches", "15 Reps", "Lie on your back, knees bent. Place a yoga block between your knees and squeeze it while performing controlled crunches."], 
+              ["Standing Side Bends", "12 Per Side", "Hold a dumbbell in one hand. Slowly lower the weight down your leg by bending your torso sideways, then pull back up using your obliques."]
+          ] 
+        },
+        { day: 10, title: "Active Recovery", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Outdoor Walk", "20 Minutes", "Keep a brisk but conversational pace. Focus on getting fresh air and moving the legs to flush out soreness."], 
+              ["Light Stretching", "5 Minutes", "Perform dynamic stretches like arm circles and leg swings to keep joints loose."]
+          ] 
+        },
+        { day: 11, title: "Strength A: Push & Squat", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Goblet Squat", "12 Reps", "Hold a dumbbell vertically against your chest. Keep your core tight and squat down until your thighs are parallel to the floor."], 
+              ["Overhead Press", "10 Reps", "Stand tall with dumbbells at shoulder height. Press them straight up until your arms are fully extended, then lower with control."], 
+              ["Push-ups", "12 Reps", "Keep a straight line from head to heels. Lower your chest until it's just above the floor, then push back up. Modify on knees if needed."], 
+              ["Band Bicep Curls", "15 Reps", "Step on the center of the resistance band. Keep elbows pinned to your sides and curl the handles upward."], 
+              ["Bird-Dogs", "10 Per Side", "On all fours, extend your right arm forward and left leg backward simultaneously. Keep your back flat. Squeeze, then switch."]
+          ] 
+        },
+        { day: 12, title: "Strength B: Pull & Hinge", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Dumbbell Deadlift", "12 Reps", "Hinge at the hips with a slight knee bend. Keep dumbbells close to your legs as you lower them, keeping your back flat. Squeeze glutes to stand."], 
+              ["Bent Over Row", "12 Reps", "Hinge forward at a 45-degree angle. Pull dumbbells up toward your hip crease, squeezing your shoulder blades together at the top."], 
+              ["Glute Bridges", "15 Reps", "Lie on your back with knees bent. Drive through your heels to lift your hips toward the ceiling. Squeeze glutes hard at the top."], 
+              ["Lateral Raises", "10 Reps", "Stand tall holding light dumbbells. Raise your arms straight out to the sides until they are parallel to the floor, then lower slowly."], 
+              ["Wall Sit", "45 Secs", "Slide down a wall until your knees are at a 90-degree angle. Keep your back flat against the wall and hold the position."]
+          ] 
+        },
+        { day: 13, title: "Core & Stability", fast: "Close Kitchen at 8:00 PM",
+          exercises: [
+              ["Plank", "45 Secs", "Rest on your forearms and toes. Brace your core tightly and avoid letting your hips sag or hike up."], 
+              ["Woodchoppers", "10 Per Side", "Anchor a band low. Rotate your torso to pull the band diagonally upward across your body. Keep arms mostly straight."], 
+              ["Band Pull-Aparts", "20 Reps", "Hold a band straight out in front of you. Squeeze your shoulder blades together to pull the band apart until it touches your chest."], 
+              ["Yoga Block Crunches", "15 Reps", "Lie on your back, knees bent. Place a yoga block between your knees and squeeze it while performing controlled crunches."], 
+              ["Standing Side Bends", "12 Per Side", "Hold a dumbbell in one hand. Slowly lower the weight down your leg by bending your torso sideways, then pull back up using your obliques."]
+          ] 
+        },
+        { day: 14, title: "FINAL CHALLENGE: AMRAP", fast: "Finish Strong!",
+          exercises: [
+              ["Timer", "20 Minutes", "Set a timer for exactly 20 minutes. Keep rest periods between exercises to an absolute minimum."], 
+              ["Goal", "As Many Rounds As Possible", "Pace yourself, but push to complete as many full circuits as you can before the clock runs out."], 
+              ["Circuit", "Do All Exercises in Strength A + B", "Combine the heavy lifts from Push/Squat and Pull/Hinge days into one continuous loop."]
+          ] 
+        }
+    ];
+
+    const appContainer = document.getElementById('app-container');
+    let progress = JSON.parse(localStorage.getItem('dadStrengthProgress')) || {};
+
+    function render() {
+        appContainer.innerHTML = '';
+        let done = 0;
+        workoutData.forEach(day => {
+            const isDone = progress[day.day];
+            if (isDone) done++;
+            const card = document.createElement('div');
+            card.className = `day-card ${isDone ? 'done' : ''}`;
+            card.innerHTML = `
+                <div class="day-header">
+                    <label class="check-container">
+                        <input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggle(${day.day})">
+                        <span class="checkmark"></span>
+                    </label>
+                    <div class="day-info">
+                        <span class="tag">Day ${day.day}</span>
+                        <span class="day-title">${day.title}</span>
+                        <span class="fast-tag">🌙 ${day.fast}</span>
+                    </div>
+                </div>
+                <details>
+                    <summary>View Routine</summary>
+                    <ul class="exercise-list">
+                        ${day.exercises.map(ex => `
+                            <li>
+                                <div class="exercise-header">
+                                    <span>${ex[0]}</span> 
+                                    <span class="reps">${ex[1]}</span>
+                                </div>
+                                ${ex[2] ? `<span class="exercise-desc">${ex[2]}</span>` : ''}
+                            </li>
+                        `).join('')}
+                    </ul>
+                </details>`;
+            appContainer.appendChild(card);
+        });
+        document.getElementById('progress-text').innerText = `${done} / 14 Days Completed`;
+        document.getElementById('progress-fill').style.width = (done/14*100) + '%';
+    }
+
+    window.toggle = (day) => {
+        progress[day] = !progress[day];
+        localStorage.setItem('dadStrengthProgress', JSON.stringify(progress));
+        render();
+    };
+
+    render();
+</script>
+</body>
+</html>
 
