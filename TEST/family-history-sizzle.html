@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/assets/images/MillerMediaLogo.png">
+    <title>Family History Sizzle (Mockup) - Adrian Miller Media</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0a0e17; --bg-card: #111625;
+            --accent-primary: #7b2cbf; --accent-secondary: #4361ee;
+            --text-main: #f0f0f0; --text-muted: #b0b8c4; --border-color: #2a3040;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Open Sans', sans-serif; background: var(--bg-dark); color: var(--text-main); margin: 0; line-height: 1.6; }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; color: white; line-height: 1.2; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+        a { color: inherit; }
+
+        .hero { text-align: center; padding: 3rem 0 2rem; background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 35%, var(--bg-dark) 80%); }
+        .eyebrow { color: var(--accent-secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+        .hero h1 { font-size: 2.8rem; margin: 0.5rem 0 1rem; background: linear-gradient(0deg, #fff, #a0c4ff); background: -webkit-linear-gradient(0deg, #fff, #a0c4ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; max-width: 640px; margin: 0 auto 1.5rem; }
+
+        .reel { max-width: 900px; margin: 0 auto; border: 1px solid var(--border-color); border-top: 3px solid var(--accent-primary); border-radius: 12px; overflow: hidden; background: var(--bg-card); box-shadow: 0 0 40px rgba(123,44,191,0.2); }
+        .reel .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+        .reel iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .reel-caption { padding: 0.8rem 1.2rem; color: var(--text-muted); font-size: 0.9rem; text-align: center; }
+
+        .btn { display: inline-block; padding: 0.85rem 2rem; border-radius: 6px; font-weight: 700; text-transform: uppercase; text-decoration: none; border: 2px solid var(--accent-secondary); color: white; transition: 0.3s; font-family: 'Montserrat', sans-serif; }
+        .btn.solid { background: var(--accent-secondary); }
+        .btn:hover { box-shadow: 0 0 18px rgba(67,97,238,0.6); transform: translateY(-2px); }
+        .cta-row { margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        section { padding: 3.5rem 0 0; }
+        .section-title { text-align: center; font-size: 1.8rem; margin: 0 0 0.5rem; }
+        .section-sub { text-align: center; color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem; }
+
+        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+        .step { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.8rem 1.5rem; text-align: center; }
+        .step i { font-size: 1.8rem; color: var(--accent-primary); margin-bottom: 0.8rem; }
+        .step h3 { margin: 0 0 0.4rem; font-size: 1.1rem; }
+        .step p { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
+
+        .work-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .project-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; transition: 0.3s; }
+        .project-card:hover { transform: translateY(-5px); box-shadow: 0 0 25px rgba(0,0,0,0.5); border-color: var(--accent-secondary); }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-wrapper iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+        .card-content { padding: 1.2rem 1.4rem 1.5rem; }
+        .tag { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 2px 10px; border-radius: 20px; background: rgba(67,97,238,0.2); color: #a0b4ff; margin-right: 6px; }
+        .tag.purple { background: rgba(123,44,191,0.2); color: #d0a8f5; }
+        .project-title { margin: 0.7rem 0 0.4rem; font-size: 1.15rem; }
+        .project-desc { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
+
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 2rem; }
+        .price-card { background: var(--bg-card); border: 1px solid var(--border-color); border-top: 3px solid var(--accent-secondary); border-radius: 12px; padding: 2.2rem 2rem; display: flex; flex-direction: column; position: relative; transition: 0.3s; }
+        .price-card:hover { transform: translateY(-5px); box-shadow: 0 0 25px rgba(0,0,0,0.5); border-top-color: var(--accent-primary); }
+        .price-card.featured { border-top-color: var(--accent-primary); box-shadow: 0 0 20px rgba(123,44,191,0.2); }
+        .badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--accent-primary); color: white; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 3px 14px; border-radius: 20px; white-space: nowrap; }
+        .price-card h3 { margin: 0 0 0.3rem; text-align: center; font-size: 1.4rem; }
+        .card-type { text-align: center; color: var(--accent-secondary); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.2rem; }
+        .price-area { text-align: center; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .price-tag { font-size: 2.8rem; font-weight: 900; font-family: 'Montserrat', sans-serif; display: block; color: white; }
+        .price-note { font-size: 0.9rem; color: var(--text-muted); }
+        .features { list-style: none; padding: 0; margin: 0 0 1.5rem; flex-grow: 1; }
+        .features li { padding: 0.7rem 0 0.7rem 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.95rem; position: relative; }
+        .features li::before { content: "•"; color: var(--accent-primary); font-weight: bold; position: absolute; left: 0; }
+        .card-btn { display: block; text-align: center; border: 2px solid var(--accent-secondary); color: white; padding: 0.8rem; border-radius: 6px; font-weight: 700; text-transform: uppercase; text-decoration: none; transition: 0.3s; }
+        .card-btn:hover, .featured .card-btn { background: var(--accent-secondary); }
+        .card-btn:hover { box-shadow: 0 0 15px rgba(67,97,238,0.5); }
+        .quote-note { font-size: 0.8rem; color: var(--text-muted); font-style: italic; margin: -0.5rem 0 1rem; }
+
+        .addons { margin-top: 2.5rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem 2rem; }
+        .addons h3 { margin: 0 0 1rem; }
+        .addon-item { display: flex; justify-content: space-between; gap: 1rem; padding: 0.8rem 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        .addon-item h4 { margin: 0; font-size: 1rem; }
+        .addon-item p { margin: 0; color: var(--text-muted); font-size: 0.9rem; }
+        .addon-price { font-weight: 700; color: #a0c4ff; white-space: nowrap; }
+
+        .final-cta { text-align: center; margin: 4rem 0 0; padding: 3.5rem 1rem; background: radial-gradient(circle at center, #1e2538 0%, var(--bg-dark) 75%); border-top: 1px solid var(--border-color); }
+        .final-cta h2 { font-size: 2rem; margin: 0 0 0.5rem; }
+        .final-cta p { color: var(--text-muted); max-width: 520px; margin: 0 auto 1.5rem; }
+        .mock-note { text-align: center; font-size: 0.8rem; color: var(--text-muted); padding: 0.5rem; background: #1a1030; }
+        @media (max-width: 600px) { .hero h1 { font-size: 2.1rem; } .addon-item { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="mock-note">MOCKUP – Family History Sizzle (TEST)</div>
+    <div id="site-header"></div>
+
+    <header class="hero">
+        <div class="container">
+            <div class="eyebrow">Family Legacy Interviews</div>
+            <h1>Their Stories Deserve to Be Seen &amp; Heard</h1>
+            <p class="subtitle">Professional video portraits recorded in the comfort of your home. Preserve your family's history for generations to come.</p>
+            <div class="reel">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/aOITNfZBLZA" title="Family History Sizzle Reel (placeholder)" allowfullscreen></iframe>
+                </div>
+                <div class="reel-caption">Sizzle reel placeholder: on-location family history sessions</div>
+            </div>
+            <div class="cta-row">
+                <a href="/request/" class="btn solid">Book now</a>
+                <a href="#rates" class="btn">See Rates</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-sub">I bring the studio to you. No travel, no stress, just conversation.</p>
+            <div class="steps">
+                <div class="step"><i class="fa-solid fa-calendar-check"></i><h3>1. Book</h3><p>Pick a package and a date that works for your family.</p></div>
+                <div class="step"><i class="fa-solid fa-video"></i><h3>2. Record</h3><p>Pro audio, lighting, and 4K video set up in your home.</p></div>
+                <div class="step"><i class="fa-solid fa-film"></i><h3>3. Edit</h3><p>Color, audio, title cards, and story editing as your package includes.</p></div>
+                <div class="step"><i class="fa-solid fa-hard-drive"></i><h3>4. Keep</h3><p>Delivered on a hard drive plus a digital copy to share.</p></div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Recent Work</h2>
+            <p class="section-sub">A look at finished family history projects.</p>
+            <div class="work-grid">
+                <div class="project-card">
+                    <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/IwubXkxULwU" title="Grandparent Legacy Interview" allowfullscreen></iframe></div>
+                    <div class="card-content">
+                        <span class="tag">Interview</span><span class="tag purple">Documentary</span>
+                        <h3 class="project-title">Grandparent Legacy Interview</h3>
+                        <p class="project-desc">A 2-hour life story interview edited into a narrative legacy episode for the family.</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="video-wrapper"><iframe src="https://www.youtube.com/embed/aOITNfZBLZA" title="Family History Sessions" allowfullscreen></iframe></div>
+                    <div class="card-content">
+                        <span class="tag">In-Home</span><span class="tag purple">4K</span>
+                        <h3 class="project-title">Family History Sessions</h3>
+                        <p class="project-desc">A short demo of the on-location recording capturing the life story of a family member.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rates">
+            <h2 class="section-title">Rates</h2>
+            <p class="section-sub">Simple, transparent packages for every family.</p>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h3>Archival Raw Session</h3>
+                    <div class="card-type">In-Home Recording</div>
+                    <div class="price-area"><span class="price-tag">$400</span><span class="price-note">Flat Rate (Salt Lake Area)</span></div>
+                    <ul class="features">
+                        <li>Includes Up to 2 Hours Recording</li>
+                        <li>Pro Audio &amp; Lighting Setup</li>
+                        <li>Raw 4K Video Files Delivered</li>
+                        <li>No Editing Included</li>
+                        <li>Flash Drive/Hard Drive Delivery</li>
+                        <li>Best for: DIY Editing / Archival</li>
+                    </ul>
+                    <a href="/request/" class="card-btn">Book This</a>
+                </div>
+                <div class="price-card featured">
+                    <span class="badge">Most Popular</span>
+                    <h3>The Heirloom</h3>
+                    <div class="card-type">Recording + Editing</div>
+                    <div class="price-area"><span class="price-tag">$850</span><span class="price-note">Complete Package</span></div>
+                    <ul class="features">
+                        <li>Includes Up to 2 Hours Recording</li>
+                        <li>Full Color Correction &amp; Audio Mix</li>
+                        <li>Title Cards for Chapters or Sections</li>
+                        <li>PDF Transcript Included</li>
+                        <li>Hard Drive Delivery and Digital Copy</li>
+                        <li>Best for: Genealogy Records</li>
+                    </ul>
+                    <a href="/request/" class="card-btn">Book This</a>
+                </div>
+                <div class="price-card">
+                    <h3>The Documentary</h3>
+                    <div class="card-type">Short Narrative Film</div>
+                    <div class="price-area"><span class="price-tag">$2,000</span><span class="price-note">Starting At</span></div>
+                    <ul class="features">
+                        <li>3 Hour Recording Session</li>
+                        <li>Narrative Story Editing (15-30m)</li>
+                        <li>B-Roll &amp; Family Photo Integration*</li>
+                        <li>Licensed Background Music</li>
+                        <li>Hard Drive Delivery</li>
+                        <li>Best for: Legacies &amp; Tributes</li>
+                    </ul>
+                    <p class="quote-note">*B-roll and photos can be included if provided, otherwise, additional hourly time will be charged to digitize or record them.</p>
+                    <a href="/request/" class="card-btn">Get a Quote</a>
+                </div>
+            </div>
+            <div class="addons">
+                <h3>Add-Ons</h3>
+                <div class="addon-item"><div><h4>Additional Time</h4><p>Need more time to tell the story? Add extra hours to any session.</p></div><div class="addon-price">+$100 / hour</div></div>
+                <div class="addon-item"><div><h4>Travel Fee</h4><p>For locations outside the Salt Lake Valley, additional travel fees may apply.</p></div><div class="addon-price">Custom Quote</div></div>
+            </div>
+        </section>
+    </div>
+
+    <div class="final-cta">
+        <h2>Ready to Preserve Their Story?</h2>
+        <p>Every year, memories fade. Let's capture them while you still can.</p>
+        <a href="/request/" class="btn solid">Book now</a>
+    </div>
+
+    <div id="site-footer"></div>
+    <script src="/assets/site.js"></script>
+</body>
+</html>
