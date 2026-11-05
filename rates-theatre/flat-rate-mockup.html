@@ -47,7 +47,54 @@
         .header-section {
             text-align: center;
             padding: 1rem 0 50rem 0;
-            background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 30%, #0b1018 60%, var(--bg-dark) 100%);
+            background: transparent;
+        }
+
+        /* --- SIZZLE REEL BACKGROUND --- */
+        .reel-bg {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden;
+            background: var(--bg-dark); pointer-events: none;
+        }
+        .reel-bg iframe {
+            position: absolute; top: 50%; left: 50%;
+            width: max(100vw, 177.78vh); height: max(100vh, 56.25vw);
+            transform: translate(-50%, -50%); border: 0;
+            opacity: 0.35; transition: opacity 0.6s ease;
+        }
+        .reel-bg::after {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(10,14,23,0.35) 0%, rgba(10,14,23,0.7) 60%, rgba(10,14,23,0.9) 100%);
+            transition: opacity 0.6s ease;
+        }
+        .reel-watch {
+            display: inline-flex; align-items: center; gap: 10px; margin-top: 0.5rem;
+            padding: 0.75rem 1.6rem; border-radius: 50px; cursor: pointer;
+            background: rgba(10,14,23,0.55); border: 2px solid var(--accent-secondary);
+            color: #fff; font: 700 0.9rem 'Montserrat', sans-serif;
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        .reel-watch:hover { background: var(--accent-secondary); box-shadow: 0 0 20px rgba(67, 97, 238, 0.5); }
+        .reel-close {
+            display: none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            z-index: 1000; padding: 0.75rem 1.6rem; border-radius: 50px; cursor: pointer;
+            background: rgba(10,14,23,0.8); border: 2px solid var(--accent-secondary);
+            color: #fff; font: 700 0.9rem 'Montserrat', sans-serif; text-transform: uppercase;
+        }
+        .reel-close:hover { background: var(--accent-secondary); }
+        .reel-bg-wrap { transition: opacity 0.6s ease; }
+        body.reel-open .reel-bg iframe { opacity: 1; }
+        body.reel-open .reel-bg::after { opacity: 0; }
+        body.reel-open .reel-bg { pointer-events: auto; }
+        body.reel-open .reel-close { display: block; }
+        body.reel-open #site-header, body.reel-open .header-section, body.reel-open .header-section + .container,
+        body.reel-open #site-footer { opacity: 0; pointer-events: none; }
+        #site-header, .header-section, .header-section + .container, #site-footer { transition: opacity 0.6s ease; }
+        body.reel-open { overflow: hidden; }
+
+        .price-from {
+            font-size: 0.8rem; color: var(--text-muted); font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2px;
         }
 
         .header-section + .container {
@@ -572,12 +619,20 @@
 <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
+    <div class="reel-bg" aria-hidden="true">
+        <iframe id="reelPlayer" title="Theatre showreel background" referrerpolicy="strict-origin-when-cross-origin"
+            src="https://www.youtube.com/embed/VbX4nv4THoI?autoplay=1&mute=1&loop=1&playlist=VbX4nv4THoI&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&disablekb=1&enablejsapi=1"
+            allow="autoplay; encrypted-media" tabindex="-1"></iframe>
+    </div>
+    <button type="button" class="reel-close" id="reelClose"><i class="fa-solid fa-xmark"></i> Back to rates</button>
+
     <div id="site-header"></div>
 
 <div class="header-section">
     <div class="container">
         <h1>Theatre Production Recording Rates</h1>
         <p class="subtitle">Flexible pricing for schools, community theaters, and parent boosters.</p>
+        <button type="button" class="reel-watch" id="reelWatch"><i class="fa-solid fa-play"></i> Watch the Showreel</button>
     </div>
 </div>
 
@@ -628,8 +683,8 @@
             <h2>The Archive</h2>
             
             <div class="price-area">
+                <span class="price-from">Starting at</span>
                 <span class="price-tag" id="price-1">$375</span>
-                <span class="price-sub">One-Time Fee</span>
                 <span class="price-note">Includes 1 Digital Master</span>
             </div>
 
@@ -649,8 +704,8 @@
             <h2>The Performance</h2>
             
             <div class="price-area">
+                <span class="price-from">Starting at</span>
                 <span class="price-tag" id="price-2">$675</span>
-                <span class="price-sub">One-Time Fee</span>
                 <span class="price-note">Includes 1 Digital Master</span>
             </div>
 
@@ -670,8 +725,8 @@
             <h2>Full Production</h2>
             
             <div class="price-area">
+                <span class="price-from">Starting at</span>
                 <span class="price-tag" id="price-3">$1,200</span>
-                <span class="price-sub">One-Time Fee</span>
                 <span class="price-note">Includes 1 Digital Master</span>
             </div>
 
@@ -788,6 +843,19 @@
             document.getElementById(`price-${i}`).innerText = money(pricingData[mode][i].flat);
         }
     }
+
+    // Showreel: unmute and enlarge the background video via the YouTube iframe API
+    const reelFrame = document.getElementById('reelPlayer');
+    const reelCmd = (func, args = []) => reelFrame.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func, args }), 'https://www.youtube.com');
+    function setReel(open) {
+        document.body.classList.toggle('reel-open', open);
+        if (open) { reelCmd('unMute'); reelCmd('setVolume', [80]); reelCmd('seekTo', [0, true]); reelCmd('playVideo'); }
+        else { reelCmd('mute'); }
+    }
+    document.getElementById('reelWatch').addEventListener('click', () => setReel(true));
+    document.getElementById('reelClose').addEventListener('click', () => setReel(false));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') setReel(false); });
 
     // 2. Toggle Explainer Box
     function toggleExplainer() {
