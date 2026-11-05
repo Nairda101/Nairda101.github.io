@@ -88,16 +88,20 @@ td ul{margin:4px 0 0;padding-left:16px;color:#555;font-size:11.5px}
 <div id="site-header"></div>
 <div class="app">
 <form class="controls" id="form" onsubmit="return false">
-  <h1>Quote Generator</h1>
+  <h1 id="pageTitle">Quote Generator</h1>
   <p class="sub">Pick a service, add-ons and client details. The preview updates live; then save it as a branded PDF.</p>
 
   <fieldset><legend>Client &amp; Event</legend>
+    <label>Document type</label>
+    <select id="docType"><option value="quote">Quote</option><option value="invoice">Invoice</option></select>
     <label>Client name</label><input type="text" id="cName">
     <label>Organization</label><input type="text" id="cOrg">
     <label>Email</label><input type="email" id="cEmail">
+    <label>Phone</label><input type="tel" id="cPhone">
     <label>Project / event name</label><input type="text" id="eName">
     <div class="row"><div><label>Event date</label><input type="date" id="eDate"></div><div><label>Venue</label><input type="text" id="eVenue"></div></div>
-    <div class="row"><div><label>Quote #</label><input type="text" id="qNum"></div><div><label>Valid for (days)</label><input type="number" id="qValid" value="30" min="1"></div></div>
+    <div class="row"><div><label id="numLbl">Quote #</label><input type="text" id="qNum"></div><div><label id="validLbl">Valid for (days)</label><input type="number" id="qValid" value="30" min="1"></div></div>
+    <div class="row" id="invOnly" style="display:none"><div><label>Based on quote #</label><input type="text" id="iRef"></div><div><label>Amount already paid ($)</label><input type="number" id="iPaid" min="0" step="0.01" placeholder="e.g. deposit"></div></div>
   </fieldset>
 
   <fieldset><legend>Service</legend>
@@ -256,21 +260,23 @@ function render(){
   const dv=parseFloat($('disc').value)||0;
   const disc=$('discType').value==='%'?sub*Math.min(dv,100)/100:Math.min(dv,sub);
   const total=sub-disc;
+  const inv=isInv();
+  const paid=Math.min(Math.max(parseFloat($('iPaid').value)||0,0),total);
   const today=new Date();
   const qd=today.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
   const until=new Date(today.getTime()+(parseInt($('qValid').value)||30)*864e5).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
   const ed=$('eDate').value?new Date($('eDate').value+'T12:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'';
   const b=(v,ph)=>v?esc(v):`<span class="blank">${ph}</span>`;
-  const hasStart=L.some(l=>l.starting);
+  const hasStart=!inv&&L.some(l=>l.starting);
   const nm=$('cOrg').value||$('cName').value||'Client';
-  document.title=`Quote ${$('qNum').value||''} - ${nm} - Adrian Miller Media`.replace(/\s+/g,' ');
+  document.title=`${inv?'Invoice':'Quote'} ${$('qNum').value||''} - ${nm} - Adrian Miller Media`.replace(/\s+/g,' ');
 
   $('doc').innerHTML=`
   <div class="dh"><img src="/assets/images/Stacked%20-%20Lighter.png" alt="Miller Media">
-    <div class="meta"><h2>QUOTE</h2><div>${$('qNum').value?'Quote # '+esc($('qNum').value)+'<br>':''}Date: ${qd}<br>Valid until: ${until}</div></div></div>
+    <div class="meta"><h2>${inv?'INVOICE':'QUOTE'}</h2><div>${$('qNum').value?(inv?'Invoice # ':'Quote # ')+esc($('qNum').value)+'<br>':''}${inv&&$('iRef').value?'Ref. quote # '+esc($('iRef').value)+'<br>':''}Date: ${qd}<br>${inv?'Due':'Valid until'}: ${until}</div></div></div>
   <div class="biz"><b>${CONTACT.name}</b><br>${CONTACT.phone} &nbsp;|&nbsp; ${CONTACT.email} &nbsp;|&nbsp; ${CONTACT.web}</div>
   <div class="two">
-    <div><h4>Prepared for</h4><b>${b($('cName').value,'Client name')}</b><br>${$('cOrg').value?esc($('cOrg').value)+'<br>':''}${esc($('cEmail').value)}</div>
+    <div><h4>${inv?'Bill to':'Prepared for'}</h4><b>${b($('cName').value,'Client name')}</b><br>${$('cOrg').value?esc($('cOrg').value)+'<br>':''}${$('cEmail').value?esc($('cEmail').value)+'<br>':''}${esc($('cPhone').value)}</div>
     <div><h4>Project</h4><b>${b($('eName').value,'Project / event')}</b><br>${ed?esc(ed)+'<br>':''}${esc($('eVenue').value)}</div>
   </div>
   <table><thead><tr><th>Description</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Amount</th></tr></thead><tbody>
@@ -279,14 +285,15 @@ function render(){
   </tbody></table>
   <div class="tot"><div><span>Subtotal</span><span>${money(sub)}</span></div>
   ${disc?`<div><span>Discount${$('discType').value==='%'?` (${dv}%)`:''}</span><span>−${money(disc)}</span></div>`:''}
-  <div class="grand"><span>Total</span><span>${money(total)}</span></div></div>
+  ${inv&&paid?`<div><span>Total</span><span>${money(total)}</span></div><div><span>Amount paid</span><span>−${money(paid)}</span></div>`:''}
+  <div class="grand"><span>${inv?(paid?'Balance due':'Total due'):'Total'}</span><span>${money(inv?total-paid:total)}</span></div></div>
   ${hasStart?`<p class="note" style="color:#666">* Listed price is a starting rate; final pricing is confirmed with the client.</p>`:''}
   ${$('notes').value.trim()?`<div class="sec"><h4>Notes</h4><p>${esc($('notes').value)}</p></div>`:''}
   ${$('pay').value.trim()?`<div class="sec"><h4>Payment terms</h4><p>${esc($('pay').value)}</p></div>`:''}
   <div class="closing">
   ${$('terms').value.trim()?`<div class="sec"><h4>Terms &amp; conditions</h4><p>${esc($('terms').value)}</p></div>`:''}
-  <div class="accept"><div>Client signature</div><div>Date</div></div>
-  <div class="foot">Thank you for the opportunity! &nbsp;•&nbsp; ${CONTACT.name} &nbsp;•&nbsp; ${CONTACT.phone} &nbsp;•&nbsp; ${CONTACT.email}</div>
+  ${inv?'':`<div class="accept"><div>Client signature</div><div>Date</div></div>`}
+  <div class="foot">${inv?'Thank you for your business!':'Thank you for the opportunity!'} &nbsp;•&nbsp; ${CONTACT.name} &nbsp;•&nbsp; ${CONTACT.phone} &nbsp;•&nbsp; ${CONTACT.email}</div>
   </div>`;
 }
 
@@ -295,13 +302,24 @@ function renderCustom(){
 }
 
 const KEY='ammQuoteArchive';
-const FIELDS=['cName','cOrg','cEmail','eName','eDate','eVenue','qNum','qValid','cat','tier','override','disc','discType','notes','pay','terms'];
+const FIELDS=['docType','cName','cOrg','cEmail','cPhone','eName','eDate','eVenue','qNum','qValid','iRef','iPaid','cat','tier','override','disc','discType','notes','pay','terms'];
+const PAY_Q='A 50% deposit is due to reserve your date, with the balance due upon delivery of the final files.';
+const PAY_I='Payment is due by the date shown above. Please include the invoice number with your payment.';
+const isInv=()=>$('docType').value==='invoice';
 const loadArchive=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return []}};
 const saveArchive=a=>{try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){alert('Could not save to the archive (browser storage unavailable).')}};
 
-function nextNum(){
+function setDocUI(){
+  const inv=isInv();
+  $('numLbl').textContent=inv?'Invoice #':'Quote #';
+  $('validLbl').textContent=inv?'Payment due in (days)':'Valid for (days)';
+  $('invOnly').style.display=inv?'':'none';
+  $('pageTitle').textContent=inv?'Invoice Generator':'Quote Generator';
+}
+
+function nextNum(type){
   const d=new Date();
-  const prefix=`AMM-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-`;
+  const prefix=`${type==='invoice'?'INV':'AMM'}-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-`;
   const used=loadArchive().map(q=>q.num).filter(n=>n&&n.startsWith(prefix)).map(n=>parseInt(n.slice(prefix.length))||0);
   return prefix+String((used.length?Math.max(...used):0)+1).padStart(2,'0');
 }
@@ -318,7 +336,7 @@ function buildRec(){
   const dv=parseFloat($('disc').value)||0;
   const total=sub-($('discType').value==='%'?sub*Math.min(dv,100)/100:Math.min(dv,sub));
   const fields={};FIELDS.forEach(f=>fields[f]=$(f).value);
-  const rec={num:$('qNum').value,savedAt:new Date().toISOString(),client:$('cOrg').value||$('cName').value,
+  const rec={num:$('qNum').value,type:$('docType').value,savedAt:new Date().toISOString(),client:$('cOrg').value||$('cName').value,
     project:$('eName').value,service:`${RATES[state.cat].label}: ${currentPkg().name}`,total,
     fields,state:JSON.parse(JSON.stringify(state))};
   return rec;
@@ -327,8 +345,8 @@ function buildRec(){
 function renderArchive(){
   const a=loadArchive();
   $('archive').innerHTML=a.length?a.map(q=>`<div class="arow"><div class="t"><b>${esc(q.num)}</b> · ${money(q.total)}<small>${esc(q.client||'No client')} · ${esc(q.service)} · ${new Date(q.savedAt).toLocaleDateString()}</small></div>
-    <button type="button" data-aload="${esc(q.num)}">Open</button><button type="button" class="del" data-adel="${esc(q.num)}">×</button></div>`).join('')
-    :'<p class="note">No saved quotes yet.</p>';
+    <button type="button" data-aload="${esc(q.num)}">Open</button>${q.type==='invoice'?'':`<button type="button" data-ainv="${esc(q.num)}">→ Invoice</button>`}<button type="button" class="del" data-adel="${esc(q.num)}">×</button></div>`).join('')
+    :'<p class="note">No saved documents yet.</p>';
 }
 
 function openQuote(num){
@@ -336,23 +354,42 @@ function openQuote(num){
   applyRec(q);
 }
 
+function makeInvoice(num){
+  const q=loadArchive().find(x=>x.num===num);if(!q)return;
+  applyRec(q);
+  $('docType').value='invoice';
+  $('iRef').value=q.num;$('iPaid').value='';$('qValid').value=14;
+  if($('pay').value===PAY_Q)$('pay').value=PAY_I;
+  $('qNum').value=nextNum('invoice');
+  setDocUI();render();
+}
+
 function applyRec(q){
   state=q.state;
   $('cat').value=q.fields.cat;
-  FIELDS.forEach(f=>{if(f!=='terms')$(f).value=q.fields[f]});
+  FIELDS.forEach(f=>{if(f!=='terms')$(f).value=q.fields[f]??(f==='docType'?'quote':'')});
   termsEdited=true;buildControls();$('terms').value=q.fields.terms;
-  renderCustom();render();window.scrollTo({top:0,behavior:'smooth'});
+  setDocUI();renderCustom();render();window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function init(){
   $('cat').innerHTML=Object.entries(RATES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
-  $('qNum').value=nextNum();
-  buildControls();render();renderArchive();
+  $('qNum').value=nextNum('quote');
+  setDocUI();buildControls();render();renderArchive();
 }
 
+$('docType').addEventListener('change',()=>{
+  const inv=isInv();
+  $('qNum').value=nextNum(inv?'invoice':'quote');
+  $('qValid').value=inv?14:30;
+  if(inv&&$('pay').value===PAY_Q)$('pay').value=PAY_I;
+  if(!inv&&$('pay').value===PAY_I)$('pay').value=PAY_Q;
+  setDocUI();
+});
 $('archive').addEventListener('click',e=>{
   const t=e.target;
   if(t.dataset.aload)openQuote(t.dataset.aload);
+  if(t.dataset.ainv)makeInvoice(t.dataset.ainv);
   if(t.dataset.adel&&confirm('Delete this saved quote?')){saveArchive(loadArchive().filter(q=>q.num!==t.dataset.adel));renderArchive();}
 });
 $('exportA').addEventListener('click',()=>{
