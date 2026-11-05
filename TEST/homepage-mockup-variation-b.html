@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage Mockup - Variation B</title>
+  <style>
+    :root {
+      --bg-ink: #070a13;
+      --bg-deep: #0d1324;
+      --panel: rgba(12, 18, 34, 0.86);
+      --text-main: #f2f5ff;
+      --text-muted: #aeb9d3;
+      --line: rgba(173, 190, 245, 0.28);
+      --violet: #7b2cbf;
+      --blue: #4361ee;
+      --mint: #00d1b4;
+      --amber: #ffb454;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      background: radial-gradient(circle at 10% 8%, #172543 0%, var(--bg-ink) 45%, #05070d 100%);
+      color: var(--text-main);
+      font-family: "Open Sans", "Segoe UI", sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 999px;
+      filter: blur(70px);
+      opacity: 0.35;
+    }
+
+    body::before {
+      width: 340px;
+      height: 340px;
+      background: var(--violet);
+      top: -80px;
+      left: -60px;
+    }
+
+    body::after {
+      width: 420px;
+      height: 420px;
+      background: var(--blue);
+      right: -120px;
+      top: 30%;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      width: min(1240px, 94vw);
+      margin: 2.5rem auto 2rem;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 1rem;
+    }
+
+    .left-stack {
+      display: grid;
+      gap: 0.9rem;
+      grid-template-rows: auto auto;
+    }
+
+    .title-panel {
+      background: linear-gradient(145deg, rgba(14, 23, 42, 0.9), rgba(9, 14, 26, 0.88));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 2.1rem;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(10px);
+      animation: rise 620ms ease both;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--mint);
+      margin-bottom: 0.7rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: currentColor;
+      opacity: 0.8;
+    }
+
+    h1 {
+      font-family: "Montserrat", "Arial Black", sans-serif;
+      font-size: clamp(2.1rem, 4.8vw, 4.6rem);
+      line-height: 0.98;
+      margin-bottom: 1rem;
+      text-wrap: balance;
+    }
+
+    .title-panel p {
+      color: var(--text-muted);
+      font-size: clamp(0.96rem, 1.15vw, 1.12rem);
+      max-width: 62ch;
+      margin-bottom: 1.2rem;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .btn {
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 0.78rem 1.25rem;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-main {
+      color: #fff;
+      background: linear-gradient(90deg, var(--violet), var(--blue));
+      box-shadow: 0 8px 24px rgba(98, 76, 222, 0.38);
+    }
+
+    .btn-ghost {
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.6rem;
+      animation: rise 760ms ease both;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.95rem;
+    }
+
+    .stat strong {
+      display: block;
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.35rem;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat span {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .collage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+      animation: rise 900ms ease both;
+    }
+
+    .tile {
+      min-height: 215px;
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
+      transform: translateZ(0);
+    }
+
+    .tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+      filter: saturate(1.06) contrast(1.06);
+    }
+
+    .tile:hover img {
+      transform: scale(1.06);
+    }
+
+    .tile.tall {
+      grid-row: span 2;
+      min-height: 445px;
+    }
+
+    .tile::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.6));
+    }
+
+    .tile .tag {
+      position: absolute;
+      left: 0.65rem;
+      bottom: 0.65rem;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.6);
+      color: #f4f7ff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.55rem;
+      font-weight: 700;
+    }
+
+    .section {
+      width: min(1240px, 94vw);
+      margin: 2.4rem auto;
+      padding-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 1rem;
+      margin-bottom: 0.95rem;
+    }
+
+    .section-header h2 {
+      font-family: "Montserrat", sans-serif;
+      font-size: clamp(1.25rem, 2.3vw, 1.9rem);
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      max-width: 54ch;
+      font-size: 0.95rem;
+    }
+
+    .mosaic {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .mosaic-card {
+      min-height: 210px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      background: var(--bg-deep);
+    }
+
+    .mosaic-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.92;
+    }
+
+    .mosaic-card .caption {
+      position: absolute;
+      inset: auto 0.7rem 0.7rem;
+      font-size: 0.82rem;
+      color: #f3f6ff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+    }
+
+    .mosaic-card .pill {
+      position: absolute;
+      top: 0.65rem;
+      left: 0.65rem;
+      font-size: 0.68rem;
+      border-radius: 999px;
+      padding: 0.24rem 0.52rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #0c1122;
+      background: var(--amber);
+    }
+
+    .workflow {
+      margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+    }
+
+    .workflow-item {
+      border-radius: 12px;
+      border: 1px dashed rgba(177, 194, 255, 0.38);
+      background: rgba(10, 16, 30, 0.82);
+      padding: 0.85rem 0.9rem;
+    }
+
+    .workflow-item strong {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d8e2ff;
+      margin-bottom: 0.25rem;
+    }
+
+    .workflow-item p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .mosaic {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .mosaic-card:first-child {
+        grid-column: 1 / -1;
+      }
+
+      .workflow {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        margin-top: 1.2rem;
+      }
+
+      .title-panel {
+        padding: 1.35rem;
+      }
+
+      .stats-row,
+      .collage,
+      .mosaic {
+        grid-template-columns: 1fr;
+      }
+
+      .tile.tall {
+        min-height: 240px;
+        grid-row: auto;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="left-stack">
+        <article class="title-panel">
+          <span class="eyebrow">Homepage Direction B</span>
+          <h1>Image-Led Narrative Without a Video Hero</h1>
+          <p>
+            This variation uses a high-impact collage and layered content blocks instead of a looping background video.
+            It keeps motion subtle while still feeling cinematic and premium.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-main" href="#">Explore Portfolio</a>
+            <a class="btn btn-ghost" href="#">See BTS Process</a>
+          </div>
+        </article>
+
+        <div class="stats-row">
+          <div class="stat">
+            <strong>90+</strong>
+            <span>Events Captured</span>
+          </div>
+          <div class="stat">
+            <strong>4K</strong>
+            <span>Delivery Workflow</span>
+          </div>
+          <div class="stat">
+            <strong>48h</strong>
+            <span>Rush Available</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="collage" aria-label="Showcase collage">
+        <figure class="tile tall">
+          <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1200&q=80" alt="Live performance lighting with audience">
+          <span class="tag">Concert</span>
+        </figure>
+        <figure class="tile">
+          <img src="https://images.unsplash.com/photo-1516307365426-bea591f05011?auto=format&fit=crop&w=900&q=80" alt="Camera operator filming performance">
+          <span class="tag">BTS</span>
+        </figure>
+        <figure class="tile">
+          <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80" alt="Video editing timeline on monitor">
+          <span class="tag">Post</span>
+        </figure>
+      </section>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Snippet-First Portfolio Layout</h2>
+        <p>Use this block as a rotating highlight zone for project stills, short vertical clips, and client outcomes.</p>
+      </div>
+
+      <div class="mosaic">
+        <article class="mosaic-card">
+          <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=1400&q=80" alt="Festival crowd and stage lights">
+          <span class="pill">Feature</span>
+          <p class="caption">Full-event capture with cinematic recap and social cutdowns.</p>
+        </article>
+        <article class="mosaic-card">
+          <img src="https://images.unsplash.com/photo-1487215078519-e21cc028cb29?auto=format&fit=crop&w=1000&q=80" alt="Dance performance on stage">
+          <span class="pill">Dance</span>
+          <p class="caption">Recital package with choreo-safe wide coverage.</p>
+        </article>
+        <article class="mosaic-card">
+          <img src="https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=1000&q=80" alt="Audio controls and mixing board">
+          <span class="pill">Audio</span>
+          <p class="caption">Direct board feed and post mix for clean delivery.</p>
+        </article>
+      </div>
+
+      <div class="workflow">
+        <article class="workflow-item">
+          <strong>Capture</strong>
+          <p>Wide masters plus intentional close-up coverage during key moments.</p>
+        </article>
+        <article class="workflow-item">
+          <strong>Shape</strong>
+          <p>Editing and color passes tuned to rhythm, pacing, and performance energy.</p>
+        </article>
+        <article class="workflow-item">
+          <strong>Deliver</strong>
+          <p>Single-file master plus optional social snippets and parent-friendly exports.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
