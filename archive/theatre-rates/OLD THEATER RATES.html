@@ -47,52 +47,7 @@
         .header-section {
             text-align: center;
             padding: 1rem 0 50rem 0;
-            background: transparent;
-        }
-
-        /* --- SIZZLE REEL BACKGROUND --- */
-        .reel-bg {
-            position: fixed; inset: 0; z-index: -1; overflow: hidden;
-            background: var(--bg-dark) url('/assets/images/curtains.png') center / cover no-repeat;
-            pointer-events: none;
-        }
-        .reel-bg video {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0; transition: opacity 0.8s ease;
-        }
-        .reel-bg.is-playing video { opacity: 0.8; }
-        .reel-bg::after {
-            content: ""; position: absolute; inset: 0;
-            background: linear-gradient(180deg, rgba(10,14,23,0.15) 0%, rgba(10,14,23,0.4) 60%, rgba(10,14,23,0.75) 100%);
-        }
-        .reel-watch {
-            display: inline-flex; align-items: center; gap: 10px; margin-top: 0.5rem;
-            padding: 0.75rem 1.6rem; border-radius: 50px; cursor: pointer;
-            background: rgba(10,14,23,0.55); border: 2px solid var(--accent-secondary);
-            color: #fff; font: 700 0.9rem 'Montserrat', sans-serif;
-            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
-            backdrop-filter: blur(4px);
-        }
-        .reel-watch:hover { background: var(--accent-secondary); box-shadow: 0 0 20px rgba(67, 97, 238, 0.5); }
-
-        /* Showreel popup */
-        .reel-modal {
-            display: none; position: fixed; inset: 0; z-index: 2000;
-            background: rgba(5, 7, 12, 0.92); align-items: center; justify-content: center; padding: 1rem;
-        }
-        .reel-modal.is-open { display: flex; }
-        .reel-modal-inner { position: relative; width: min(1000px, 100%); aspect-ratio: 16 / 9; }
-        .reel-modal-inner iframe { width: 100%; height: 100%; border: 0; border-radius: 10px; box-shadow: 0 0 40px rgba(0,0,0,0.6); }
-        .reel-modal-close {
-            position: absolute; top: -3rem; right: 0; background: none; border: none;
-            color: #fff; font-size: 1.8rem; cursor: pointer;
-        }
-        body.modal-open { overflow: hidden; }
-
-        @media (prefers-reduced-motion: reduce) { .reel-bg video { display: none; } }
-        .price-from {
-            font-size: 0.8rem; color: var(--text-muted); font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2px;
+            background: radial-gradient(circle at top center, #1e2538 0%, #0f1420 30%, #0b1018 60%, var(--bg-dark) 100%);
         }
 
         .header-section + .container {
@@ -119,8 +74,7 @@
 
         /* --- COLLAPSIBLE EXPLAINER (UPDATED) --- */
         .explainer-box {
-            background: rgba(10, 14, 23, 0.88);
-            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.03);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             margin-bottom: 3rem;
@@ -372,16 +326,6 @@
             background: var(--accent-secondary); box-shadow: 0 0 15px rgba(67, 97, 238, 0.5);
         }
 
-        .license-box {
-            margin-top: 2rem; padding: 1.5rem 2rem; border-radius: 12px;
-            background: linear-gradient(rgba(255, 107, 107, 0.08), rgba(255, 107, 107, 0.08)), rgba(10, 14, 23, 0.88);
-            backdrop-filter: blur(8px); border: 1px solid rgba(255, 107, 107, 0.4);
-            border-left: 4px solid #ff6b6b;
-        }
-        .license-box h4 { margin: 0 0 0.75rem; font-size: 1.05rem; color: #ffd0d0; }
-        .license-box p { margin: 0 0 0.75rem; font-size: 0.9rem; color: #d8d8d8; }
-        .license-box p:last-child { margin-bottom: 0; }
-
         /* --- MOBILE CAROUSEL (ONLY AFFECTS RATE CARDS) --- */
         .pricing-carousel {
             position: relative;
@@ -457,8 +401,7 @@
         /* --- ADD ONS & HYBRID --- */
         .addons-section {
             margin-top: 4rem;
-            background: rgba(10, 14, 23, 0.88);
-            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.03);
             padding: 2rem;
             border-radius: 12px;
             border-left: 4px solid var(--accent-secondary);
@@ -480,7 +423,6 @@
             margin-top: 2rem;
             padding: 1.5rem;
             background: linear-gradient(90deg, #101522 0%, #161b2e 100%);
-            backdrop-filter: blur(8px);
             border: 1px dashed var(--accent-primary);
             border-radius: 8px;
             display: flex;
@@ -588,7 +530,7 @@
             }
 
             .header-section {
-                padding: 0.5rem 0 37rem 0;
+                padding: 0.5rem 0 35rem 0;
             }
             
             .header-section + .container {
@@ -609,7 +551,7 @@
         
         @media (max-width: 480px) {
             .header-section {
-                padding: 0.5rem 0 25rem 0;
+                padding: 0.5rem 0 22rem 0;
             }
             
             .header-section + .container {
@@ -621,25 +563,12 @@
 <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
-    <div class="reel-bg" aria-hidden="true">
-        <video id="reelVideo" autoplay muted loop playsinline preload="auto" poster="/assets/images/curtains.png">
-            <source src="/assets/video/Web-overlay_720%201.5mbs.mp4" type="video/mp4">
-        </video>
-    </div>
-
-    <div class="reel-modal" id="reelModal" role="dialog" aria-modal="true" aria-label="Theatre showreel">
-        <div class="reel-modal-inner">
-            <button type="button" class="reel-modal-close" id="reelClose" aria-label="Close showreel"><i class="fa-solid fa-xmark"></i></button>
-            <div id="reelSlot" style="width:100%;height:100%;"></div>
-        </div>
-    </div>
     <div id="site-header"></div>
 
 <div class="header-section">
     <div class="container">
         <h1>Theatre Production Recording Rates</h1>
         <p class="subtitle">Flexible pricing for schools, community theaters, and parent boosters.</p>
-        <button type="button" class="reel-watch" id="reelWatch"><i class="fa-solid fa-play"></i> Watch the Showreel</button>
     </div>
 </div>
 
@@ -655,16 +584,16 @@
         <div class="explainer-content">
             <div class="explainer-grid">
                 <div class="explainer-item">
-                    <h4>1. One Flat Fee</h4>
-                    <p>You pay a single production fee for filming, editing, and your chosen production value. That covers on-site time and post-production in full.</p>
+                    <h4>1. Flat Rate (Best for Schools/Organizations)</h4>
+                    <p>The organization pays a single fee. You receive the master files and full rights to distribute the video to cast, crew, and students for free.</p>
                 </div>
                 <div class="explainer-item">
-                    <h4>2. One Digital Master Included</h4>
-                    <p>You receive one final master file, delivered digitally or on a physical drive. Need more copies for cast and families? Additional copies are available as add-ons.</p>
+                    <h4>2. Per Copy (Best for Parents/Communities)</h4>
+                    <p>No upfront cost to the school. Patrons purchase individual copies directly. <br><em>Note: This option requires a minimum number of pre-orders to confirm booking.</em></p>
                 </div>
             </div>
             <div class="hybrid-note">
-                <i class="fa-solid fa-circle-info"></i> <strong>Splitting the cost?</strong> Schools and parent groups often share the fee. You are welcome to collect payments from families yourself. Additional copies are available as <a href="#addons" onclick="event.stopPropagation()">add-ons below</a>.
+                <i class="fa-solid fa-circle-info"></i> <strong>Hybrid Option:</strong> The school or a parent can pay a base fee upfront to lower the cost per copy for everyone else. <a href="/request/">Submit a request for a custom quote.</a>
             </div>
             <div class="hybrid-note" style="border-top-color: #ff6b6b; color: #ffd0d0;">
                 <i class="fa-solid fa-scale-balanced"></i> <strong>Don't forget your video license:</strong> To protect your organization and the show's creators, please remember that video recording rights must be secured separately from your performance rights. It is the hosting organization's responsibility to purchase this authorization from the distributor (e.g., Music Theatre International, Concord Theatricals, Samuel French, etc.) prior to booking. <a href="/request/">Please reach out</a> to discuss your options!
@@ -689,10 +618,16 @@
         <div class="price-card" data-card-index="0">
             <h2>The Archive</h2>
             
+            <div class="card-toggle-wrapper mode-flat" id="toggle-1" onclick="toggleCard(1)">
+                <div class="toggle-glider"></div>
+                <div class="toggle-label label-flat">Flat Rate</div>
+                <div class="toggle-label label-copy">Per Copy</div>
+            </div>
+
             <div class="price-area">
-                <span class="price-from">Starting at</span>
                 <span class="price-tag" id="price-1">$375</span>
-                <span class="price-note">Includes 1 Digital Master</span>
+                <span class="price-sub" id="sub-1">One-Time Fee</span>
+                <span class="price-note" id="note-1">Includes Distribution Rights</span>
             </div>
 
             <ul class="features">
@@ -710,10 +645,16 @@
         <div class="price-card" data-card-index="1" style="border-top-color: var(--accent-primary); box-shadow: 0 0 15px rgba(123, 44, 191, 0.1);">
             <h2>The Performance</h2>
             
+            <div class="card-toggle-wrapper mode-flat" id="toggle-2" onclick="toggleCard(2)">
+                <div class="toggle-glider"></div>
+                <div class="toggle-label label-flat">Flat Rate</div>
+                <div class="toggle-label label-copy">Per Copy</div>
+            </div>
+
             <div class="price-area">
-                <span class="price-from">Starting at</span>
                 <span class="price-tag" id="price-2">$675</span>
-                <span class="price-note">Includes 1 Digital Master</span>
+                <span class="price-sub" id="sub-2">One-Time Fee</span>
+                <span class="price-note" id="note-2">Includes Distribution Rights</span>
             </div>
 
             <ul class="features">
@@ -725,16 +666,22 @@
                 <li>Best value!</li>
             </ul>
 
-            <a href="/request/" class="card-btn" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">            Book This</a>
-                    </div>
+            <a href="/request/" class="card-btn" style="background: var(--accent-secondary); border-color: var(--accent-secondary);">Book This</a>
+        </div>
 
         <div class="price-card" data-card-index="2">
             <h2>Full Production</h2>
             
+            <div class="card-toggle-wrapper mode-flat" id="toggle-3" onclick="toggleCard(3)">
+                <div class="toggle-glider"></div>
+                <div class="toggle-label label-flat">Flat Rate</div>
+                <div class="toggle-label label-copy">Per Copy</div>
+            </div>
+
             <div class="price-area">
-                <span class="price-from">Starting at</span>
                 <span class="price-tag" id="price-3">$1,200</span>
-                <span class="price-note">Includes 1 Digital Master</span>
+                <span class="price-sub" id="sub-3">One-Time Fee</span>
+                <span class="price-note" id="note-3">Includes Distribution Rights</span>
             </div>
 
             <ul class="features">
@@ -759,35 +706,13 @@
         </div>
     </div>
 
-    <div class="license-box">
-        <h4><i class="fa-solid fa-file-shield"></i> Digital Master: Terms of Use</h4>
-        <p>The digital master file is provided for <strong>private, archival use by the cast, crew, and their immediate families</strong>. The Purchaser agrees that this video may not be uploaded publicly to YouTube, Vimeo, or social media platforms, or sold for commercial profit.</p>
-        <p>The Purchaser assumes all liability for ensuring that distribution of this file adheres to the theatrical licensing agreements (e.g., MTI, Concord, Disney) secured by the host organization.</p>
-    </div>
-
-    <div class="addons-section" id="addons">
+    <div class="addons-section">
         <h3 style="margin-bottom: 1.5rem;">Optional Add-Ons</h3>
-
-        <div class="addon-item">
-            <div class="addon-title">
-                <h4>Additional Digital Copy</h4>
-                <p>An extra copy of the final file, delivered by download link.</p>
-            </div>
-            <div class="addon-price">+$15 ea.</div>
-        </div>
-
-        <div class="addon-item">
-            <div class="addon-title">
-                <h4>Additional USB / Disc Copy</h4>
-                <p>An extra physical copy of the final file.</p>
-            </div>
-            <div class="addon-price">+$25 ea.</div>
-        </div>
         
         <div class="addon-item">
             <div class="addon-title">
                 <h4>Additional Night Capture</h4>
-                <p>Add an additional performance recording. <em>Full Production package only.</em></p>
+                <p>Add an additional performance recording to the Full Production package.</p>
             </div>
             <div class="addon-price">+$250</div>
         </div>
@@ -812,7 +737,7 @@
         <div class="hybrid-icon"><i class="fa-solid fa-handshake-simple"></i></div>
         <div class="hybrid-text">
             <h4>Need a Custom Fit?</h4>
-            <p>Double cast, multiple venues, or want families to chip in for the fee? <a href="/request/">Submit a request for a quote.</a></p>
+            <p>Is your show double cast? Need a hybrid payment options? (e.g. School pays 50%, Parents pay 50%). <a href="/request/">Submit a request for a quote.</a></p>
         </div>
     </div>
 
@@ -822,18 +747,16 @@
    // THEATRE DATA STORE
     const pricingData = {
         standard: {
-            1: { flat: 375 },
-            2: { flat: 675 },
-            3: { flat: 1200 }
+            1: { flat: "$375", copyPrice: "$20", minSold: "19", note: "Includes Distribution Rights", copyNote: "Requires 19 Pre-Orders" },
+            2: { flat: "$675", copyPrice: "$25", minSold: "27", note: "Includes Distribution Rights", copyNote: "Requires 27 Pre-Orders" },
+            3: { flat: "$1,200", copyPrice: "$30", minSold: "40", note: "Includes Distribution Rights", copyNote: "Requires 40 Pre-Orders" }
         },
         junior: {
-            1: { flat: 250 },
-            2: { flat: 450 },
-            3: { flat: 800 }
+            1: { flat: "$250", copyPrice: "$20", minSold: "13", note: "Includes Distribution Rights", copyNote: "Requires 13 Pre-Orders" },
+            2: { flat: "$450", copyPrice: "$25", minSold: "18", note: "Includes Distribution Rights", copyNote: "Requires 18 Pre-Orders" },
+            3: { flat: "$800", copyPrice: "$30", minSold: "27", note: "Includes Distribution Rights", copyNote: "Requires 27 Pre-Orders" }
         }
     };
-
-    const money = n => '$' + n.toLocaleString('en-US');
 
     let currentMode = 'standard'; // 'standard' or 'junior'
 
@@ -847,34 +770,47 @@
 
         // Refresh all cards
         for (let i = 1; i <= 3; i++) {
-            document.getElementById(`price-${i}`).innerText = money(pricingData[mode][i].flat);
+            updateCardDisplay(i);
         }
     }
 
-    // Background video: fade in once it is actually playing
-    const bgVideo = document.getElementById('reelVideo');
-    const bgBox = document.querySelector('.reel-bg');
-    bgVideo.addEventListener('playing', () => bgBox.classList.add('is-playing'));
-    bgVideo.play().catch(() => {});
+    // 2. Toggle Individual Card (Flat vs Copy)
+    function toggleCard(tier) {
+        const toggle = document.getElementById(`toggle-${tier}`);
+        const isFlat = toggle.classList.contains('mode-flat');
+        
+        if (isFlat) {
+            toggle.classList.remove('mode-flat');
+            toggle.classList.add('mode-copy');
+        } else {
+            toggle.classList.remove('mode-copy');
+            toggle.classList.add('mode-flat');
+        }
+        updateCardDisplay(tier);
+    }
 
-    // Showreel popup: YouTube embed is created on click and removed on close
-    const reelModal = document.getElementById('reelModal');
-    const reelSlot = document.getElementById('reelSlot');
-    function openReel() {
-        reelSlot.innerHTML = '<iframe title="Theatre Production Showreel" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen src="https://www.youtube.com/embed/VbX4nv4THoI?autoplay=1&rel=0"></iframe>';
-        reelModal.classList.add('is-open');
-        document.body.classList.add('modal-open');
+    // 3. Update Text Logic
+    function updateCardDisplay(tier) {
+        const toggle = document.getElementById(`toggle-${tier}`);
+        const isFlat = toggle.classList.contains('mode-flat');
+        const data = pricingData[currentMode][tier];
+
+        const priceEl = document.getElementById(`price-${tier}`);
+        const subEl = document.getElementById(`sub-${tier}`);
+        const noteEl = document.getElementById(`note-${tier}`);
+
+        if (isFlat) {
+            priceEl.innerText = data.flat;
+            subEl.innerText = "One-Time Fee";
+            noteEl.innerText = data.note;
+        } else {
+            priceEl.innerText = data.copyPrice;
+            subEl.innerText = "Per Copy";
+            noteEl.innerText = data.copyNote;
+        }
     }
-    function closeReel() {
-        reelModal.classList.remove('is-open');
-        document.body.classList.remove('modal-open');
-        reelSlot.innerHTML = '';
-    }
-    document.getElementById('reelWatch').addEventListener('click', openReel);
-    document.getElementById('reelClose').addEventListener('click', closeReel);
-    reelModal.addEventListener('click', e => { if (e.target === reelModal) closeReel(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReel(); });
-    // 2. Toggle Explainer Box
+
+    // 4. Toggle Explainer Box
     function toggleExplainer() {
         const box = document.getElementById('explainer');
         box.classList.toggle('is-open');
