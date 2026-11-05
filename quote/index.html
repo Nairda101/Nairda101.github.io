@@ -259,7 +259,7 @@ function render(){
   $('doc').innerHTML=`
   <div class="dh"><img src="/assets/images/Stacked%20-%20Lighter.png" alt="Miller Media">
     <div class="meta"><h2>QUOTE</h2><div>${$('qNum').value?'Quote # '+esc($('qNum').value)+'<br>':''}Date: ${qd}<br>Valid until: ${until}</div></div></div>
-  <div class="biz"><b>${CONTACT.name}</b><br>${CONTACT.email} &nbsp;|&nbsp; ${CONTACT.web}</div>
+  <div class="biz"><b>${CONTACT.name}</b><br>${CONTACT.phone} &nbsp;|&nbsp; ${CONTACT.email} &nbsp;|&nbsp; ${CONTACT.web}</div>
   <div class="two">
     <div><h4>Prepared for</h4><b>${b($('cName').value,'Client name')}</b><br>${$('cOrg').value?esc($('cOrg').value)+'<br>':''}${esc($('cEmail').value)}</div>
     <div><h4>Project</h4><b>${b($('eName').value,'Project / event')}</b><br>${ed?esc(ed)+'<br>':''}${esc($('eVenue').value)}</div>
@@ -277,7 +277,7 @@ function render(){
   <div class="closing">
   ${$('terms').value.trim()?`<div class="sec"><h4>Terms &amp; conditions</h4><p>${esc($('terms').value)}</p></div>`:''}
   <div class="accept"><div>Client signature</div><div>Date</div></div>
-  <div class="foot">Thank you for the opportunity! &nbsp;•&nbsp; ${CONTACT.name} &nbsp;•&nbsp; ${CONTACT.email}</div>
+  <div class="foot">Thank you for the opportunity! &nbsp;•&nbsp; ${CONTACT.name} &nbsp;•&nbsp; ${CONTACT.phone} &nbsp;•&nbsp; ${CONTACT.email}</div>
   </div>`;
 }
 
