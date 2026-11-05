@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Quote Generator | Adrian Miller Media</title>
+<link rel="icon" type="image/png" href="/assets/images/MillerMediaLogo.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--card:#111625;--accent:#7b2cbf;--accent2:#4361ee;--muted:#b0b8c4;--border:#2a3040;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#fff;font-family:'Open Sans',sans-serif;}
+h1,h2,h3,h4{font-family:'Montserrat',sans-serif;margin:0}
+.app{display:grid;grid-template-columns:minmax(320px,430px) 1fr;gap:24px;max-width:1400px;margin:0 auto;padding:24px;align-items:start}
+.controls{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}
+.controls h1{font-size:1.3rem;margin-bottom:4px}
+.controls .sub{color:var(--muted);font-size:.85rem;margin:0 0 16px}
+fieldset{border:0;border-top:1px solid var(--border);margin:16px 0 0;padding:14px 0 0}
+legend{font-family:'Montserrat';font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);padding:0 8px 0 0}
+label{display:block;font-size:.8rem;color:var(--muted);margin:10px 0 4px}
+input[type=text],input[type=email],input[type=date],input[type=number],select,textarea{width:100%;background:#0a0e17;color:#fff;border:1px solid var(--border);border-radius:6px;padding:8px 10px;font:inherit;font-size:.9rem}
+textarea{min-height:90px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--border);border-radius:8px;margin-top:8px;cursor:pointer;color:#fff;font-size:.88rem}
+.opt.sel{border-color:var(--accent2);background:rgba(67,97,238,.12)}
+.opt.off{opacity:.4;cursor:not-allowed}
+.opt input{margin-top:3px}
+.opt .t{flex:1}.opt .p{font-weight:700;white-space:nowrap}
+.opt small{display:block;color:var(--muted);font-size:.75rem;margin-top:2px}
+.qty{width:64px!important;padding:4px 6px!important}
+.btn{display:inline-block;border:0;border-radius:8px;padding:12px 18px;font:700 .9rem 'Montserrat';color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));cursor:pointer;width:100%;margin-top:16px}
+.btn.alt{background:transparent;border:1px solid var(--border);margin-top:8px}
+.note{font-size:.75rem;color:var(--muted);margin-top:8px}
+.addbtn{background:none;border:1px dashed var(--border);color:var(--muted);border-radius:6px;padding:6px 10px;cursor:pointer;margin-top:8px;font:inherit;font-size:.8rem}
+.arow{display:flex;gap:8px;align-items:center;border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-top:6px;font-size:.8rem}
+.arow .t{flex:1;min-width:0}.arow small{display:block;color:var(--muted)}
+.arow button{background:none;border:1px solid var(--border);color:#fff;border-radius:6px;padding:4px 8px;cursor:pointer;font-size:.75rem}
+.arow button.del{color:#f55}
+.cust{display:grid;grid-template-columns:1fr 90px 28px;gap:6px;margin-top:6px}
+.cust button{background:none;border:0;color:#f55;cursor:pointer;font-size:1.1rem}
+
+/* Quote document (always light for print) */
+.doc{font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-variant-ligatures:none;font-kerning:normal;text-rendering:geometricPrecision;background:#fff;color:#1b1f2a;border-radius:6px;padding:48px 52px;font-size:13px;line-height:1.5;min-height:1000px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.doc h2,.doc h3,.doc h4{color:#1b1f2a}
+.dh{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;border-bottom:4px solid;border-image:linear-gradient(90deg,#7b2cbf,#4361ee) 1;padding-bottom:18px}
+.dh img{height:84px;width:auto}
+.dh .meta{text-align:right}
+.dh .meta h2{font-size:28px;letter-spacing:.12em;color:#7b2cbf}
+.dh .meta div{font-size:12px;color:#555}
+.biz{margin-top:14px;font-size:12px;color:#555}
+.biz b{color:#1b1f2a;font-family:'Montserrat'}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:22px}
+.doc h4{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:#4361ee;margin-bottom:4px}
+.doc .blank{color:#aaa;font-style:italic}
+table{width:100%;border-collapse:collapse;margin-top:24px}
+th{background:#f1f2f8;text-align:left;font:700 10.5px 'Montserrat';text-transform:uppercase;letter-spacing:.08em;padding:8px 10px;color:#333}
+td{padding:10px;border-bottom:1px solid #e4e6ee;vertical-align:top}
+th.r,td.r{text-align:right;white-space:nowrap}
+td .d{display:block;font-size:11.5px;color:#666;margin-top:2px}
+td ul{margin:4px 0 0;padding-left:16px;color:#555;font-size:11.5px}
+.tot{margin-left:auto;width:290px;margin-top:12px}
+.tot div{display:flex;justify-content:space-between;padding:5px 10px}
+.tot .grand{background:linear-gradient(135deg,#7b2cbf,#4361ee);color:#fff;font:700 15px 'Montserrat';border-radius:4px;margin-top:6px;padding:10px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sec{margin-top:24px}
+.sec h4{break-after:avoid}
+.sec p{margin:2px 0;white-space:pre-line;color:#444;font-size:12px}
+.foot{margin-top:30px;padding-top:12px;border-top:1px solid #e4e6ee;text-align:center;color:#777;font-size:11px}
+.accept{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:34px;break-inside:avoid}
+.accept div{border-top:1px solid #333;padding-top:4px;font-size:11px;color:#555}
+
+@media screen and (max-width:980px){.app{grid-template-columns:1fr}.controls{position:static;max-height:none}.doc{padding:24px 18px;overflow-x:auto}.dh{flex-direction:column}.dh .meta{text-align:left}.two{grid-template-columns:1fr}}
+@media print{
+  @page{margin:14mm}
+  body{background:#fff}
+  .controls{display:none!important}
+  .app{display:block;padding:0;max-width:none}
+  .doc{box-shadow:none;border-radius:0;padding:0;min-height:0;font-size:12px}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  tr{break-inside:avoid}
+  .closing{break-inside:avoid;page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<form class="controls" id="form" onsubmit="return false">
+  <h1>Quote Generator</h1>
+  <p class="sub">Pick a service, add-ons and client details. The preview updates live; then save it as a branded PDF.</p>
+
+  <fieldset><legend>Client &amp; Event</legend>
+    <label>Client name</label><input type="text" id="cName">
+    <label>Organization</label><input type="text" id="cOrg">
+    <label>Email</label><input type="email" id="cEmail">
+    <label>Project / event name</label><input type="text" id="eName">
+    <div class="row"><div><label>Event date</label><input type="date" id="eDate"></div><div><label>Venue</label><input type="text" id="eVenue"></div></div>
+    <div class="row"><div><label>Quote #</label><input type="text" id="qNum"></div><div><label>Valid for (days)</label><input type="number" id="qValid" value="30" min="1"></div></div>
+  </fieldset>
+
+  <fieldset><legend>Service</legend>
+    <label>Category</label>
+    <select id="cat"></select>
+    <div id="tierWrap"><label>Show length</label>
+      <select id="tier"><option value="standard">Standard (2+ hours)</option><option value="junior">Junior (under 75 min)</option></select></div>
+    <div id="pkgs"></div>
+    <label>Package price override (optional, e.g. "Starting at" items)</label>
+    <input type="number" id="override" min="0" step="1" placeholder="Leave blank to use listed price">
+  </fieldset>
+
+  <fieldset><legend>Add-ons</legend>
+    <div id="addons"></div>
+  </fieldset>
+
+  <fieldset><legend>Custom items &amp; discount</legend>
+    <div id="custom"></div>
+    <button type="button" class="addbtn" id="addCustom">+ Add custom line item</button>
+    <div class="row"><div><label>Discount</label><input type="number" id="disc" min="0" step="1" value="0"></div>
+    <div><label>Type</label><select id="discType"><option value="$">$ amount</option><option value="%">% percent</option></select></div></div>
+  </fieldset>
+
+  <fieldset><legend>Notes &amp; Terms</legend>
+    <label>Notes to client</label><textarea id="notes"></textarea>
+    <label>Payment terms</label><textarea id="pay">A 50% deposit is due to reserve your date, with the balance due upon delivery of the final files.</textarea>
+    <label>Terms &amp; conditions (editable, defaults per category)</label><textarea id="terms" style="min-height:160px"></textarea>
+  </fieldset>
+
+  <fieldset><legend>Quote Archive</legend>
+    <div id="archive"></div>
+    <div class="row" style="margin-top:8px">
+      <button type="button" class="addbtn" id="exportA">Export backup</button>
+      <button type="button" class="addbtn" id="importA">Import backup</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json" hidden>
+    <p class="note">Saved automatically each time you click Download PDF. Stored in this browser only, so export a backup now and then.</p>
+  </fieldset>
+
+  <button type="button" class="btn" id="pdf">Download PDF</button>
+  <button type="button" class="btn alt" id="reset">Reset</button>
+  <p class="note">In the print dialog choose “Save as PDF” and turn off “Headers and footers” for the cleanest result.</p>
+</form>
+
+<main><article class="doc" id="doc"></article></main>
+</div>
+
+<script>
+const CONTACT = { name:'Adrian Miller Media', email:'adrianmillermedia@gmail.com', web:'www.adrianmillermedia.com' };
+
+// Keep in sync with the rates pages.
+const THEATRE_LICENSE = "Video license: recording rights must be obtained separately from your performance license (e.g. MTI, Concord, Samuel French). The client is responsible for securing them before filming.";
+const THEATRE_TERMS = "Digital master: one file for private, archival use by the cast, crew and their immediate families. The Purchaser agrees this video may not be uploaded publicly to YouTube, Vimeo or social media platforms, or sold for commercial profit. The Purchaser assumes all liability for ensuring distribution of this file adheres to the theatrical licensing agreements (e.g. MTI, Concord, Disney) secured by the host organization.";
+const GENERIC_TERMS = "Base pricing covers the listed recording time; additional time is billed in addition. Final files are for the client's personal and organizational use. Rush and travel are quoted separately where noted.";
+
+const RATES = {
+  theatre:{ label:'Theatre', tiers:{
+      standard:{Archive:375,Performance:675,'Full Production':1200},
+      junior:{Archive:250,Performance:450,'Full Production':800}},
+    packages:[
+      {id:'Archive',name:'Archive',desc:'1 camera wide, 1 night, direct board audio, 1 digital master',inc:['1 camera, wide shot','1 night of recording','Direct board audio','1 digital master file']},
+      {id:'Performance',name:'Performance',desc:'2 cameras, color corrected, pro audio mix',inc:['2 cameras, 1 night','Color corrected, polished multicam edit','Professional audio mix','1 digital master file']},
+      {id:'Full Production',name:'Full Production',desc:'2 cameras, 2 nights, best-scenes edit, titles & credits',inc:['2 cameras, 2 nights','Polished edit of the best scenes','Opening title and end credits','1 digital master file']}],
+    addons:[
+      {id:'copyD',name:'Additional digital copy',price:15,unit:'each',qty:true},
+      {id:'copyP',name:'Additional USB / disc copy',price:25,unit:'each',qty:true},
+      {id:'night',name:'Additional night capture',price:250,only:['Full Production'],note:'Full Production package only'},
+      {id:'bts',name:'BTS video package',price:150},
+      {id:'reel',name:'1 minute highlight reel',price:150}],
+    terms:THEATRE_LICENSE+"\n\n"+THEATRE_TERMS },
+  concert:{ label:'Concert',
+    packages:[
+      {id:'a',name:'Audio Archival',price:175,desc:'Stereo / multi-track audio, single hi-res file',inc:['Up to 1 hour of recording','Stereo / multi-track audio','Single hi-res file']},
+      {id:'v',name:'Video Archival',price:250,desc:'1-camera wide, synced audio, basic color',inc:['Up to 1 hour of recording','1-camera wide shot with audio','Synced audio, basic color']},
+      {id:'c',name:'Cinematic Concert',price:350,desc:'2–3 cameras, edited to the music',inc:['Up to 1 hour of recording','2–3 cameras with close-ups','Edited to the music']}],
+    addons:[
+      {id:'sec',name:'Section-by-section separation',price:50},
+      {id:'title',name:'On-screen titling & graphics',price:75},
+      {id:'rush',name:'Rush delivery (48-hour)',price:150}],
+    terms:GENERIC_TERMS },
+  dance:{ label:'Dance',
+    packages:[
+      {id:'a',name:'Archival Recital',price:250,desc:'1-camera wide, synced audio, basic color',inc:['Up to 1 hour of recording','1-camera wide shot','Synced audio, basic color']},
+      {id:'d',name:'Dynamic Recital Edit',price:400,desc:'Multi-camera, edited to rhythm, close-ups',inc:['Up to 1 hour of recording','Multi-camera with close-ups','Edited to rhythm']}],
+    addons:[
+      {id:'sep',name:'Routine-by-routine separation',price:50},
+      {id:'title',name:'On-screen titling',price:75},
+      {id:'night',name:'Additional night recording',price:150},
+      {id:'rush',name:'Rush delivery',price:150}],
+    terms:GENERIC_TERMS },
+  family:{ label:'Family History',
+    packages:[
+      {id:'raw',name:'Archival Raw Session',price:400,desc:'Up to 2 hrs, raw 4K files, no editing',inc:['Salt Lake area, up to 2 hours','Raw 4K files on flash / hard drive','No editing']},
+      {id:'heir',name:'The Heirloom',price:850,desc:'Color correction, audio mix, title cards, transcript',inc:['Up to 2 hours of interview','Color correction and audio mix','Title cards and PDF transcript','Hard drive and digital copy']},
+      {id:'doc',name:'The Documentary',price:2000,starting:true,desc:'3-hour session, 15–30 min narrative edit',inc:['3-hour session','15–30 minute narrative edit','B-roll / photo integration','Licensed music, hard drive']}],
+    addons:[
+      {id:'time',name:'Additional time',price:100,unit:'hour',qty:true},
+      {id:'travel',name:'Travel fee (outside Salt Lake Valley)',custom:true}],
+    terms:"Documentary: if photos or B-roll are not provided, additional hourly time is charged to digitize or record them. "+GENERIC_TERMS }
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+
+let state = {cat:'theatre',pkg:null,add:{},custom:[]};
+let termsEdited = false;
+
+function pkgPrice(p){
+  const c=RATES[state.cat];
+  return c.tiers ? c.tiers[$('tier').value][p.id] : p.price;
+}
+function currentPkg(){return RATES[state.cat].packages.find(p=>p.id===state.pkg)}
+
+function buildControls(){
+  const c=RATES[state.cat];
+  $('tierWrap').style.display=c.tiers?'':'none';
+  if(!currentPkg()) state.pkg=c.packages[0].id;
+  $('pkgs').innerHTML=c.packages.map(p=>`<label class="opt ${p.id===state.pkg?'sel':''}"><input type="radio" name="pkg" value="${p.id}" ${p.id===state.pkg?'checked':''}>
+    <span class="t">${esc(p.name)}<small>${esc(p.desc)}</small></span><span class="p">${p.starting?'from ':''}${money(pkgPrice(p))}</span></label>`).join('');
+  $('addons').innerHTML=c.addons.map(a=>{
+    const off=a.only&&!a.only.includes(state.pkg);
+    const v=state.add[a.id]||{on:false,qty:1,amt:''};
+    const price=a.custom?`<input type="number" class="qty" data-amt="${a.id}" placeholder="$" value="${esc(v.amt)}" min="0">`:`+${money(a.price)}${a.unit?'/'+(a.unit==='each'?'ea':'hr'):''}`;
+    return `<label class="opt ${off?'off':''} ${v.on&&!off?'sel':''}"><input type="checkbox" data-add="${a.id}" ${v.on&&!off?'checked':''} ${off?'disabled':''}>
+      <span class="t">${esc(a.name)}<small>${esc(off?a.note:a.qty?'Quantity '+'':a.custom?'Enter quoted amount':a.note||'')}</small></span>
+      ${a.qty?`<input type="number" class="qty" data-qty="${a.id}" min="1" value="${v.qty}">`:''}<span class="p">${price}</span></label>`}).join('');
+  if(!termsEdited) $('terms').value=c.terms;
+}
+
+function lines(){
+  const c=RATES[state.cat],p=currentPkg(),out=[];
+  const ov=parseFloat($('override').value);
+  const base=isNaN(ov)?pkgPrice(p):ov;
+  const tier=c.tiers?` (${$('tier').value==='junior'?'Junior, under 75 min':'Standard, 2+ hrs'})`:'';
+  out.push({name:`${c.label}: ${p.name}${tier}`,detail:p.desc,inc:p.inc,qty:1,price:base,starting:p.starting&&isNaN(ov)});
+  c.addons.forEach(a=>{
+    const v=state.add[a.id]; if(!v||!v.on||(a.only&&!a.only.includes(state.pkg)))return;
+    if(a.custom){const amt=parseFloat(v.amt)||0;out.push({name:a.name,qty:1,price:amt});return;}
+    const q=a.qty?Math.max(1,parseInt(v.qty)||1):1;
+    out.push({name:a.name,detail:a.qty?`${q} × ${money(a.price)}`:'',qty:q,price:a.price});
+  });
+  state.custom.forEach(x=>{if(x.name||x.amt)out.push({name:x.name||'Custom item',qty:1,price:parseFloat(x.amt)||0})});
+  return out;
+}
+
+function render(){
+  const L=lines();
+  const sub=L.reduce((s,l)=>s+l.price*l.qty,0);
+  const dv=parseFloat($('disc').value)||0;
+  const disc=$('discType').value==='%'?sub*Math.min(dv,100)/100:Math.min(dv,sub);
+  const total=sub-disc;
+  const today=new Date();
+  const qd=today.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const until=new Date(today.getTime()+(parseInt($('qValid').value)||30)*864e5).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const ed=$('eDate').value?new Date($('eDate').value+'T12:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'';
+  const b=(v,ph)=>v?esc(v):`<span class="blank">${ph}</span>`;
+  const hasStart=L.some(l=>l.starting);
+  const nm=$('cOrg').value||$('cName').value||'Client';
+  document.title=`Quote ${$('qNum').value||''} - ${nm} - Adrian Miller Media`.replace(/\s+/g,' ');
+
+  $('doc').innerHTML=`
+  <div class="dh"><img src="/assets/images/Stacked%20-%20Lighter.png" alt="Miller Media">
+    <div class="meta"><h2>QUOTE</h2><div>${$('qNum').value?'Quote # '+esc($('qNum').value)+'<br>':''}Date: ${qd}<br>Valid until: ${until}</div></div></div>
+  <div class="biz"><b>${CONTACT.name}</b><br>${CONTACT.email} &nbsp;|&nbsp; ${CONTACT.web}</div>
+  <div class="two">
+    <div><h4>Prepared for</h4><b>${b($('cName').value,'Client name')}</b><br>${$('cOrg').value?esc($('cOrg').value)+'<br>':''}${esc($('cEmail').value)}</div>
+    <div><h4>Project</h4><b>${b($('eName').value,'Project / event')}</b><br>${ed?esc(ed)+'<br>':''}${esc($('eVenue').value)}</div>
+  </div>
+  <table><thead><tr><th>Description</th><th class="r">Qty</th><th class="r">Rate</th><th class="r">Amount</th></tr></thead><tbody>
+  ${L.map(l=>`<tr><td><b>${esc(l.name)}</b>${l.detail&&!l.inc?`<span class="d">${esc(l.detail)}</span>`:''}${l.inc?`<ul>${l.inc.map(i=>`<li>${esc(i)}</li>`).join('')}</ul>`:''}</td>
+   <td class="r">${l.qty}</td><td class="r">${l.starting?'from ':''}${money(l.price)}</td><td class="r">${money(l.price*l.qty)}</td></tr>`).join('')}
+  </tbody></table>
+  <div class="tot"><div><span>Subtotal</span><span>${money(sub)}</span></div>
+  ${disc?`<div><span>Discount${$('discType').value==='%'?` (${dv}%)`:''}</span><span>−${money(disc)}</span></div>`:''}
+  <div class="grand"><span>Total</span><span>${money(total)}</span></div></div>
+  ${hasStart?`<p class="note" style="color:#666">* Listed price is a starting rate; final pricing is confirmed with the client.</p>`:''}
+  ${$('notes').value.trim()?`<div class="sec"><h4>Notes</h4><p>${esc($('notes').value)}</p></div>`:''}
+  ${$('pay').value.trim()?`<div class="sec"><h4>Payment terms</h4><p>${esc($('pay').value)}</p></div>`:''}
+  <div class="closing">
+  ${$('terms').value.trim()?`<div class="sec"><h4>Terms &amp; conditions</h4><p>${esc($('terms').value)}</p></div>`:''}
+  <div class="accept"><div>Client signature</div><div>Date</div></div>
+  <div class="foot">Thank you for the opportunity! &nbsp;•&nbsp; ${CONTACT.name} &nbsp;•&nbsp; ${CONTACT.email}</div>
+  </div>`;
+}
+
+function renderCustom(){
+  $('custom').innerHTML=state.custom.map((x,i)=>`<div class="cust"><input type="text" data-cn="${i}" placeholder="Description" value="${esc(x.name)}"><input type="number" data-ca="${i}" placeholder="$" value="${esc(x.amt)}"><button type="button" data-cd="${i}" title="Remove">×</button></div>`).join('');
+}
+
+const KEY='ammQuoteArchive';
+const FIELDS=['cName','cOrg','cEmail','eName','eDate','eVenue','qNum','qValid','cat','tier','override','disc','discType','notes','pay','terms'];
+const loadArchive=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return []}};
+const saveArchive=a=>{try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){alert('Could not save to the archive (browser storage unavailable).')}};
+
+function nextNum(){
+  const d=new Date();
+  const prefix=`AMM-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-`;
+  const used=loadArchive().map(q=>q.num).filter(n=>n&&n.startsWith(prefix)).map(n=>parseInt(n.slice(prefix.length))||0);
+  return prefix+String((used.length?Math.max(...used):0)+1).padStart(2,'0');
+}
+
+function archiveQuote(){
+  const L=lines();
+  const sub=L.reduce((s,l)=>s+l.price*l.qty,0);
+  const dv=parseFloat($('disc').value)||0;
+  const total=sub-($('discType').value==='%'?sub*Math.min(dv,100)/100:Math.min(dv,sub));
+  const fields={};FIELDS.forEach(f=>fields[f]=$(f).value);
+  const rec={num:$('qNum').value,savedAt:new Date().toISOString(),client:$('cOrg').value||$('cName').value,
+    project:$('eName').value,service:`${RATES[state.cat].label}: ${currentPkg().name}`,total,
+    fields,state:JSON.parse(JSON.stringify(state))};
+  const a=loadArchive().filter(q=>q.num!==rec.num);
+  a.unshift(rec);saveArchive(a);renderArchive();
+}
+
+function renderArchive(){
+  const a=loadArchive();
+  $('archive').innerHTML=a.length?a.map(q=>`<div class="arow"><div class="t"><b>${esc(q.num)}</b> · ${money(q.total)}<small>${esc(q.client||'No client')} · ${esc(q.service)} · ${new Date(q.savedAt).toLocaleDateString()}</small></div>
+    <button type="button" data-aload="${esc(q.num)}">Open</button><button type="button" class="del" data-adel="${esc(q.num)}">×</button></div>`).join('')
+    :'<p class="note">No saved quotes yet.</p>';
+}
+
+function openQuote(num){
+  const q=loadArchive().find(x=>x.num===num);if(!q)return;
+  state=q.state;
+  $('cat').value=q.fields.cat;
+  FIELDS.forEach(f=>{if(f!=='terms')$(f).value=q.fields[f]});
+  termsEdited=true;buildControls();$('terms').value=q.fields.terms;
+  renderCustom();render();window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function init(){
+  $('cat').innerHTML=Object.entries(RATES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  $('qNum').value=nextNum();
+  buildControls();render();renderArchive();
+}
+
+$('archive').addEventListener('click',e=>{
+  const t=e.target;
+  if(t.dataset.aload)openQuote(t.dataset.aload);
+  if(t.dataset.adel&&confirm('Delete this saved quote?')){saveArchive(loadArchive().filter(q=>q.num!==t.dataset.adel));renderArchive();}
+});
+$('exportA').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(loadArchive(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='quote-archive-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
+});
+$('importA').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',async e=>{
+  try{
+    const inc=JSON.parse(await e.target.files[0].text());
+    if(!Array.isArray(inc))throw 0;
+    const map=new Map(loadArchive().map(q=>[q.num,q]));
+    inc.forEach(q=>{if(q&&q.num&&q.fields&&q.state)map.set(q.num,q)});
+    saveArchive([...map.values()].sort((a,b)=>b.savedAt.localeCompare(a.savedAt)));
+    renderArchive();
+  }catch(err){alert('That file is not a valid quote archive.');}
+  e.target.value='';
+});
+
+$('cat').addEventListener('change',e=>{state.cat=e.target.value;state.pkg=null;state.add={};$('override').value='';termsEdited=false;buildControls();render();});
+$('tier').addEventListener('change',()=>{buildControls();render();});
+$('terms').addEventListener('input',()=>{termsEdited=true;});
+$('form').addEventListener('change',e=>{
+  const t=e.target;
+  if(t.name==='pkg'){state.pkg=t.value;buildControls();}
+  else if(t.dataset.add){(state.add[t.dataset.add]=state.add[t.dataset.add]||{on:false,qty:1,amt:''}).on=t.checked;buildControls();}
+  render();
+});
+$('form').addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.qty){(state.add[t.dataset.qty]=state.add[t.dataset.qty]||{on:false,qty:1,amt:''}).qty=t.value;}
+  if(t.dataset.amt){(state.add[t.dataset.amt]=state.add[t.dataset.amt]||{on:false,qty:1,amt:''}).amt=t.value;}
+  if(t.dataset.cn!==undefined)state.custom[t.dataset.cn].name=t.value;
+  if(t.dataset.ca!==undefined)state.custom[t.dataset.ca].amt=t.value;
+  render();
+});
+$('form').addEventListener('click',e=>{
+  if(e.target.dataset.cd!==undefined){state.custom.splice(e.target.dataset.cd,1);renderCustom();render();}
+});
+$('addCustom').addEventListener('click',()=>{state.custom.push({name:'',amt:''});renderCustom();});
+$('pdf').addEventListener('click',()=>{render();archiveQuote();window.print();});
+$('reset').addEventListener('click',()=>{if(confirm('Clear the form?')){$('form').reset();state={cat:'theatre',pkg:null,add:{},custom:[]};termsEdited=false;$('cat').value='theatre';renderCustom();init();}});
+init();
+</script>
+</body>
+</html>
