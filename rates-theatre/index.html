@@ -53,9 +53,15 @@
         /* --- SIZZLE REEL BACKGROUND --- */
         .reel-bg {
             position: fixed; inset: 0; z-index: -1; overflow: hidden;
-            background: var(--bg-dark) url('/assets/images/curtains.png') center / cover no-repeat;
+            background: var(--bg-dark);
             pointer-events: none;
         }
+        .reel-bg::before {
+            content: ""; position: absolute; inset: 0;
+            background: url('/assets/images/curtains.png') center / cover no-repeat;
+            transition: opacity 0.8s ease;
+        }
+        .reel-bg.is-playing::before { opacity: 0; }
         .reel-bg video {
             position: absolute; inset: 0; width: 100%; height: 100%;
             object-fit: cover; opacity: 0; transition: opacity 0.8s ease;
