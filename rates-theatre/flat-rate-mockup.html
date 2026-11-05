@@ -119,8 +119,11 @@
 
         /* --- COLLAPSIBLE EXPLAINER (UPDATED) --- */
         .explainer-box {
-            background: rgba(10, 14, 23, 0.78);
-            backdrop-filter: blur(6px);
+            background: rgba(10, 14, 23, 0.88);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 3rem;
             overflow: hidden; 
             transition: all 0.3s ease;
         }
@@ -371,7 +374,8 @@
 
         .license-box {
             margin-top: 2rem; padding: 1.5rem 2rem; border-radius: 12px;
-            background: rgba(255, 107, 107, 0.06); border: 1px solid rgba(255, 107, 107, 0.4);
+            background: linear-gradient(rgba(255, 107, 107, 0.08), rgba(255, 107, 107, 0.08)), rgba(10, 14, 23, 0.88);
+            backdrop-filter: blur(8px); border: 1px solid rgba(255, 107, 107, 0.4);
             border-left: 4px solid #ff6b6b;
         }
         .license-box h4 { margin: 0 0 0.75rem; font-size: 1.05rem; color: #ffd0d0; }
@@ -453,7 +457,8 @@
         /* --- ADD ONS & HYBRID --- */
         .addons-section {
             margin-top: 4rem;
-            background: rgba(255,255,255,0.03);
+            background: rgba(10, 14, 23, 0.88);
+            backdrop-filter: blur(8px);
             padding: 2rem;
             border-radius: 12px;
             border-left: 4px solid var(--accent-secondary);
@@ -475,6 +480,7 @@
             margin-top: 2rem;
             padding: 1.5rem;
             background: linear-gradient(90deg, #101522 0%, #161b2e 100%);
+            backdrop-filter: blur(8px);
             border: 1px dashed var(--accent-primary);
             border-radius: 8px;
             display: flex;
