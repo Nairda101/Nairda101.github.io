@@ -53,19 +53,17 @@
         /* --- SIZZLE REEL BACKGROUND --- */
         .reel-bg {
             position: fixed; inset: 0; z-index: -1; overflow: hidden;
-            background: var(--bg-dark); pointer-events: none;
+            background: var(--bg-dark) url('/assets/images/curtains.png') center / cover no-repeat;
+            pointer-events: none;
         }
-        .reel-bg iframe {
-            position: absolute; top: 50%; left: 50%;
-            width: max(100vw, 177.78vh); height: max(100vh, 56.25vw);
-            transform: translate(-50%, -50%) scale(1.08); border: 0;
-            opacity: 0; transition: opacity 0.6s ease;
+        .reel-bg video {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0; transition: opacity 0.8s ease;
         }
-        .reel-bg.is-playing iframe { opacity: 0.8; }
+        .reel-bg.is-playing video { opacity: 0.8; }
         .reel-bg::after {
             content: ""; position: absolute; inset: 0;
             background: linear-gradient(180deg, rgba(10,14,23,0.15) 0%, rgba(10,14,23,0.4) 60%, rgba(10,14,23,0.75) 100%);
-            transition: opacity 0.6s ease;
         }
         .reel-watch {
             display: inline-flex; align-items: center; gap: 10px; margin-top: 0.5rem;
@@ -76,31 +74,22 @@
             backdrop-filter: blur(4px);
         }
         .reel-watch:hover { background: var(--accent-secondary); box-shadow: 0 0 20px rgba(67, 97, 238, 0.5); }
-        .reel-close {
-            display: none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-            z-index: 1000; padding: 0.75rem 1.6rem; border-radius: 50px; cursor: pointer;
-            background: rgba(10,14,23,0.8); border: 2px solid var(--accent-secondary);
-            color: #fff; font: 700 0.9rem 'Montserrat', sans-serif; text-transform: uppercase;
-        }
-        .reel-close:hover { background: var(--accent-secondary); }
-        .reel-bg-wrap { transition: opacity 0.6s ease; }
-        body.reel-open .reel-bg.is-playing iframe { opacity: 1; }
-        body.reel-open .reel-bg::after { opacity: 0; }
-        body.reel-open .reel-bg { pointer-events: auto; }
-        body.reel-open .reel-close { display: block; }
-        body.reel-open #site-header, body.reel-open .header-section, body.reel-open .header-section + .container,
-        body.reel-open #site-footer { opacity: 0; pointer-events: none; }
-        #site-header, .header-section, .header-section + .container, #site-footer { transition: opacity 0.6s ease; }
-        body.reel-open { overflow: hidden; }
 
-        /* Phones/tablets in portrait: show the whole 16:9 frame instead of cropping it */
-        @media (max-width: 768px) and (orientation: portrait) {
-            .reel-bg iframe {
-                width: 100vw; height: 56.25vw; top: 38%;
-                transform: translate(-50%, -50%);
-            }
+        /* Showreel popup */
+        .reel-modal {
+            display: none; position: fixed; inset: 0; z-index: 2000;
+            background: rgba(5, 7, 12, 0.92); align-items: center; justify-content: center; padding: 1rem;
         }
+        .reel-modal.is-open { display: flex; }
+        .reel-modal-inner { position: relative; width: min(1000px, 100%); aspect-ratio: 16 / 9; }
+        .reel-modal-inner iframe { width: 100%; height: 100%; border: 0; border-radius: 10px; box-shadow: 0 0 40px rgba(0,0,0,0.6); }
+        .reel-modal-close {
+            position: absolute; top: -3rem; right: 0; background: none; border: none;
+            color: #fff; font-size: 1.8rem; cursor: pointer;
+        }
+        body.modal-open { overflow: hidden; }
 
+        @media (prefers-reduced-motion: reduce) { .reel-bg video { display: none; } }
         .price-from {
             font-size: 0.8rem; color: var(--text-muted); font-weight: 700;
             text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2px;
@@ -130,10 +119,8 @@
 
         /* --- COLLAPSIBLE EXPLAINER (UPDATED) --- */
         .explainer-box {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin-bottom: 3rem;
+            background: rgba(10, 14, 23, 0.78);
+            backdrop-filter: blur(6px);
             overflow: hidden; 
             transition: all 0.3s ease;
         }
@@ -629,12 +616,17 @@
 </head>
 <body>
     <div class="reel-bg" aria-hidden="true">
-        <iframe id="reelPlayer" title="Theatre showreel background" referrerpolicy="strict-origin-when-cross-origin"
-            src="https://www.youtube.com/embed/VbX4nv4THoI?autoplay=1&mute=1&controls=0&modestbranding=1&playsinline=1&rel=0&iv_load_policy=3&disablekb=1&enablejsapi=1"
-            allow="autoplay; encrypted-media" tabindex="-1"></iframe>
+        <video id="reelVideo" autoplay muted loop playsinline preload="auto" poster="/assets/images/curtains.png">
+            <source src="/assets/video/Web-overlay_720%201.5mbs.mp4" type="video/mp4">
+        </video>
     </div>
-    <button type="button" class="reel-close" id="reelClose"><i class="fa-solid fa-xmark"></i> Back to rates</button>
 
+    <div class="reel-modal" id="reelModal" role="dialog" aria-modal="true" aria-label="Theatre showreel">
+        <div class="reel-modal-inner">
+            <button type="button" class="reel-modal-close" id="reelClose" aria-label="Close showreel"><i class="fa-solid fa-xmark"></i></button>
+            <div id="reelSlot" style="width:100%;height:100%;"></div>
+        </div>
+    </div>
     <div id="site-header"></div>
 
 <div class="header-section">
@@ -853,31 +845,29 @@
         }
     }
 
-    // Showreel: unmute and enlarge the background video via the YouTube iframe API
-    const reelFrame = document.getElementById('reelPlayer');
-    const reelCmd = (func, args = []) => reelFrame.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func, args }), 'https://www.youtube.com');
-    function setReel(open) {
-        document.body.classList.toggle('reel-open', open);
-        if (open) { reelCmd('unMute'); reelCmd('setVolume', [80]); reelCmd('seekTo', [0, true]); reelCmd('playVideo'); }
-        else { reelCmd('mute'); }
+    // Background video: fade in once it is actually playing
+    const bgVideo = document.getElementById('reelVideo');
+    const bgBox = document.querySelector('.reel-bg');
+    bgVideo.addEventListener('playing', () => bgBox.classList.add('is-playing'));
+    bgVideo.play().catch(() => {});
+
+    // Showreel popup: YouTube embed is created on click and removed on close
+    const reelModal = document.getElementById('reelModal');
+    const reelSlot = document.getElementById('reelSlot');
+    function openReel() {
+        reelSlot.innerHTML = '<iframe title="Theatre Production Showreel" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen src="https://www.youtube.com/embed/VbX4nv4THoI?autoplay=1&rel=0"></iframe>';
+        reelModal.classList.add('is-open');
+        document.body.classList.add('modal-open');
     }
-    document.getElementById('reelWatch').addEventListener('click', () => setReel(true));
-
-    // Listen to player state: loop manually (no playlist, so no prev/next buttons) and reveal once playing
-    reelFrame.addEventListener('load', () => {
-        reelFrame.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), 'https://www.youtube.com');
-    });
-    window.addEventListener('message', e => {
-        if (e.source !== reelFrame.contentWindow) return;
-        let data; try { data = JSON.parse(e.data); } catch { return; }
-        const state = data.event === 'onStateChange' ? data.info : data.info && data.info.playerState;
-        if (state === 1) document.querySelector('.reel-bg').classList.add('is-playing');
-        if (state === 0) { reelCmd('seekTo', [0, true]); reelCmd('playVideo'); }
-    });
-    document.getElementById('reelClose').addEventListener('click', () => setReel(false));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') setReel(false); });
-
+    function closeReel() {
+        reelModal.classList.remove('is-open');
+        document.body.classList.remove('modal-open');
+        reelSlot.innerHTML = '';
+    }
+    document.getElementById('reelWatch').addEventListener('click', openReel);
+    document.getElementById('reelClose').addEventListener('click', closeReel);
+    reelModal.addEventListener('click', e => { if (e.target === reelModal) closeReel(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeReel(); });
     // 2. Toggle Explainer Box
     function toggleExplainer() {
         const box = document.getElementById('explainer');
