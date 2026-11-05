@@ -134,6 +134,10 @@ td ul{margin:4px 0 0;padding-left:16px;color:#555;font-size:11.5px}
   <fieldset><legend>Quote Archive</legend>
     <div id="archive"></div>
     <div class="row" style="margin-top:8px">
+      <button type="button" class="addbtn" id="driveBtn">Connect Google Drive</button>
+    </div>
+    <p class="note" id="driveStatus">Google Drive backup is not connected.</p>
+    <div class="row" style="margin-top:8px">
       <button type="button" class="addbtn" id="exportA">Export backup</button>
       <button type="button" class="addbtn" id="importA">Import backup</button>
     </div>
@@ -328,7 +332,88 @@ function archiveQuote(){
   const rec=buildRec();
   const a=loadArchive().filter(q=>q.num!==rec.num);
   a.unshift(rec);saveArchive(a);renderArchive();
+  if(localStorage.getItem('ammDriveOn'))driveSave(rec).then(()=>driveStatus('Saved '+rec.num+' to Drive.')).catch(e=>driveStatus('Drive backup failed: '+e.message+' (saved locally).'));
 }
+
+/* Google Drive backup: one JSON file per quote/invoice in a Drive folder. */
+const GOOGLE_CLIENT_ID='414996156156-89av9s0nr0hl1mqphdd14ql6s05okuai.apps.googleusercontent.com';
+const DRIVE_FOLDER='Miller Media Quotes';
+let driveToken=null,driveFolderId=null;
+const driveStatus=t=>{$('driveStatus').textContent=t};
+const loadGis=()=>new Promise((res,rej)=>{
+  if(window.google&&google.accounts)return res();
+  const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=res;
+  s.onerror=()=>rej(new Error('Could not load Google sign-in'));document.head.appendChild(s);
+});
+async function driveAuth(silent){
+  if(!GOOGLE_CLIENT_ID)throw new Error('no Client ID set yet (GOOGLE_CLIENT_ID in the script)');
+  if(driveToken&&Date.now()<driveToken.exp)return driveToken.t;
+  await loadGis();
+  return new Promise((res,rej)=>{
+    google.accounts.oauth2.initTokenClient({
+      client_id:GOOGLE_CLIENT_ID,scope:'https://www.googleapis.com/auth/drive.file',
+      callback:r=>{
+        if(r.error)return rej(new Error(r.error));
+        driveToken={t:r.access_token,exp:Date.now()+(r.expires_in-60)*1000};
+        localStorage.setItem('ammDriveOn','1');res(r.access_token);
+      },
+      error_callback:e=>rej(new Error(e.type||'sign-in cancelled'))
+    }).requestAccessToken({prompt:silent?'none':''});
+  });
+}
+async function driveApi(url,opts={}){
+  const t=await driveAuth(false);
+  const r=await fetch(url,{...opts,headers:{...(opts.headers||{}),Authorization:'Bearer '+t}});
+  if(!r.ok)throw new Error('Drive error '+r.status);
+  return r;
+}
+const dq=s=>s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+async function driveFolder(){
+  if(driveFolderId)return driveFolderId;
+  const q=encodeURIComponent(`name='${DRIVE_FOLDER}' and mimeType='application/vnd.google-apps.folder' and trashed=false`);
+  const found=(await(await driveApi(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id)`)).json()).files;
+  if(found.length)return driveFolderId=found[0].id;
+  const c=await(await driveApi('https://www.googleapis.com/drive/v3/files?fields=id',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name:DRIVE_FOLDER,mimeType:'application/vnd.google-apps.folder'})})).json();
+  return driveFolderId=c.id;
+}
+async function driveSave(rec){
+  const folder=await driveFolder();
+  const name=rec.num.replace(/[^\w\-]+/g,'_')+'.json';
+  const q=encodeURIComponent(`name='${dq(name)}' and '${folder}' in parents and trashed=false`);
+  const ex=(await(await driveApi(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id)`)).json()).files;
+  const meta=ex.length?{}:{name,parents:[folder]};
+  const b='ammb'+Date.now();
+  const body=`--${b}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(meta)}\r\n--${b}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(rec)}\r\n--${b}--`;
+  const url=ex.length?`https://www.googleapis.com/upload/drive/v3/files/${ex[0].id}?uploadType=multipart`:'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
+  await driveApi(url,{method:ex.length?'PATCH':'POST',headers:{'Content-Type':'multipart/related; boundary='+b},body});
+}
+async function driveSync(){
+  const folder=await driveFolder();
+  const q=encodeURIComponent(`'${folder}' in parents and trashed=false and name contains '.json'`);
+  const files=(await(await driveApi(`https://www.googleapis.com/drive/v3/files?q=${q}&pageSize=1000&fields=files(id)`)).json()).files;
+  const map=new Map(loadArchive().map(x=>[x.num,x]));
+  const remote=new Map();let pulled=0;
+  for(const f of files){
+    try{
+      const rec=await(await driveApi(`https://www.googleapis.com/drive/v3/files/${f.id}?alt=media`)).json();
+      if(!(rec&&rec.num&&rec.fields&&rec.state))continue;
+      remote.set(rec.num,rec);
+      const mine=map.get(rec.num);
+      if(!mine||String(rec.savedAt)>String(mine.savedAt)){map.set(rec.num,rec);pulled++;}
+    }catch(e){}
+  }
+  saveArchive([...map.values()].sort((a,b)=>String(b.savedAt).localeCompare(String(a.savedAt))));
+  renderArchive();
+  let pushed=0;
+  for(const rec of map.values()){const r=remote.get(rec.num);if(!r||String(rec.savedAt)>String(r.savedAt)){await driveSave(rec);pushed++;}}
+  driveStatus(`Drive connected. Pulled ${pulled}, backed up ${pushed}. Last sync ${new Date().toLocaleTimeString()}.`);
+}
+async function driveConnect(silent){
+  try{driveStatus('Syncing with Google Drive…');await driveAuth(silent);await driveSync();$('driveBtn').textContent='Sync Google Drive now';}
+  catch(e){driveStatus(silent?'Google Drive backup is not connected.':'Drive: '+e.message);}
+}
+$('driveBtn').addEventListener('click',()=>driveConnect(false));
 
 function buildRec(){
   const L=lines();
@@ -376,6 +461,10 @@ function init(){
   $('cat').innerHTML=Object.entries(RATES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
   $('qNum').value=nextNum('quote');
   setDocUI();buildControls();render();renderArchive();
+  if(GOOGLE_CLIENT_ID&&localStorage.getItem('ammDriveOn')){
+    const auto=$('qNum').value;
+    driveConnect(true).then(()=>{if($('qNum').value===auto&&!isInv()){$('qNum').value=nextNum('quote');render();}});
+  }
 }
 
 $('docType').addEventListener('change',()=>{
