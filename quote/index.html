@@ -134,6 +134,12 @@ td ul{margin:4px 0 0;padding-left:16px;color:#555;font-size:11.5px}
       <button type="button" class="addbtn" id="importA">Import backup</button>
     </div>
     <input type="file" id="importFile" accept="application/json" hidden>
+    <div class="row" style="margin-top:8px">
+      <button type="button" class="addbtn" id="saveDraft">Save draft to file</button>
+      <button type="button" class="addbtn" id="loadDraft">Load draft from file</button>
+    </div>
+    <input type="file" id="draftFile" accept="application/json" hidden>
+    <p class="note">Draft files save the form exactly as it is now (no PDF needed) and can be loaded back into the form later.</p>
     <p class="note">Saved automatically each time you click Download PDF. Stored in this browser only, so export a backup now and then.</p>
   </fieldset>
 
@@ -301,6 +307,12 @@ function nextNum(){
 }
 
 function archiveQuote(){
+  const rec=buildRec();
+  const a=loadArchive().filter(q=>q.num!==rec.num);
+  a.unshift(rec);saveArchive(a);renderArchive();
+}
+
+function buildRec(){
   const L=lines();
   const sub=L.reduce((s,l)=>s+l.price*l.qty,0);
   const dv=parseFloat($('disc').value)||0;
@@ -309,8 +321,7 @@ function archiveQuote(){
   const rec={num:$('qNum').value,savedAt:new Date().toISOString(),client:$('cOrg').value||$('cName').value,
     project:$('eName').value,service:`${RATES[state.cat].label}: ${currentPkg().name}`,total,
     fields,state:JSON.parse(JSON.stringify(state))};
-  const a=loadArchive().filter(q=>q.num!==rec.num);
-  a.unshift(rec);saveArchive(a);renderArchive();
+  return rec;
 }
 
 function renderArchive(){
@@ -322,6 +333,10 @@ function renderArchive(){
 
 function openQuote(num){
   const q=loadArchive().find(x=>x.num===num);if(!q)return;
+  applyRec(q);
+}
+
+function applyRec(q){
   state=q.state;
   $('cat').value=q.fields.cat;
   FIELDS.forEach(f=>{if(f!=='terms')$(f).value=q.fields[f]});
@@ -341,19 +356,44 @@ $('archive').addEventListener('click',e=>{
   if(t.dataset.adel&&confirm('Delete this saved quote?')){saveArchive(loadArchive().filter(q=>q.num!==t.dataset.adel));renderArchive();}
 });
 $('exportA').addEventListener('click',()=>{
-  const blob=new Blob([JSON.stringify(loadArchive(),null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='quote-archive-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
+  const data=loadArchive();
+  if(!data.length){alert('Nothing to back up yet. Quotes are added to the archive when you click Download PDF.');return;}
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='quote-archive-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 });
 $('importA').addEventListener('click',()=>$('importFile').click());
 $('importFile').addEventListener('change',async e=>{
+  if(!e.target.files[0])return;
   try{
     const inc=JSON.parse(await e.target.files[0].text());
     if(!Array.isArray(inc))throw 0;
     const map=new Map(loadArchive().map(q=>[q.num,q]));
-    inc.forEach(q=>{if(q&&q.num&&q.fields&&q.state)map.set(q.num,q)});
-    saveArchive([...map.values()].sort((a,b)=>b.savedAt.localeCompare(a.savedAt)));
+    let n=0;
+    inc.forEach(q=>{if(q&&q.num&&q.fields&&q.state){map.set(q.num,q);n++;}});
+    if(!n)throw 0;
+    saveArchive([...map.values()].sort((a,b)=>String(b.savedAt).localeCompare(String(a.savedAt))));
     renderArchive();
+    alert('Imported '+n+' quote'+(n===1?'':'s')+'.');
   }catch(err){alert('That file is not a valid quote archive.');}
+  e.target.value='';
+});
+
+$('saveDraft').addEventListener('click',()=>{
+  const rec=buildRec();
+  const name=(rec.client||'draft').replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-')||'draft';
+  const blob=new Blob([JSON.stringify(rec,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`quote-draft-${rec.num}-${name}.json`;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
+$('loadDraft').addEventListener('click',()=>$('draftFile').click());
+$('draftFile').addEventListener('change',async e=>{
+  if(!e.target.files[0])return;
+  try{
+    const q=JSON.parse(await e.target.files[0].text());
+    if(!q||!q.fields||!q.state||!RATES[q.fields.cat])throw 0;
+    if(confirm('Replace the current form with this draft?'))applyRec(q);
+  }catch(err){alert('That file is not a valid quote draft.');}
   e.target.value='';
 });
 
