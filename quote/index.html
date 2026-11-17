@@ -180,7 +180,9 @@ const RATES = {
       {id:'copyP',name:'Additional USB / disc copy',price:25,unit:'each',qty:true},
       {id:'night',name:'Additional night capture',price:250,only:['Full Production'],note:'Full Production package only'},
       {id:'bts',name:'BTS video package',price:150},
-      {id:'reel',name:'1 minute highlight reel',price:150}],
+      {id:'reel',name:'1 minute highlight reel',price:150},
+      {id:'camera',name:'Additional camera',price:150,unit:'camera-night',qty:true,quantityLabel:'camera-night',only:['Performance','Full Production'],note:'$150 per additional camera, per recording night (Performance or Full Production only)'}
+    ],
     terms:THEATRE_LICENSE+"\n\n"+THEATRE_TERMS },
   concert:{ label:'Concert',
     packages:[
@@ -235,9 +237,9 @@ function buildControls(){
   $('addons').innerHTML=c.addons.map(a=>{
     const off=a.only&&!a.only.includes(state.pkg);
     const v=state.add[a.id]||{on:false,qty:1,amt:''};
-    const price=a.custom?`<input type="number" class="qty" data-amt="${a.id}" placeholder="$" value="${esc(v.amt)}" min="0">`:`+${money(a.price)}${a.unit?'/'+(a.unit==='each'?'ea':'hr'):''}`;
+    const price=a.custom?`<input type="number" class="qty" data-amt="${a.id}" placeholder="$" value="${esc(v.amt)}" min="0">`:`+${money(a.price)}${a.unit?'/'+(a.unit==='each'?'ea':a.unit==='hour'?'hr':a.unit):''}`;
     return `<label class="opt ${off?'off':''} ${v.on&&!off?'sel':''}"><input type="checkbox" data-add="${a.id}" ${v.on&&!off?'checked':''} ${off?'disabled':''}>
-      <span class="t">${esc(a.name)}<small>${esc(off?a.note:a.qty?'Quantity '+'':a.custom?'Enter quoted amount':a.note||'')}</small></span>
+      <span class="t">${esc(a.name)}<small>${esc(off?a.note:a.qty?(a.note||'Quantity'):a.custom?'Enter quoted amount':a.note||'')}</small></span>
       ${a.qty?`<input type="number" class="qty" data-qty="${a.id}" min="1" value="${v.qty}">`:''}<span class="p">${price}</span></label>`}).join('');
   if(!termsEdited) $('terms').value=c.terms;
 }
@@ -252,7 +254,8 @@ function lines(){
     const v=state.add[a.id]; if(!v||!v.on||(a.only&&!a.only.includes(state.pkg)))return;
     if(a.custom){const amt=parseFloat(v.amt)||0;out.push({name:a.name,qty:1,price:amt});return;}
     const q=a.qty?Math.max(1,parseInt(v.qty)||1):1;
-    out.push({name:a.name,detail:a.qty?`${q} × ${money(a.price)}`:'',qty:q,price:a.price});
+    const quantityDetail=a.qty?`${q}${a.quantityLabel?` ${a.quantityLabel}${q===1?'':'s'}`:''} × ${money(a.price)}`:'';
+    out.push({name:a.name,detail:quantityDetail,qty:q,price:a.price});
   });
   state.custom.forEach(x=>{if(x.name||x.amt)out.push({name:x.name||'Custom item',qty:1,price:parseFloat(x.amt)||0})});
   return out;
