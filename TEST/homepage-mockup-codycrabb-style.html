@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miller Media | Homepage Mockup</title>
+<link rel="icon" type="image/png" href="/assets/images/MillerMediaLogo.png">
+<link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=poppins:300,400,500,600,800,900&display=swap">
+<style>
+:root {
+  --primary: #7b2cbf;
+  --secondary: #4361ee;
+  --accent: #4361ee;
+  --accent-strong: #3a54d4;
+  --accent-soft: #a0b0ff;
+  --fg: #161b33;
+  --bg: #fff;
+  --muted: #555b6d;
+  --border: #e2e3ed;
+  --ink: #0a0e17;
+  --surface: #f4f4fa;
+  --night: #060717;
+  --on-dark: #fff;
+  --muted-on-dark: #e4e4f3;
+  --border-on-dark: rgb(255 255 255 / 18%);
+  --gradient-night: linear-gradient(135deg, #0a0e17 0%, #161a4a 70%, #2a2a7a 100%);
+  --font: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 9px 22px rgb(9 6 61 / 5%);
+  --shadow-md: 0 18px 38px rgb(9 6 61 / 15%);
+  --container: 1200px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--muted);
+  font: 400 1rem/1.6 var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { margin: 0; color: var(--ink); line-height: 1.15; font-weight: 600; }
+h2 { font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.375rem); letter-spacing: -.025em; }
+h3 { font-size: 1.125rem; font-weight: 500; }
+p { margin: 0; }
+a { color: #3624b6; }
+img, iframe { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.container { width: min(100% - 2 * var(--gutter), var(--container)); margin-inline: auto; }
+.section { padding-block: clamp(3.5rem, 7vw, 6rem); }
+.surface { background: var(--surface); }
+.flow > * + * { margin-top: 1rem; }
+.eyebrow {
+  display: inline-block;
+  color: var(--accent-strong);
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.lead { font-size: 1.125rem; }
+.text-center { text-align: center; }
+.section-head { max-width: 46rem; margin: 0 auto 1.5rem; }
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link { position: absolute; z-index: 1001; top: -5rem; left: 1rem; }
+.skip-link:focus { top: 1rem; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .625rem 1.125rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font: 500 1rem/1.2 var(--font);
+  letter-spacing: -.025em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: filter .15s var(--ease), background-color .15s, border-color .15s, transform .15s;
+}
+.btn--primary { background: var(--accent-strong); color: #fff; }
+.btn--primary:hover { filter: brightness(.9); transform: translateY(-1px); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--border); }
+.btn--ghost:hover { border-color: currentColor; background: rgb(255 255 255 / 8%); }
+.btn-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* Elements fade up once as they enter the viewport. */
+[data-reveal] { transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.js [data-reveal]:not(.is-revealed) { opacity: 0; transform: translateY(16px); }
+.js .page-top [data-reveal] { opacity: 1; transform: none; transition: none; }
+
+/* Floating desktop navigation */
+.site-header { position: fixed; top: 12px; left: 0; right: 0; z-index: 100; pointer-events: none; }
+.site-header__bar {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: min(100% - 2 * var(--gutter), var(--container));
+  min-height: 4.5rem;
+  margin-inline: auto;
+  padding: .5rem .75rem .5rem .5rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: background-color .3s var(--ease), border-color .3s, box-shadow .3s, transform .3s;
+}
+.site-header__logo { flex: none; line-height: 0; }
+.site-header__logo img { width: 3.5rem; height: 3.5rem; object-fit: contain; }
+.site-nav { flex: 1; display: flex; justify-content: flex-end; }
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav a { color: var(--ink); text-decoration: none; font-size: .875rem; font-weight: 500; white-space: nowrap; }
+.site-nav__list > li > a:not(.btn):hover { color: var(--accent-strong); }
+.site-nav .btn { padding: .5rem 1rem; color: #fff; font-size: .875rem; }
+.has-sub { position: relative; display: flex; align-items: center; gap: .15rem; }
+.sub-toggle { padding: .25rem; border: 0; background: none; color: var(--ink); cursor: pointer; line-height: 0; }
+.sub-toggle::before {
+  content: "";
+  display: block;
+  width: .4em;
+  height: .4em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-25%) rotate(45deg);
+  transition: transform .15s;
+}
+.sub-toggle[aria-expanded="true"]::before { transform: translateY(25%) rotate(-135deg); }
+.sub {
+  position: absolute;
+  top: calc(100% + 1rem);
+  left: -.75rem;
+  display: grid;
+  gap: 2px;
+  width: 21rem;
+  margin: 0;
+  padding: .5rem;
+  list-style: none;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity .15s var(--ease), transform .15s var(--ease), visibility .15s;
+}
+.sub--end { right: -.75rem; left: auto; }
+.sub a {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  align-items: center;
+  column-gap: .75rem;
+  padding: .75rem;
+  border-radius: var(--radius-sm);
+  white-space: normal;
+}
+.sub a:hover { background: var(--surface); }
+.sub-icon { grid-row: span 2; display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: var(--radius-sm); background: rgb(67 97 238 / 12%); }
+.sub-title { font-weight: 600; line-height: 1.3; }
+.sub-desc { color: var(--muted); font-size: .75rem; line-height: 1.4; }
+@media (min-width: 1101px) {
+  .site-header:not(.is-solid) .site-header__bar { background: transparent; border-color: transparent; box-shadow: none; transform: translateY(4px); }
+  .site-header:not(.is-solid) .site-nav__list > li > a:not(.btn), .site-header:not(.is-solid) .sub-toggle { color: #fff; }
+  .has-sub:hover > .sub, .has-sub:focus-within > .sub, .sub-toggle[aria-expanded="true"] + .sub { opacity: 1; visibility: visible; transform: none; }
+}
+
+/* The five-button app-style mobile navigation and its expandable sheets. */
+.tabbar {
+  display: none;
+  position: fixed;
+  right: 0;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  left: 0;
+  z-index: 100;
+  width: min(100% - 2 * var(--gutter), 28rem);
+  margin-inline: auto;
+  transition: transform .3s var(--ease);
+}
+.tabbar.is-tucked { transform: translateY(calc(100% + 24px)); }
+.tabbar__list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: rgb(255 255 255 / 94%);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+.tabbar__item {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  width: 100%;
+  padding: .5rem .2rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--muted);
+  font: 500 .6875rem/1.2 var(--font);
+  text-decoration: none;
+  cursor: pointer;
+}
+.tabbar__icon { font-size: 1.2rem; line-height: 1; }
+.tabbar__item[aria-expanded="true"] { color: var(--ink); background: var(--surface); }
+.tabbar__item--cta { background: var(--accent-strong); color: #fff; }
+.tabbar__sheet {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  left: 0;
+  padding: .5rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  animation: sheet .3s var(--ease);
+}
+.tabbar__sheet[hidden] { display: none; }
+.tabbar__sheet a { display: grid; grid-template-columns: 2.25rem 1fr; align-items: center; column-gap: .75rem; padding: .75rem; color: var(--ink); text-decoration: none; }
+.tabbar__sheet a:hover { background: var(--surface); }
+.tabbar__sheet-title { padding: .5rem .75rem .25rem; color: var(--accent-strong); font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+@keyframes sheet { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+@media (max-width: 1100px) {
+  .site-header { display: none; }
+  .tabbar { display: block; }
+  .footer-legal { padding-bottom: 7rem !important; }
+}
+
+/* Photo hero with the broad curved lower edge and dark photo tint. */
+.page-top .container { width: auto; margin-inline: 0; }
+.hero-card {
+  --hero-inline: max(var(--gutter), calc((100vw - var(--container)) / 2));
+  position: relative;
+  display: flex;
+  min-height: clamp(36rem, 88vh, 56rem);
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: calc(6.5rem + clamp(2.5rem, 1.5rem + 3vw, 4.5rem)) var(--hero-inline) clamp(2.5rem, 1.75rem + 2.5vw, 4rem);
+  color: var(--muted-on-dark);
+  border-radius: 0 0 clamp(40px, 7vw, 100px) clamp(40px, 7vw, 100px);
+  background-color: var(--ink);
+  background-image: linear-gradient(100deg, rgb(10 14 23 / 96%) 0%, rgb(10 14 23 / 62%) 50%, rgb(10 14 23 / 12%) 100%), var(--photo), var(--gradient-night);
+  background-size: cover;
+  background-position: center;
+}
+.hero-card > * { position: relative; max-width: 44rem; }
+.hero-card > * + * { margin-top: .75rem; }
+.home-hero__name {
+  max-width: none !important;
+  color: #fff;
+  font-size: min(7.5rem, calc((100vw - 2 * var(--hero-inline)) / 9.4));
+  font-weight: 800;
+  letter-spacing: -.045em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.hero-card .btn-row { margin-top: 2rem; }
+.hero-card .btn--ghost { color: #fff; border-color: var(--border-on-dark); }
+.hero-badge {
+  position: absolute !important;
+  right: var(--hero-inline);
+  bottom: 2rem;
+  display: grid;
+  width: clamp(84px, 10vw, 120px);
+  aspect-ratio: 1;
+  max-width: none !important;
+  place-items: center;
+  padding: .5rem;
+  border-radius: 50%;
+  background: conic-gradient(var(--primary), var(--secondary), var(--primary));
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes spin-in { from { opacity: 0; transform: rotate(-200deg) scale(.4); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .home-hero > h1 { animation: rise .8s var(--ease) .1s both; }
+  .home-hero > .lead { animation: rise .8s var(--ease) .25s both; }
+  .home-hero > .btn-row { animation: rise .8s var(--ease) .4s both; }
+  .home-hero > .hero-badge { animation: spin-in 1.1s cubic-bezier(.22, 1, .36, 1) .6s both; }
+}
+@media (max-width: 980px) {
+  .hero-card { min-height: calc(100svh - 6rem); padding-top: 3rem; background-position: center, 45% 20%; }
+  .hero-badge { display: none; }
+  .home-hero__name { font-size: clamp(3rem, 15vw, 5rem); white-space: normal; }
+}
+
+.dot-divider { display: flex; align-items: center; width: min(100%, 30rem); margin: 1rem auto; }
+.dot-divider::before, .dot-divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.dot-divider span { position: relative; flex: none; width: .875rem; height: .875rem; margin-inline: 1.375rem; border: 2px solid var(--accent); border-radius: 50%; }
+.dot-divider span::before, .dot-divider span::after { content: ""; position: absolute; top: 50%; width: .375rem; height: .375rem; border-radius: 50%; background: var(--accent); transform: translateY(-50%); }
+.dot-divider span::before { right: calc(100% + .5rem); }
+.dot-divider span::after { left: calc(100% + .5rem); }
+
+/* Looping portfolio rows of tall, clickable project artwork. */
+.marquee-section { overflow-x: clip; }
+.marquee {
+  display: grid;
+  gap: .5rem;
+  margin-inline: calc(50% - 50vw);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.marquee__row { overflow: hidden; padding-block: .75rem; }
+.marquee__inner { display: flex; gap: .75rem; width: max-content; padding-right: .75rem; animation: marquee-left 90s linear infinite; }
+.marquee__row--reverse .marquee__inner { animation-name: marquee-right; }
+.marquee:hover .marquee__inner, .marquee:focus-within .marquee__inner { animation-play-state: paused; }
+@keyframes marquee-left { to { transform: translateX(-50%); } }
+@keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.tile {
+  position: relative;
+  flex: none;
+  width: clamp(8rem, 22vw, 13rem);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--gradient-night);
+  color: #fff;
+  text-decoration: none;
+  transform-origin: 50% 100%;
+  transition: transform .3s var(--ease);
+}
+.tile:hover, .tile:focus-visible { transform: translateY(-8px) rotate(-1.5deg); }
+.tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.tile__label { position: absolute; inset: auto 0 0; padding: 3rem .75rem .75rem; background: linear-gradient(to top, rgb(6 7 23 / 92%), transparent); color: #fff; font-size: .875rem; font-weight: 600; line-height: 1.25; }
+@media (prefers-reduced-motion: reduce) { .marquee__inner { animation: none !important; } .marquee__row { overflow-x: auto; } }
+
+/* About and rotating testimonial carousel */
+.split { display: grid; align-items: center; gap: 2rem; }
+@media (min-width: 981px) { .split { grid-template-columns: 1fr 1fr; column-gap: clamp(3rem, 1rem + 5vw, 6rem); } .split--top { align-items: start; } }
+.media-frame { overflow: hidden; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+.media-frame img { width: 100%; height: 100%; object-fit: cover; }
+.tilt { transform: rotate(-2.5deg); transition: transform .6s var(--ease); }
+.tilt:hover { transform: none; }
+.js .tilt[data-reveal]:not(.is-revealed) { transform: translateY(16px) rotate(-2.5deg); }
+.testimonial-carousel { position: relative; max-width: 52rem; margin: 3rem auto 0; padding-inline: 3.75rem; }
+.testimonial-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  align-items: start;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  transition: height .3s var(--ease);
+}
+.testimonial-track::-webkit-scrollbar { display: none; }
+.testimonial-track > * { scroll-snap-align: start; }
+.testimonial { margin: 0; padding: clamp(1.5rem, 1rem + 3vw, 3rem); background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg); text-align: center; }
+.avatar { display: grid; width: 5rem; height: 5rem; place-items: center; margin: 0 auto .75rem; border: 3px solid var(--surface); border-radius: 50%; outline: 2px solid var(--accent); background: var(--ink); color: #fff; font-size: 1.25rem; font-weight: 600; }
+.testimonial cite { display: block; margin-bottom: 1.5rem; color: var(--ink); font-style: normal; font-weight: 600; line-height: 1.3; }
+.testimonial cite span { display: block; color: var(--muted); font-size: .875rem; font-weight: 400; }
+.testimonial blockquote { margin: 0; color: var(--fg); }
+.carousel-controls { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.carousel-button { display: grid; width: 2.75rem; height: 2.75rem; place-items: center; border: 1px solid var(--border); border-radius: 50%; background: #fff; color: var(--ink); cursor: pointer; pointer-events: auto; }
+.carousel-button:hover { border-color: currentColor; }
+.carousel-button::before { content: ""; width: .55em; height: .55em; margin-right: .15em; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); }
+.carousel-button--prev::before { margin: 0 0 0 .15em; transform: rotate(135deg); }
+
+/* Dark-gradient content card */
+.dark-card { position: relative; overflow: hidden; padding: clamp(2rem, 1.25rem + 3vw, 3.5rem); border-radius: var(--radius-lg); background: var(--gradient-night); box-shadow: var(--shadow-md); color: var(--muted-on-dark); }
+.dark-card::after { position: absolute; top: -4.5rem; right: -4.5rem; width: 14rem; height: 14rem; border: 1.5rem solid var(--accent); border-radius: 50%; content: ""; opacity: .35; pointer-events: none; }
+.dark-card > * { position: relative; max-width: 52rem; }
+.dark-card > * + * { margin-top: .75rem; }
+.dark-card h2 { color: #fff; }
+.dark-card .eyebrow { color: var(--accent-soft); }
+.points { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 1.5rem; max-width: none !important; margin: 2rem 0 0; padding: 0; list-style: none; }
+.points li { display: grid; gap: .5rem; align-content: start; padding-top: 1rem; border-top: 1px solid var(--border-on-dark); }
+.points strong { color: #fff; font-weight: 600; }
+.points li > span:last-child { font-size: .875rem; }
+.points__icon { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; border-radius: var(--radius-sm); background: rgb(67 97 238 / 25%); font-size: 1.1rem; }
+
+/* Click-to-play video */
+.embed { position: relative; max-width: 56rem; aspect-ratio: 16 / 9; margin-inline: auto; background: var(--night); cursor: pointer; }
+.embed > img { width: 100%; height: 100%; object-fit: cover; opacity: .85; transition: transform .5s var(--ease); }
+.embed:hover > img { transform: scale(1.04); }
+.play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  width: 72px;
+  height: 72px;
+  place-items: center;
+  margin: auto;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  font-size: 1.4rem;
+  transition: transform .3s;
+}
+.embed:hover .play { transform: scale(1.12); }
+.embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* Contact form; submit is intentionally a local mockup interaction. */
+.contact-panel { padding: clamp(1.25rem, .75rem + 2vw, 2rem); border: 1px solid var(--border); border-radius: var(--radius-lg); background: #fff; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 16px; }
+.full { grid-column: 1 / -1; }
+.field label, .field legend { display: block; margin: 0 0 6px; padding: 0; color: var(--fg); font-size: .875rem; font-weight: 500; }
+.field fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.field input[type="text"], .field input[type="email"], .field select, .field textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid #d4d4d8;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+  color: var(--fg);
+  font: inherit;
+  transition: border-color .15s, box-shadow .15s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { outline: 0; border-color: var(--accent-strong); box-shadow: 0 0 0 3px rgb(58 84 212 / 18%); }
+.choice { display: flex; gap: 10px; margin-bottom: 10px; color: var(--fg); font-size: .9375rem; cursor: pointer; }
+.choice input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent-strong); }
+.form-success { padding: 18px 20px; border: 1px solid rgb(22 163 74 / 35%); border-radius: var(--radius-md); background: rgb(22 163 74 / 8%); color: var(--fg); }
+@media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+
+/* Contact message / booking dialog */
+.modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 1rem; background: rgb(6 7 23 / 70%); opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
+.modal.open { opacity: 1; visibility: visible; }
+.modal__box { position: relative; width: min(720px, 100%); max-height: 92vh; overflow: auto; padding: 2rem; border-radius: var(--radius-lg); background: #fff; transform: scale(.94); transition: transform .3s var(--ease); }
+.modal.open .modal__box { transform: none; }
+.modal__close { position: absolute; top: .75rem; right: .75rem; display: grid; width: 2.25rem; height: 2.25rem; place-items: center; border: 0; border-radius: 50%; background: var(--surface); cursor: pointer; }
+.switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 1.5rem 0; padding: 4px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); }
+.switch button { padding: .625rem 1rem; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--muted); font: 500 .875rem var(--font); cursor: pointer; }
+.switch button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgb(9 6 61 / 12%); }
+.booking-placeholder { display: grid; min-height: 16rem; place-items: center; padding: 1rem; border: 1px dashed var(--border); border-radius: var(--radius-md); background: var(--surface); text-align: center; }
+
+/* Footer */
+.footer { background: var(--gradient-night); color: var(--muted-on-dark); font-size: .875rem; text-align: center; }
+.footer-main { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding-block: 4rem 3rem; }
+.footer-main img { width: 3.5rem; height: 3.5rem; border-radius: var(--radius-sm); }
+.footer-name { color: #fff; font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.375rem); font-weight: 800; letter-spacing: -.025em; line-height: 1.1; }
+.footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.5rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.footer a { color: #fff; text-decoration: none; }
+.footer a:hover { color: var(--accent-soft); }
+.footer-legal { padding-block: 1.5rem; border-top: 1px solid var(--border-on-dark); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .js [data-reveal]:not(.is-revealed) { opacity: 1; transform: none; }
+}
+</style>
+<script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+<a class="skip-link btn btn--primary" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__bar">
+    <a class="site-header__logo" href="#top"><img src="/assets/images/MillerMediaLogo.png" alt="Miller Media home" width="56" height="56"></a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul class="site-nav__list">
+        <li><a href="#about">About</a></li>
+        <li class="has-sub">
+          <a href="#services">Services</a>
+          <button class="sub-toggle" type="button" aria-expanded="false" aria-controls="sub-services"><span class="visually-hidden">Show the Services menu</span></button>
+          <ul class="sub" id="sub-services">
+            <li><a href="#services"><span class="sub-icon" aria-hidden="true">🎙️</span><span class="sub-title">Audio Engineering</span><span class="sub-desc">Mixing, recording and music production.</span></a></li>
+            <li><a href="#services"><span class="sub-icon" aria-hidden="true">🎬</span><span class="sub-title">Video Production</span><span class="sub-desc">Interviews, performances and shoots.</span></a></li>
+          </ul>
+        </li>
+        <li class="has-sub">
+          <a href="#work">Work</a>
+          <button class="sub-toggle" type="button" aria-expanded="false" aria-controls="sub-work"><span class="visually-hidden">Show the Work menu</span></button>
+          <ul class="sub sub--end" id="sub-work">
+            <li><a href="#work"><span class="sub-icon" aria-hidden="true">🎞️</span><span class="sub-title">Portfolio</span><span class="sub-desc">Selected projects and productions.</span></a></li>
+            <li><a href="#reel"><span class="sub-icon" aria-hidden="true">▶️</span><span class="sub-title">Production Reel</span><span class="sub-desc">A quick look at the work.</span></a></li>
+          </ul>
+        </li>
+        <li><a href="#contact-section">Contact</a></li>
+        <li><a class="btn btn--primary" href="#contact-section" data-open-popup>Start Your Project</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<nav class="tabbar" aria-label="Mobile">
+  <div class="tabbar__sheet" id="sheet-services" hidden>
+    <p class="tabbar__sheet-title">Services</p>
+    <a href="#services"><span class="sub-icon" aria-hidden="true">🎙️</span><span class="sub-title">Audio Engineering</span><span class="sub-desc">Mixing, recording and music.</span></a>
+    <a href="#services"><span class="sub-icon" aria-hidden="true">🎬</span><span class="sub-title">Video Production</span><span class="sub-desc">Interviews, performances and shoots.</span></a>
+  </div>
+  <div class="tabbar__sheet" id="sheet-work" hidden>
+    <p class="tabbar__sheet-title">Work</p>
+    <a href="#work"><span class="sub-icon" aria-hidden="true">🎞️</span><span class="sub-title">Portfolio</span><span class="sub-desc">Selected projects and productions.</span></a>
+    <a href="#reel"><span class="sub-icon" aria-hidden="true">▶️</span><span class="sub-title">Production Reel</span><span class="sub-desc">A quick look at the work.</span></a>
+  </div>
+  <ul class="tabbar__list">
+    <li><a class="tabbar__item" href="#top"><span class="tabbar__icon" aria-hidden="true">⌂</span>Home</a></li>
+    <li><button class="tabbar__item" type="button" aria-expanded="false" aria-controls="sheet-services"><span class="tabbar__icon" aria-hidden="true">▣</span>Services</button></li>
+    <li><button class="tabbar__item" type="button" aria-expanded="false" aria-controls="sheet-work"><span class="tabbar__icon" aria-hidden="true">▶</span>Work</button></li>
+    <li><a class="tabbar__item" href="#about"><span class="tabbar__icon" aria-hidden="true">◉</span>About</a></li>
+    <li><a class="tabbar__item tabbar__item--cta" href="#contact-section" data-open-popup><span class="tabbar__icon" aria-hidden="true">✉</span>Contact</a></li>
+  </ul>
+</nav>
+
+<main id="main" tabindex="-1">
+  <section class="page-top" id="top">
+    <div class="container">
+      <div class="hero-card home-hero" style="--photo:url('/assets/images/Main%20Edit%20-%20No%20Text%20for%20background.00_00_25_02.Still004.jpg')">
+        <h1 class="home-hero__name">Adrian Miller</h1>
+        <p class="lead">Crystal clear audio and impactful video. I handle the technical precision so you can focus on your story.</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="#contact-section" data-open-popup>Let's Get In Touch</a>
+          <a class="btn btn--ghost" href="#work">Portfolio</a>
+        </div>
+        <div class="hero-badge" aria-hidden="true">Salt Lake City<br>Audio &amp; Video</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="section marquee-section">
+    <div class="container">
+      <div class="section-head text-center flow" data-reveal>
+        <p class="eyebrow">Selected work</p>
+        <h2>Projects I've helped bring to life.</h2>
+        <div class="dot-divider" aria-hidden="true"><span></span></div>
+      </div>
+      <div id="project-deck" hidden>
+        <a class="tile" href="https://youtu.be/IwubXkxULwU" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/IwubXkxULwU/hqdefault.jpg" alt="" loading="lazy"><span class="tile__label">"It was Meant to Be"</span></a>
+        <a class="tile" href="https://youtu.be/Z5tJQ3EyxNI" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/Z5tJQ3EyxNI/hqdefault.jpg" alt="" loading="lazy"><span class="tile__label">Sintel — Sound Design</span></a>
+        <a class="tile" href="https://youtu.be/pzWouHYJeug" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/pzWouHYJeug/hqdefault.jpg" alt="" loading="lazy"><span class="tile__label">The Little Mermaid</span></a>
+        <a class="tile" href="#work"><img src="/assets/images/Valley%20Theatre.png" alt="" loading="lazy"><span class="tile__label">Valley Theatre</span></a>
+        <a class="tile" href="#work"><img src="/assets/images/curtains.png" alt="" loading="lazy"><span class="tile__label">Theatre Capture</span></a>
+        <a class="tile" href="#work"><span class="tile__label">Podcast Mixing</span></a>
+        <a class="tile" href="#work"><span class="tile__label">Live Recording</span></a>
+        <a class="tile" href="#work"><span class="tile__label">Post-Production</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section surface">
+    <div class="container">
+      <div class="split">
+        <div class="media-frame tilt" data-reveal>
+          <img src="/assets/images/Stacked%20-%20Lighter.png" alt="Miller Media logo" style="aspect-ratio:1;object-fit:contain;padding:2rem;background:var(--ink)">
+        </div>
+        <div class="flow" data-reveal>
+          <h2>Hi, I'm Adrian.</h2>
+          <p>I run Miller Media. I help creators, theatres and businesses turn their ideas into audio and video that looks polished and sounds incredible.</p>
+          <p>Plan it, record it, edit it, ship it. I handle the production so you can focus on your story.</p>
+          <div class="btn-row">
+            <a class="btn btn--primary" href="#contact-section" data-open-popup>Let's Get In Touch</a>
+            <a class="btn btn--ghost" href="#reel">Watch My Demo Reel</a>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-carousel" id="testimonials" data-reveal>
+        <div class="testimonial-track">
+          <figure class="testimonial"><div class="avatar" aria-hidden="true">MM</div><figcaption><cite>Client testimonial <span>Replace with a real client</span></cite></figcaption><blockquote><p>“A testimonial goes here. This placeholder lets you preview the testimonial carousel interaction and styling.”</p></blockquote></figure>
+          <figure class="testimonial"><div class="avatar" aria-hidden="true">MM</div><figcaption><cite>Client testimonial <span>Replace with a real client</span></cite></figcaption><blockquote><p>“A longer testimonial can go here, too. The carousel adjusts to the height of the quote in view, so a change in content won't leave extra empty space.”</p></blockquote></figure>
+          <figure class="testimonial"><div class="avatar" aria-hidden="true">MM</div><figcaption><cite>Client testimonial <span>Replace with a real client</span></cite></figcaption><blockquote><p>“One more sample testimonial. Use the arrows to move between quotes.”</p></blockquote></figure>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-button carousel-button--prev" type="button"><span class="visually-hidden">Previous testimonial</span></button>
+          <button class="carousel-button" type="button"><span class="visually-hidden">Next testimonial</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section">
+    <div class="container">
+      <div class="dark-card" data-reveal>
+        <p class="eyebrow">Production services</p>
+        <h2>Three ways to work together.</h2>
+        <p class="lead">From a single mix to a full production, I'll meet you where your project is and take it the rest of the way.</p>
+        <ul class="points">
+          <li><span class="points__icon" aria-hidden="true">🎙️</span><strong>Audio Engineering</strong><span>Podcast mixing, music production and on-location recording that sounds crisp and balanced.</span></li>
+          <li><span class="points__icon" aria-hidden="true">🎬</span><strong>Video Production</strong><span>Full-service production for interviews, performances and all your video needs.</span></li>
+          <li><span class="points__icon" aria-hidden="true">✨</span><strong>Post-Production</strong><span>Editing, color grading and sound design that turn raw footage into a polished final product.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="reel" class="section">
+    <div class="container">
+      <div class="section-head text-center flow" data-reveal>
+        <p class="eyebrow">Production reel</p>
+        <h2>Hit play.</h2>
+        <div class="dot-divider" aria-hidden="true"><span></span></div>
+      </div>
+      <div class="embed media-frame" id="production-reel" data-video="kF8OhHZHmXs" data-reveal role="button" tabindex="0" aria-label="Play production reel">
+        <img src="https://img.youtube.com/vi/kF8OhHZHmXs/hqdefault.jpg" alt="">
+        <span class="play" aria-hidden="true">▶</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact-section" class="section surface">
+    <div class="container split split--top">
+      <div class="flow" data-reveal>
+        <p class="eyebrow">Start a conversation</p>
+        <h2>Got a story to tell? Let's make it.</h2>
+        <p>Tell me about your project and where things get stuck. Drop a note or book a call. No pitch deck needed.</p>
+        <div class="btn-row"><a class="btn btn--ghost" href="#contact-section" data-open-popup data-modal-tab="book">Book a call</a></div>
+      </div>
+      <div class="contact-panel" data-reveal id="inline-form"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-main">
+    <img src="/assets/images/MillerMediaLogo.png" alt="" width="56" height="56">
+    <p class="footer-name">MILLER MEDIA</p>
+    <p>Audio and video production for creators, theatres and businesses.</p>
+    <ul class="footer-links">
+      <li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#work">Work</a></li><li><a href="#contact-section">Contact</a></li>
+    </ul>
+  </div>
+  <div class="container footer-legal"><p>© <span id="year">2026</span> Miller Media. Mockup only.</p></div>
+</footer>
+
+<div class="modal" id="contact-modal" aria-hidden="true">
+  <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal__close" type="button" aria-label="Close dialog">×</button>
+    <p class="eyebrow">Start a conversation</p>
+    <h2 id="modal-title" style="margin-top:.5rem">Let's work together.</h2>
+    <div class="modal-switch" data-switch-group>
+      <div class="switch" role="tablist" aria-label="How would you like to get in touch?">
+        <button type="button" role="tab" aria-selected="true" aria-controls="message-panel" data-switch="message-panel">Send a message</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="booking-panel" data-switch="booking-panel">Book a call</button>
+      </div>
+      <div id="message-panel" role="tabpanel"></div>
+      <div id="booking-panel" role="tabpanel" hidden><div class="booking-placeholder">Calendar embed can go here.</div></div>
+    </div>
+  </div>
+</div>
+
+<template id="contact-form-template">
+  <form class="field mock-form">
+    <div class="form-grid">
+      <div><label>Name<input type="text" name="name" autocomplete="name"></label></div>
+      <div><label>Email<input type="email" name="email" autocomplete="email"></label></div>
+      <fieldset class="full">
+        <legend>What can I help with? *</legend>
+        <label class="choice"><input type="checkbox" name="help" value="audio">Audio engineering or mixing</label>
+        <label class="choice"><input type="checkbox" name="help" value="video">Video production</label>
+        <label class="choice"><input type="checkbox" name="help" value="editing">Editing / post-production</label>
+        <label class="choice"><input type="checkbox" name="help" value="other">Something else</label>
+      </fieldset>
+      <div class="full"><label>How did you hear about me?
+        <select name="heard"><option value="">Choose…</option><option>Word of mouth</option><option>Social media</option><option>Google Search</option><option>Other</option></select>
+      </label></div>
+      <div class="full"><label>Tell me about your project *<textarea rows="5" name="project" required></textarea></label></div>
+    </div>
+    <div style="margin-top:1.5rem"><button class="btn btn--primary" type="submit">Send Message</button></div>
+  </form>
+  <p class="form-success" role="status" tabindex="-1" hidden>Thanks! This is a mockup; nothing was sent.</p>
+</template>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var one = function (selector, root) { return (root || document).querySelector(selector); };
+  var all = function (selector, root) { return Array.prototype.slice.call((root || document).querySelectorAll(selector)); };
+  one("#year").textContent = String(new Date().getFullYear());
+
+  // Reveal sections on scroll, while showing everything for reduced motion or older browsers.
+  var revealItems = all("[data-reveal]");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+    revealItems.forEach(function (item) { item.classList.add("is-revealed"); });
+  } else {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-revealed");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -10% 0px" });
+    revealItems.forEach(function (item) { revealObserver.observe(item); });
+  }
+
+  // The desktop header settles onto a white bar after the hero scrolls away.
+  var header = one(".site-header");
+  var setHeader = function () { header.classList.toggle("is-solid", window.scrollY > 24); };
+  setHeader();
+  window.addEventListener("scroll", setHeader, { passive: true });
+  all(".sub-toggle").forEach(function (button) {
+    button.addEventListener("click", function () {
+      button.setAttribute("aria-expanded", button.getAttribute("aria-expanded") !== "true");
+    });
+  });
+
+  // Mobile sheets close on outside click, Escape, or choosing a destination.
+  var tabbar = one(".tabbar");
+  var sheetButtons = all("button[aria-controls]", tabbar);
+  var closeSheets = function (except) {
+    sheetButtons.forEach(function (button) {
+      if (button === except) return;
+      button.setAttribute("aria-expanded", "false");
+      one("#" + button.getAttribute("aria-controls")).hidden = true;
+    });
+  };
+  sheetButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var opening = button.getAttribute("aria-expanded") !== "true";
+      closeSheets(button);
+      button.setAttribute("aria-expanded", String(opening));
+      one("#" + button.getAttribute("aria-controls")).hidden = !opening;
+    });
+  });
+  document.addEventListener("click", function (event) {
+    if (!tabbar.contains(event.target)) closeSheets();
+  });
+  all(".tabbar__sheet a").forEach(function (link) {
+    link.addEventListener("click", function () { closeSheets(); });
+  });
+  var lastScrollY = window.scrollY;
+  window.addEventListener("scroll", function () {
+    var y = window.scrollY;
+    if (Math.abs(y - lastScrollY) < 8) return;
+    tabbar.classList.toggle("is-tucked", y > lastScrollY && y > 160 && !one('[aria-expanded="true"]', tabbar));
+    lastScrollY = y;
+  }, { passive: true });
+
+  // Build two continuously scrolling rows from the project tiles.
+  var tiles = all("#project-deck .tile");
+  var marquee = document.createElement("div");
+  marquee.className = "marquee";
+  [0, 1].forEach(function (rowIndex) {
+    var row = document.createElement("div");
+    row.className = "marquee__row" + (rowIndex ? " marquee__row--reverse" : "");
+    var inner = document.createElement("div");
+    inner.className = "marquee__inner";
+    var rowTiles = tiles.filter(function (_, index) { return index % 2 === rowIndex; });
+    for (var pass = 0; pass < 6; pass++) {
+      rowTiles.forEach(function (tile) {
+        var copy = tile.cloneNode(true);
+        if (pass > 0) {
+          copy.setAttribute("aria-hidden", "true");
+          copy.setAttribute("tabindex", "-1");
+        }
+        inner.appendChild(copy);
+      });
+    }
+    row.appendChild(inner);
+    marquee.appendChild(row);
+  });
+  one("#project-deck").after(marquee);
+
+  // Testimonial carousel advances one quote and fits the active quote's height.
+  var carousel = one("#testimonials");
+  var track = one(".testimonial-track", carousel);
+  var fitTimer;
+  var fitTrack = function () {
+    var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    var index = Math.round(track.scrollLeft / (track.clientWidth + gap));
+    var slide = track.children[index];
+    if (slide) track.style.height = slide.offsetHeight + "px";
+  };
+  all(".carousel-button", carousel).forEach(function (button) {
+    button.addEventListener("click", function () {
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      var direction = button.classList.contains("carousel-button--prev") ? -1 : 1;
+      track.scrollBy({ left: direction * (track.clientWidth + gap), behavior: "smooth" });
+    });
+  });
+  track.addEventListener("scroll", function () {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(fitTrack, 60);
+  });
+  window.addEventListener("resize", function () { track.style.height = ""; fitTrack(); });
+  window.addEventListener("load", fitTrack);
+  fitTrack();
+
+  // Load the video iframe only after the visitor chooses to play.
+  var reel = one("#production-reel");
+  var playReel = function () {
+    if (one("iframe", reel)) return;
+    reel.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + reel.dataset.video + '?autoplay=1" title="Miller Media production reel" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+  };
+  reel.addEventListener("click", playReel, { once: true });
+  reel.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      playReel();
+    }
+  });
+
+  // The inline form and popup form share the same clearly-marked mock behavior.
+  var template = one("#contact-form-template");
+  ["#inline-form", "#message-panel"].forEach(function (selector) {
+    var slot = one(selector);
+    slot.appendChild(template.content.cloneNode(true));
+    var form = one(".mock-form", slot);
+    var success = one(".form-success", slot);
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      var choices = all('input[name="help"]:checked', form);
+      if (!choices.length) {
+        one('input[name="help"]', form).focus();
+        return;
+      }
+      form.hidden = true;
+      success.hidden = false;
+      success.focus();
+    });
+  });
+
+  // Modal supports message/booking tabs, backdrop and Escape, then restores focus.
+  var modal = one("#contact-modal");
+  var lastFocus;
+  var openModal = function (tab) {
+    lastFocus = document.activeElement;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    var target = tab === "book" ? "booking-panel" : "message-panel";
+    all("[data-switch]", modal).forEach(function (button) {
+      var selected = button.dataset.switch === target;
+      button.setAttribute("aria-selected", String(selected));
+      one("#" + button.dataset.switch, modal).hidden = !selected;
+    });
+    one(".modal__close", modal).focus();
+  };
+  var closeModal = function () {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    if (lastFocus) lastFocus.focus();
+  };
+  all("[data-open-popup]").forEach(function (trigger) {
+    trigger.addEventListener("click", function (event) {
+      event.preventDefault();
+      openModal(trigger.dataset.modalTab);
+    });
+  });
+  all("[data-switch]", modal).forEach(function (button) {
+    button.addEventListener("click", function () {
+      all("[data-switch]", modal).forEach(function (tab) {
+        var selected = tab === button;
+        tab.setAttribute("aria-selected", String(selected));
+        one("#" + tab.dataset.switch, modal).hidden = !selected;
+      });
+    });
+  });
+  one(".modal__close", modal).addEventListener("click", closeModal);
+  modal.addEventListener("click", function (event) { if (event.target === modal) closeModal(); });
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape") return;
+    if (modal.classList.contains("open")) closeModal();
+    closeSheets();
+    all(".sub-toggle").forEach(function (button) { button.setAttribute("aria-expanded", "false"); });
+  });
+});
+</script>
+</body>
+</html>
