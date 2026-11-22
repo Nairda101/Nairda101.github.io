@@ -182,8 +182,9 @@ const RATES = {
       {id:'bts',name:'BTS video package',price:150},
       {id:'reel',name:'1 minute highlight reel',price:150},
       {id:'camera',name:'Additional camera',price:150,unit:'camera-night',qty:true,quantityLabel:'camera-night',only:['Performance','Full Production'],note:'$150 per additional camera, per recording night (Performance or Full Production only)'},
-      {id:'opening',name:'Opening photo montage or motion graphic title sequence',price:75,only:['Archive','Performance'],note:'Available for Archive and Performance; included with Full Production'},
-      {id:'credits',name:'Closing credits',price:75,only:['Archive','Performance'],note:'Available for Archive and Performance; included with Full Production'}
+      {id:'opening',name:'Opening photo montage or motion graphic title sequence',price:75,only:['Archive','Performance'],note:'Archive and Performance only; included with Full Production. Choose the bundle to save $25 on both.'},
+      {id:'credits',name:'Closing credits',price:75,only:['Archive','Performance'],note:'Archive and Performance only; included with Full Production. Choose the bundle to save $25 on both.'},
+      {id:'openingCreditsBundle',name:'Opening photo montage or motion graphic title sequence and closing credits bundle',price:125,only:['Archive','Performance'],note:'Save $25 on both; replaces the individual options. Included with Full Production.'}
     ],
     terms:THEATRE_LICENSE+"\n\n"+THEATRE_TERMS },
   concert:{ label:'Concert',
@@ -534,7 +535,15 @@ $('terms').addEventListener('input',()=>{termsEdited=true;});
 $('form').addEventListener('change',e=>{
   const t=e.target;
   if(t.name==='pkg'){state.pkg=t.value;buildControls();}
-  else if(t.dataset.add){(state.add[t.dataset.add]=state.add[t.dataset.add]||{on:false,qty:1,amt:''}).on=t.checked;buildControls();}
+  else if(t.dataset.add){
+    const id=t.dataset.add;
+    (state.add[id]=state.add[id]||{on:false,qty:1,amt:''}).on=t.checked;
+    if(state.cat==='theatre'&&t.checked){
+      const replaces=id==='openingCreditsBundle'?['opening','credits']:['opening','credits'].includes(id)?['openingCreditsBundle']:[];
+      replaces.forEach(other=>{if(state.add[other])state.add[other].on=false;});
+    }
+    buildControls();
+  }
   render();
 });
 $('form').addEventListener('input',e=>{
