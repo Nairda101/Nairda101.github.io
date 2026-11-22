@@ -174,14 +174,16 @@ const RATES = {
     packages:[
       {id:'Archive',name:'Archive',desc:'1 camera wide, 1 night, direct board audio, 1 digital master',inc:['1 camera, wide shot','1 night of recording','Direct board audio','1 digital master file']},
       {id:'Performance',name:'Performance',desc:'2 cameras, color corrected, pro audio mix',inc:['2 cameras, 1 night','Color corrected, polished multicam edit','Professional audio mix','1 digital master file']},
-      {id:'Full Production',name:'Full Production',desc:'2 cameras, 2 nights, best-scenes edit, titles & credits',inc:['2 cameras, 2 nights','Polished edit of the best scenes','Opening title and end credits','1 digital master file']}],
+      {id:'Full Production',name:'Full Production',desc:'2 cameras, 2 nights, best-scenes edit, opening sequence & closing credits',inc:['2 cameras, 2 nights','Polished edit of the best scenes','Opening photo montage or motion graphic title sequence included','Closing credits included','1 digital master file']}],
     addons:[
       {id:'copyD',name:'Additional digital copy',price:15,unit:'each',qty:true},
       {id:'copyP',name:'Additional USB / disc copy',price:25,unit:'each',qty:true},
       {id:'night',name:'Additional night capture',price:250,only:['Full Production'],note:'Full Production package only'},
       {id:'bts',name:'BTS video package',price:150},
       {id:'reel',name:'1 minute highlight reel',price:150},
-      {id:'camera',name:'Additional camera',price:150,unit:'camera-night',qty:true,quantityLabel:'camera-night',only:['Performance','Full Production'],note:'$150 per additional camera, per recording night (Performance or Full Production only)'}
+      {id:'camera',name:'Additional camera',price:150,unit:'camera-night',qty:true,quantityLabel:'camera-night',only:['Performance','Full Production'],note:'$150 per additional camera, per recording night (Performance or Full Production only)'},
+      {id:'opening',name:'Opening photo montage or motion graphic title sequence',price:75,only:['Archive','Performance'],note:'Available for Archive and Performance; included with Full Production'},
+      {id:'credits',name:'Closing credits',price:75,only:['Archive','Performance'],note:'Available for Archive and Performance; included with Full Production'}
     ],
     terms:THEATRE_LICENSE+"\n\n"+THEATRE_TERMS },
   concert:{ label:'Concert',
